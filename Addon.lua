@@ -10,7 +10,7 @@ local Addon = LibStub('AceAddon-3.0'):NewAddon(ADDON, 'LibClass-2.0', 'AceConsol
 ns.Addon = Addon
 ns.L = LibStub('AceLocale-3.0'):GetLocale(ADDON)
 
-ns.ICON = [[Interface\Icons\INV_Misc_Gift_03]]
+ns.ICON = [[Interface\AddOns\tdPack2\Resource\INV_Pet_Broom]]
 
 function Addon:OnInitialize(args)
     local defaults = {profile = {reverse = false}}
