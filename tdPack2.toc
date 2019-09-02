@@ -1,7 +1,7 @@
-﻿## Interface: 50400
+﻿## Interface: 11302
 ## Title: tdPack2
 ## Author: Dencer
-## Version: 50400.01
+## Version: @project-version@
 ## OptionalDeps: Bagnon, Combuctor, tdBag
 ## SavedVariables: TDDB_PACK2
 
