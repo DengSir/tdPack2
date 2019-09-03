@@ -174,7 +174,7 @@ function Group:CanPutItem(item)
     if family == 0 then
         return true
     end
-    return band(family, item:GetFamily()) > 0
+    return ns.IsFamilyContains(family, item:GetFamily())
 end
 
 function Group:CanPutSlot(slot)

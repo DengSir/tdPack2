@@ -13,6 +13,12 @@ local GetContainerItemLink, GetContainerItemID, GetContainerItemInfo = GetContai
 ---@type ns
 local ns = select(2, ...)
 
+local CONTAINERS = {}
+do
+    CONTAINERS[GetItemClassInfo(LE_ITEM_CLASS_CONTAINER)] = true
+    CONTAINERS[GetItemClassInfo(LE_ITEM_CLASS_QUIVER)] = true
+end
+
 local function riter(t, i)
     i = i - 1
     if i > 0 then
@@ -48,6 +54,10 @@ function ns.GetItemFamily(itemId)
         return 0
     end
     if type(itemId) == 'string' then
+        return 0
+    end
+    local _, itemType = ns.GetItemInfo(itemId)
+    if CONTAINERS[itemType] then
         return 0
     end
     return GetItemFamily(itemId)
@@ -106,12 +116,7 @@ function ns.IsBagSlotFull(bag, slot)
 end
 
 function ns.GetBagSlotFamily(bag, slot)
-    local itemId = self:GetBagSlotID(bag, slot)
-    if not itemId then
-        return 0
-    end
-
-    return type(itemId) == 'string' and 0 or GetItemFamily(itemId)
+    return ns.GetItemFamily(ns.GetBagSlotID(bag, slot))
 end
 
 function ns.IsBagSlotLocked(bag, slot)
@@ -120,10 +125,20 @@ end
 
 function ns.ToOrderCache(list)
     local len = #tostring(#list)
-    local f = '%0' .. len  .. 'd'
+    local f = '%0' .. len .. 'd'
     local cache = {}
     for i, v in ipairs(list) do
         cache[v] = format(f, i)
     end
     return cache, strrep('9', len)
+end
+
+if ns.IsRetail then
+    function ns.IsFamilyContains(bagFamily, itemFamily)
+        return bit.band(bagFamily, itemFamily) > 0
+    end
+else
+    function ns.IsFamilyContains(bagFamily, itemFamily)
+        return bagFamily == itemFamily
+    end
 end
