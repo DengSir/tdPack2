@@ -5,4 +5,5 @@
     <Script file="Bagnon.lua"/>
     <Script file="Combuctor.lua"/>
     <Script file="Blizzard.lua"/>
+    <Script file="Inventorian.lua"/>
 </Ui>
