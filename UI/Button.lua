@@ -4,6 +4,7 @@
 -- @Date   : 9/2/2019, 7:35:50 PM
 
 local ns = select(2, ...)
+local Addon = ns.Addon
 local L = ns.L
 
 local function OnClick(self, click)
@@ -43,4 +44,8 @@ function ns.SetupButton(button, condition)
         button:HookScript('OnEnter', OnEnter)
     end
     button:HookScript('OnLeave', GameTooltip_Hide)
+end
+
+function Addon:SetupButton(button, condition)
+    ns.SetupButton(button, condition)
 end

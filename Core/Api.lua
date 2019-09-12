@@ -33,9 +33,9 @@ function ns.ripairs(t)
 end
 
 function ns.GetItemInfo(itemId)
-    local itemName, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture
+    local itemName, itemLink, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture
     if type(itemId) == 'number' then
-        itemName, _, itemQuality, itemLevel, _, itemType, itemSubType, _, itemEquipLoc, itemTexture =
+        itemName, itemLink, itemQuality, itemLevel, _, itemType, itemSubType, _, itemEquipLoc, itemTexture =
             GetItemInfo(itemId)
     elseif type(itemId) == 'string' then
         assert(false)
@@ -46,7 +46,7 @@ function ns.GetItemInfo(itemId)
         itemType = BATTLE_PET
         itemSubType = BATTLE_PET_SUBTYPES[itemSubType]
     end
-    return itemName, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture
+    return itemName, itemLink, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture
 end
 
 function ns.GetItemFamily(itemId)
@@ -56,7 +56,7 @@ function ns.GetItemFamily(itemId)
     if type(itemId) == 'string' then
         return 0
     end
-    local _, itemType = ns.GetItemInfo(itemId)
+    local _, _, itemType = ns.GetItemInfo(itemId)
     if CONTAINERS[itemType] then
         return 0
     end

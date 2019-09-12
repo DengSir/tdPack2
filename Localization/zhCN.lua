@@ -15,3 +15,8 @@ L['<Right Click> '] = '<右击>'
 L['Pack bags'] = '整理背包'
 L['Reverse Pack'] = '反向整理'
 L['Open options'] = '打开设置'
+
+L.KeywordMount = '使用： 召唤或解散'
+L.KeywordFood = '进食时必须保持坐姿'
+L.KeywordWater = '喝水时必须保持坐姿'
+L.KeywordClass = '职业：'

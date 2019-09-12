@@ -24,4 +24,9 @@ L['<Right Click> '] = true
 L['Pack bags'] = true
 L['Reverse Pack'] = true
 L['Open options'] = true
+
+L.KeywordMount = 'Use: Summons and dismisses'
+L.KeywordFood = 'Must remain seated while eating'
+L.KeywordWater = 'Must remain seated while drinking'
+L.KeywordClass = 'Classes:'
 --@end-debug@

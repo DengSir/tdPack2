@@ -12,20 +12,22 @@ ns.Item = Item
 
 function Item:Constructor(parent, bag, slot)
     local itemId = ns.GetBagSlotID(bag, slot)
-    local itemName, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture = ns.GetItemInfo(itemId)
+    local itemName, itemLink, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture = ns.GetItemInfo(itemId)
 
     self.itemId = itemId
     self.itemName = itemName
+    self.itemLink = itemLink
     self.itemType = itemType
     self.itemSubType = itemSubType
     self.itemEquipLoc = itemEquipLoc
     self.itemQuality = itemQuality
     self.itemLevel = itemLevel
     self.itemTexture = itemTexture
+    self.itemFamily = ns.GetItemFamily(itemId)
 end
 
 function Item:GetFamily()
-    return ns.GetItemFamily(self.itemId)
+    return self.itemFamily or 0
 end
 
 function Item:NeedSaveToBank()
@@ -50,6 +52,10 @@ end
 
 function Item:GetItemName()
     return self.itemName or ''
+end
+
+function Item:GetItemLink()
+    return self.itemLink or ''
 end
 
 function Item:GetItemType()
