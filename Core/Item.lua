@@ -24,10 +24,15 @@ function Item:Constructor(parent, bag, slot)
     self.itemLevel = itemLevel
     self.itemTexture = itemTexture
     self.itemFamily = ns.GetItemFamily(itemId)
+    self.itemCount = ns.GetBagSlotCount(bag, slot)
 end
 
 function Item:GetFamily()
     return self.itemFamily or 0
+end
+
+function Item:GetItemCount()
+    return self.itemCount or 0
 end
 
 function Item:NeedSaveToBank()

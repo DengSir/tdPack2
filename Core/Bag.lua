@@ -14,10 +14,8 @@ local ripairs = ns.ripairs
 local Bag = ns.Addon:NewClass('Bag')
 ns.Bag = Bag
 
-local BAG_CLASSES = {bag = {0, 1, 2, 3, 4}, bank = {-1, 5, 6, 7, 8, 9, 10, 11}}
-
 function Bag:Constructor(bagClass)
-    self.bags = BAG_CLASSES[bagClass]
+    self.bags = bagClass == 'bag' and ns.GetBags() or ns.GetBanks()
     self.groups = {}
     self.swapItems = {}
     self:InitGroups()

@@ -10,17 +10,20 @@ local Rule = ns.Addon:NewModule('Rule')
 ns.Rule = Rule
 
 function Rule:OnInitialize()
-    self.orderCache = {}
+    self.orderCache = setmetatable({}, {__mode = 'v'})
 
     self.junkOrder = ns.JunkOrder:New(ns.DEFAULT_CUSTOM_ORDER)
     self.customOrder = ns.CustomOrder:New(ns.DEFAULT_CUSTOM_ORDER)
     self.equipLocOrder = ns.EquipLocOrder:New(ns.DEFAULT_EQUIP_LOC_ORDER)
-    self.levelOrder = ns.SimpleOrder:New(function(item)
+    self.levelOrder = function(item)
         return format('%04d', 9999 - item:GetItemLevel())
-    end)
-    self.qualityOrder = ns.SimpleOrder:New(function(item)
+    end
+    self.qualityOrder = function(item)
         return format('%02d', 99 - item:GetItemQuality())
-    end)
+    end
+    self.countOrder = function(item)
+        return format('%04d', item:GetItemCount())
+    end
 end
 
 local function comp(lhs, rhs)
@@ -33,21 +36,18 @@ end
 
 ---@param item Item
 function Rule:GetOrder(item)
-    local itemId = item:GetItemId()
-    local order = self.orderCache[itemId]
-    if order then
-        return order
+    local order = self.orderCache[item]
+    if not order then
+        order = self:BuildOrder(item)
+        self.orderCache[item] = order
     end
-
-    order = self:BuildOrder(item)
-    self.orderCache[itemId] = order
     return order
 end
 
 ---@param item Item
 function Rule:BuildOrder(item)
-    local level = self.levelOrder:GetOrder(item)
-    local quality = self.qualityOrder:GetOrder(item)
+    local level = self.levelOrder(item)
+    local quality = self.qualityOrder(item)
     local levelQuality
     if item:IsEquippable() then
         levelQuality = level .. quality
@@ -56,13 +56,13 @@ function Rule:BuildOrder(item)
     end
 
     return table.concat({
-        self.junkOrder:GetOrder(item), --
-        self.customOrder:GetOrder(item), --
-        self.equipLocOrder:GetOrder(item), --
+        self.junkOrder(item), --
+        self.customOrder(item), --
+        self.equipLocOrder(item), --
         item:GetItemType(), --
         item:GetItemSubType(), --
         levelQuality, --
         item:GetItemName(), --
+        self.countOrder(item), --
     }, ',')
 end
-

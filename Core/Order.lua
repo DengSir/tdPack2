@@ -14,3 +14,7 @@ ns.Order = Order
 function Order:GetOrder(item)
     error('Not implemented')
 end
+
+function Order._Meta:__call(item)
+    return self:GetOrder(item)
+end

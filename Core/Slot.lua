@@ -52,6 +52,14 @@ function Slot:IsLocked()
     return ns.IsBagSlotLocked(self.bag, self.slot)
 end
 
+function Slot:IsBank()
+    return ns.IsBank(self.bag)
+end
+
+function Slot:IsBag()
+    return ns.IsBag(self.bag)
+end
+
 ---@param slot Slot
 ---@return boolean
 function Slot:MoveTo(slot)
@@ -75,4 +83,10 @@ function Slot:MoveTo(slot)
     PickupContainerItem(slot.bag, slot.slot)
 
     return true
+end
+
+---@param item Item
+---@return boolean
+function Slot:IsItemIn(item)
+    return self:GetItemId() == item:GetItemId() and ns.GetBagSlotCount(self.bag, self.slot) == item:GetItemCount()
 end

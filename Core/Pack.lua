@@ -99,10 +99,6 @@ function Pack:Start()
     self:ScheduleRepeatingTimer('OnIdle', 0.05)
 end
 
-function GG()
-    Pack:Start()
-end
-
 function Pack:Stop()
     self:CancelAllTimers()
 
@@ -115,14 +111,24 @@ function Pack:ShowMessage(text, r, g, b)
     ns.Addon:Printf(text)
 end
 
-local bags = {bag = {0, 1, 2, 3, 4}, bank = {0, 1, 2, 3, 4, -1, 5, 6, 7, 8, 9, 10, 11}}
+function Pack:IterateBags()
+    return coroutine.wrap(function()
+        for _, bag in ipairs(ns.GetBags()) do
+            coroutine.yield(bag)
+        end
+
+        if self.isBankOpened then
+            for _, bag in ipairs(ns.GetBanks()) do
+                coroutine.yield(bag)
+            end
+        end
+    end)
+end
 
 function Pack:StackReady()
-    for _, bag in ipairs(self.isBankOpened and bags.bank or bags.bag) do
+    for bag in self:IterateBags() do
         for slot = 1, ns.GetBagNumSlots(bag) do
-            if not ns.IsBagSlotEmpty(bag, slot) and not ns.IsBagSlotFull(bag, slot) then
-                tinsert(self.slots, ns.Slot:New(nil, bag, slot))
-            end
+            tinsert(self.slots, ns.Slot:New(nil, bag, slot))
         end
     end
 end
@@ -131,11 +137,35 @@ function Pack:Stack()
     local stackingSlots = {}
     local complete = true
 
+    local function isCanStack(slot)
+        if slot:IsEmpty() then
+            return false
+        end
+        if not slot:IsFull() then
+            return true
+        end
+
+        if not self.isBankOpened then
+            return false
+        end
+
+        local stacking = stackingSlots[slot:GetItemId()]
+        if not stacking then
+            return false
+        end
+
+        if stacking:IsBank() and slot:IsBag() then
+            return true
+        end
+
+        return false
+    end
+
     for i, slot in ripairs(self.slots) do
         if slot:IsLocked() then
             complete = false
         else
-            if not slot:IsEmpty() and not slot:IsFull() then
+            if isCanStack(slot) then
                 local itemId = slot:GetItemId()
                 if stackingSlots[itemId] then
                     slot:MoveTo(stackingSlots[itemId])

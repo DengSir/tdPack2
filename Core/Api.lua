@@ -13,12 +13,6 @@ local GetContainerItemLink, GetContainerItemID, GetContainerItemInfo = GetContai
 ---@type ns
 local ns = select(2, ...)
 
-local CONTAINERS = {}
-do
-    CONTAINERS[GetItemClassInfo(LE_ITEM_CLASS_CONTAINER)] = true
-    CONTAINERS[GetItemClassInfo(LE_ITEM_CLASS_QUIVER)] = true
-end
-
 local function riter(t, i)
     i = i - 1
     if i > 0 then
@@ -30,6 +24,46 @@ function ns.ripairs(t)
     assert(type(t) == 'table')
 
     return riter, t, #t + 1
+end
+
+local CONTAINERS = {}
+do
+    CONTAINERS[GetItemClassInfo(LE_ITEM_CLASS_CONTAINER)] = true
+    CONTAINERS[GetItemClassInfo(LE_ITEM_CLASS_QUIVER)] = true
+end
+
+function ns.IsItemContainer(itemId)
+    local _, _, itemType = ns.GetItemInfo(itemId)
+    return CONTAINERS[itemType]
+end
+
+local BAGS = {BACKPACK_CONTAINER}
+for i = 1, NUM_BAG_SLOTS do
+    tinsert(BAGS, i)
+end
+
+local BANKS = {BANK_CONTAINER}
+for i = 1, NUM_BANKBAGSLOTS do
+    tinsert(BANKS, i + NUM_BAG_SLOTS)
+end
+
+local BAGS_SET = tInvert(BAGS)
+local BANKS_SET = tInvert(BANKS)
+
+function ns.IsBag(id)
+    return BAGS_SET[id]
+end
+
+function ns.IsBank(id)
+    return BANKS_SET[id]
+end
+
+function ns.GetBags()
+    return BAGS
+end
+
+function ns.GetBanks()
+    return BANKS
 end
 
 function ns.GetItemInfo(itemId)
@@ -56,8 +90,7 @@ function ns.GetItemFamily(itemId)
     if type(itemId) == 'string' then
         return 0
     end
-    local _, _, itemType = ns.GetItemInfo(itemId)
-    if CONTAINERS[itemType] then
+    if ns.IsItemContainer(itemId) then
         return 0
     end
     return GetItemFamily(itemId)
@@ -112,7 +145,11 @@ function ns.IsBagSlotFull(bag, slot)
         return true
     end
 
-    return stackCount == select(2, GetContainerItemInfo(bag, slot))
+    return stackCount == ns.GetBagSlotCount(bag, slot)
+end
+
+function ns.GetBagSlotCount(bag, slot)
+    return (select(2, GetContainerItemInfo(bag, slot)))
 end
 
 function ns.GetBagSlotFamily(bag, slot)

@@ -107,7 +107,7 @@ function Group:Pack()
         end
 
         local item = self.items[index]
-        if item:GetItemId() ~= tarSlot:GetItemId() then
+        if not tarSlot:IsItemIn(item) then
             local slot = ns.FindSlot(item, tarSlot)
             if not slot then
                 return false, 'pack: not found target slot ' .. item:GetItemName() .. ' goto ' .. tarSlot.bag .. ' ' ..
@@ -126,6 +126,7 @@ function Group:Pack()
     return true
 end
 
+---@return Slot
 function Group:GetIdleSlot()
     local step = fastrandom(0, 1) == 0 and -1 or 1
     local e = fastrandom(1, self:GetItemCount())
@@ -145,7 +146,7 @@ function Group:FindSlot(item, tarSlot)
         return
     end
     for _, slot in ripairs(self.slots) do
-        if slot:GetItemId() == item:GetItemId() and not slot:IsLocked() then
+        if slot:IsItemIn(item) and not slot:IsLocked() then
             return slot
         end
     end
@@ -159,7 +160,7 @@ function Group:FilterSlots()
     end
 
     for i, item in ripairs(self.items) do
-        if self:GetSlot(i):GetItemId() == item:GetItemId() then
+        if self:GetSlot(i):IsItemIn(item) then
             tremove(self.slots, i)
             tremove(self.items, i)
         end
