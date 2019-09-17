@@ -14,10 +14,10 @@ function EquipLocOrder:Constructor(profile)
 end
 
 function EquipLocOrder:Build(profile)
-    self.cache, self.default = ns.ToOrderCache(profile)
+    self.orders, self.default = ns.ToOrderCache(profile)
 end
 
 ---@param item Item
 function EquipLocOrder:GetOrder(item)
-    return self.cache[item:GetItemEquipLoc()] or self.default
+    return self.orders[item:GetItemEquipLoc()] or self.default
 end

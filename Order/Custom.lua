@@ -3,63 +3,91 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/1/2019, 12:50:23 AM
 
+local ipairs, type = ipairs, type
+local tinsert, wipe = table.insert, table.wipe
+local format = string.format
+
 ---@type ns
 local ns = select(2, ...)
 
-local LibSearch = LibStub('LibItemSearch-1.2', true)
+local LibSearch = LibStub('LibItemSearch-1.2')
 
 local CustomOrder = ns.Addon:NewClass('CustomOrder', ns.Order)
 ns.CustomOrder = CustomOrder
 
 function CustomOrder:Constructor(profile)
-    self.orders = {
+    self.methods = {
         function(item)
-            return self.simple[item:GetItemId()]
-        end,
-        function(item)
-            if not LibSearch then
-                return
-            end
-
-            for _, v in ipairs(self.advance) do
-                if LibSearch:Matches(item:GetItemLink(), v) then
-                    return self.simple[v]
-                end
-            end
-        end,
-        function(item)
-            return self.simple['#' .. item:GetItemType() .. '##' .. item:GetItemSubType()]
-        end,
-        function(item)
-            return self.simple['##' .. item:GetItemSubType()]
-        end,
-        function(item)
-            return self.simple['#' .. item:GetItemType()]
+            return self.simpleOrders[item:GetItemId()]
+        end, function(item)
+            return self:GetAdvanceOrder(item:GetItemLink())
+        end, function(item)
+            return self.simpleOrders['#' .. item:GetItemType() .. '##' .. item:GetItemSubType()]
+        end, function(item)
+            return self.simpleOrders['##' .. item:GetItemSubType()]
+        end, function(item)
+            return self.simpleOrders['#' .. item:GetItemType()]
         end,
     }
-    self.advance = {}
-    self:Build(profile)
+
+    self.simpleOrders = {}
+    self.advanceRules = {}
+    self:Build(profile, self.advanceRules)
 end
 
-function CustomOrder:Build(profile)
-    self.simple, self.default = ns.ToOrderCache(profile)
-
-    wipe(self.advance)
-
-    for i, v in ipairs(profile) do
-        if type(v) == 'string' and not v:find('^#') then
-            tinsert(self.advance, v)
+function CustomOrder:GetAdvanceOrder(link, rules)
+    for _, v in ipairs(rules or self.advanceRules) do
+        if LibSearch:Matches(link, v.rule) then
+            if v.children then
+                local order = self:GetAdvanceOrder(link, v.children)
+                if order then
+                    return order
+                end
+            end
+            return v.order
         end
     end
 end
 
+function CustomOrder:BuildInternal(profile, rules, last)
+    for _, v in ipairs(profile) do
+        local t = type(v)
+        if t == 'number' or t == 'string' then
+            self.simpleOrders[v] = last
+        elseif t == 'table' then
+            local item = {}
+
+            if v.children then
+                item.children = {}
+                last = self:BuildInternal(v.children, item.children, last)
+            end
+
+            item.rule = v.rule
+            item.order = last
+            tinsert(rules, item)
+        end
+        last = last + 1
+    end
+    return last
+end
+
+function CustomOrder:Build(profile)
+    wipe(self.advanceRules)
+    wipe(self.simpleOrders)
+    self.default = self:BuildInternal(profile, self.advanceRules, 0)
+end
+
 ---@param item Item
-function CustomOrder:GetOrder(item)
-    for _, v in ipairs(self.orders) do
+function CustomOrder:GetOrderInternal(item)
+    for _, v in ipairs(self.methods) do
         local order = v(item)
         if order then
             return order
         end
     end
     return self.default
+end
+
+function CustomOrder:GetOrder(item)
+    return format('%08d', self:GetOrderInternal(item))
 end

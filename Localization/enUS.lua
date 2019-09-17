@@ -23,10 +23,12 @@ L['<Left Click> '] = true
 L['<Right Click> '] = true
 L['Pack bags'] = true
 L['Reverse Pack'] = true
+L['Enable chat message'] = true
 L['Open options'] = true
 
-L.KeywordMount = 'Use: Summons and dismisses'
+L.KeywordMount = 'Summons and dismisses'
 L.KeywordFood = 'Must remain seated while eating'
 L.KeywordWater = 'Must remain seated while drinking'
-L.KeywordClass = 'Classes:'
+L.KeywordClass = 'Classes'
+L.KeywordConjuredItem = 'Conjured Item'
 --@end-debug@

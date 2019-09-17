@@ -17,31 +17,40 @@ local CONSUMABLE = GetItemClassInfo(LE_ITEM_CLASS_CONSUMABLE) -- 消耗品
 local QUEST = GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM) -- 任务
 local MISC = GetItemClassInfo(LE_ITEM_CLASS_MISCELLANEOUS) -- 其它
 local PROJECTILE = GetItemClassInfo(LE_ITEM_CLASS_PROJECTILE) -- 弹药
+local REAGENT = GetItemClassInfo(LE_ITEM_CLASS_REAGENT) -- 材料
 local FISHINGPOLE = GetItemSubClassInfo(LE_ITEM_CLASS_WEAPON, LE_ITEM_WEAPON_FISHINGPOLE) -- 鱼竿
 
 ns.DEFAULT_CUSTOM_ORDER = {
     HEARTHSTONE_ITEM_ID, -- 炉石
-    'tip:' .. L.KeywordMount, --
+    {rule = 'tip:' .. L.KeywordMount}, -- 坐骑
     5060, -- 潜行者工具
     2901, -- 矿工锄
     5956, -- 铁匠锤
     7005, -- 剥皮刀
-    'type:' .. FISHINGPOLE, --
-    'type:' .. WEAPON, --
-    'type:' .. ARMOR, --
-    'type:' .. CONTAINER, --
-    'type:' .. QUIVER, --
-    'type:' .. PROJECTILE, --
-    'type:' .. RECIPE, --
-    'type:' .. TRADEGOODS .. ' & tip:' .. L.KeywordClass, --
-    'type:' .. TRADEGOODS, --
-    'type:' .. CONSUMABLE .. ' & tip:' .. L.KeywordClass, --
-    'type:' .. CONSUMABLE .. ' & tip:' .. L.KeywordFood, --
-    'type:' .. CONSUMABLE .. ' & tip:' .. L.KeywordWater, --
-    'type:' .. CONSUMABLE, --
-    'type:' .. CONSUMABLE, --
-    'type:' .. MISC, --
-    'type:' .. QUEST, --
+    {rule = 'type:' .. FISHINGPOLE}, -- 鱼竿
+    {rule = 'type:' .. WEAPON}, -- 武器
+    {rule = 'type:' .. ARMOR}, -- 护甲
+    {rule = 'type:' .. CONTAINER}, -- 容器
+    {rule = 'type:' .. QUIVER}, -- 箭袋
+    {rule = 'type:' .. PROJECTILE}, -- 弹药
+    {rule = 'type:' .. RECIPE}, -- 配方
+    {
+        rule = 'type:' .. TRADEGOODS,
+        children = {
+            {rule = 'tip:' .. L.KeywordClass}, -- 职业
+        },
+    }, -- 商品
+    {
+        rule = 'type:' .. CONSUMABLE,
+        children = {
+            {rule = 'tip:' .. L.KeywordClass}, -- 职业
+            {rule = 'tip:' .. L.KeywordFood}, -- 食物
+            {rule = 'tip:' .. L.KeywordWater}, -- 水
+        },
+    }, -- 消耗品
+    {rule = 'type:' .. MISC}, -- 杂项
+    {rule = 'type:' .. REAGENT}, -- 材料
+    {rule = 'type:' .. QUEST}, -- 任务
 }
 
 ns.DEFAULT_EQUIP_LOC_ORDER = {

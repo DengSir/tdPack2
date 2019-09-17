@@ -26,29 +26,49 @@ function ns.ripairs(t)
     return riter, t, #t + 1
 end
 
-local CONTAINERS = {}
-do
-    CONTAINERS[GetItemClassInfo(LE_ITEM_CLASS_CONTAINER)] = true
-    CONTAINERS[GetItemClassInfo(LE_ITEM_CLASS_QUIVER)] = true
+function ns.memorize(func, nilable)
+    local cache = {}
+    return function(arg1, ...)
+        local value = cache[arg1]
+        if value == nil then
+            value = func(arg1, ...)
+            cache[arg1] = value
+        end
+        return value
+    end
 end
 
-function ns.IsItemContainer(itemId)
-    local _, _, itemType = ns.GetItemInfo(itemId)
-    return CONTAINERS[itemType]
+function ns.memorizenilable(func)
+    local cache = {}
+    return function(arg1, ...)
+        local value = cache[arg1]
+        if value == nil then
+            value = func(arg1, ...) or cache
+            cache[arg1] = value
+        end
+        return value ~= cache and value or nil
+    end
 end
 
 local BAGS = {BACKPACK_CONTAINER}
-for i = 1, NUM_BAG_SLOTS do
-    tinsert(BAGS, i)
-end
-
 local BANKS = {BANK_CONTAINER}
-for i = 1, NUM_BANKBAGSLOTS do
-    tinsert(BANKS, i + NUM_BAG_SLOTS)
+do
+    for i = 1, NUM_BAG_SLOTS do
+        tinsert(BAGS, i)
+    end
+
+    for i = 1, NUM_BANKBAGSLOTS do
+        tinsert(BANKS, i + NUM_BAG_SLOTS)
+    end
 end
 
 local BAGS_SET = tInvert(BAGS)
 local BANKS_SET = tInvert(BANKS)
+
+function ns.IsItemContainer(itemId)
+    local itemEquipLoc = select(5, ns.GetItemInfo(itemId))
+    return itemEquipLoc and itemEquipLoc == 'INVTYPE_BAG'
+end
 
 function ns.IsBag(id)
     return BAGS_SET[id]

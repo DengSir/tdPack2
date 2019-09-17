@@ -5,6 +5,7 @@
 
 ---@type ns
 local ns = select(2, ...)
+local Addon = ns.Addon
 
 local Rule = ns.Addon:NewModule('Rule')
 ns.Rule = Rule
@@ -22,7 +23,11 @@ function Rule:OnInitialize()
         return format('%02d', 99 - item:GetItemQuality())
     end
     self.countOrder = function(item)
-        return format('%04d', item:GetItemCount())
+        if Addon:IsReversePack() then
+            return format('%04d', 9999 - item:GetItemCount())
+        else
+            return format('%04d', item:GetItemCount())
+        end
     end
 end
 

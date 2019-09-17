@@ -5,37 +5,50 @@
 
 ---@type ns
 local ns = select(2, ...)
+local LibSearch = LibStub('LibItemSearch-1.2')
+
+local L = ns.L
+
+local CONJURED_ITEM_MATCHS = 'tip:' .. L.KeywordConjuredItem
 
 local JunkOrder = ns.Addon:NewClass('JunkOrder', ns.Order)
 ns.JunkOrder = JunkOrder
 
 function JunkOrder:Constructor(profile)
-    self.cache = {}
+    self.orders = {}
     self:Build(profile)
 end
 
 function JunkOrder:Build(profile)
     for i, v in ipairs(profile) do
         if type(v) == 'number' then
-            self.cache[v] = true
+            self.orders[v] = true
         end
     end
 end
 
 function JunkOrder:GetOrder(item)
-    return self:IsJunk(item) and '9' or '0'
+    return self:IsInCustomRule(item) and '0' or self:IsJunk(item) and '9' or self:IsConjuredItem(item) and '8' or '0'
 end
 
----@param item Item
+function JunkOrder:IsInCustomRule(item)
+    return self.orders[item:GetItemId()]
+end
+
 function JunkOrder:IsJunk(item)
     local itemId = item:GetItemId()
-    if self.cache[itemId] then
-        return false
-    end
     if Scrap then
         return Scrap:IsJunk(itemId)
     else
         local _, _, quality, _, _, _, _, _, _, _, price = GetItemInfo(itemId)
         return quality == LE_ITEM_QUALITY_POOR and price and price > 0
     end
+end
+
+local IsConjuredItem = ns.memorizenilable(function(itemId)
+    return LibSearch:Matches('item:' .. itemId, CONJURED_ITEM_MATCHS)
+end)
+
+function JunkOrder:IsConjuredItem(item)
+    return IsConjuredItem(item:GetItemId())
 end
