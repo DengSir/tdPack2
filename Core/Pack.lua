@@ -45,7 +45,7 @@ end
 function Pack:BANKFRAME_CLOSED()
     if self.isBankOpened and self.status ~= STATUS_FREE then
         self:SetStatus(STATUS_CANCEL)
-        self:ShowMessage(L['Leave bank, pack cancel.'], 1, 0, 0)
+        self:Warning(L['Leave bank, pack cancel.'])
     end
     self.isBankOpened = nil
 end
@@ -53,7 +53,7 @@ end
 function Pack:PLAYER_REGEN_DISABLED()
     if self.status ~= STATUS_FREE then
         self:SetStatus(STATUS_CANCEL)
-        self:ShowMessage(L['Player enter combat, pack cancel.'], 1, 0, 0)
+        self:Warning(L['Player enter combat, pack cancel.'])
     end
 end
 
@@ -76,22 +76,22 @@ end
 
 function Pack:Start()
     if self.status ~= STATUS_FREE then
-        self:ShowMessage(L['Packing now'], 1, 0, 0)
+        self:Warning(L['Packing now'])
         return
     end
 
     if UnitIsDead('player') then
-        self:ShowMessage(L['Player is dead'], 1, 0, 0)
+        self:Warning(L['Player is dead'])
         return
     end
 
     if InCombatLockdown() then
-        self:ShowMessage(L['Player in combat'], 1, 0, 0)
+        self:Warning(L['Player in combat'])
         return
     end
 
     if GetCursorInfo() then
-        self:ShowMessage(L['Please drop the item, money or skills.'], 1, 0, 0)
+        self:Warning(L['Please drop the item, money or skills.'])
         return
     end
 
@@ -107,8 +107,15 @@ function Pack:Stop()
     self:SetStatus(STATUS_FREE)
 end
 
-function Pack:ShowMessage(text, r, g, b)
-    ns.Addon:Printf(text)
+function Pack:Message(text)
+    if not ns.Addon:IsConsoleEnabled() then
+        return
+    end
+    ns.Addon:Print(text)
+end
+
+function Pack:Warning(text)
+    return self:Message(format('|cffff0000%s|r', text))
 end
 
 function Pack:IterateBags()
@@ -283,7 +290,7 @@ end
 
 function Pack:StatusFinish()
     self:Stop()
-    self:ShowMessage(L['Pack finish.'], 0, 1, 0)
+    self:Message(L['Pack finish.'])
 end
 
 function Pack:StatusCancel()

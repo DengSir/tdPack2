@@ -13,7 +13,7 @@ ns.ICON = [[Interface\AddOns\tdPack2\Resource\INV_Pet_Broom]]
 ns.IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 function Addon:OnInitialize(args)
-    local defaults = {profile = {reverse = false}}
+    local defaults = {profile = {reverse = false, console = true}}
 
     self.db = LibStub('AceDB-3.0'):New('TDDB_PACK2', defaults, true)
 
@@ -24,6 +24,10 @@ end
 
 function Addon:IsReversePack()
     return self.db.profile.reverse
+end
+
+function Addon:IsConsoleEnabled()
+    return self.db.profile.console
 end
 
 function Addon:Pack()
