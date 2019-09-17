@@ -25,7 +25,10 @@ function Addon:LoadOptionFrame()
             self.db.profile[item[#item]] = value
         end,
 
-        args = {reverse = {type = 'toggle', name = L['Reverse Pack'], width = 'full', order = orderGen()}},
+        args = {
+            reverse = {type = 'toggle', name = L['Reverse Pack'], width = 'full', order = orderGen()},
+            console = {type = 'toggle', name = L['Enable chat message'], width = 'full', order = orderGen()},
+        },
     }
 
     local registry = LibStub('AceConfigRegistry-3.0')
