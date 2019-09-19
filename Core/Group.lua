@@ -36,7 +36,7 @@ end
 function Group:InitSlots()
     local bags = self:GetParent():GetBags()
 
-    if ns.Addon:IsReversePack() then
+    if ns.Pack:IsOptionReverse() then
         for _, bag in ripairs(bags) do
             if ns.GetBagFamily(bag) == self.family then
                 for slot = ns.GetBagNumSlots(bag), 1, -1 do

@@ -23,7 +23,7 @@ function Rule:OnInitialize()
         return format('%02d', 99 - item:GetItemQuality())
     end
     self.countOrder = function(item)
-        if Addon:IsReversePack() then
+        if ns.Pack:IsOptionReverse() then
             return format('%04d', 9999 - item:GetItemCount())
         else
             return format('%04d', item:GetItemCount())

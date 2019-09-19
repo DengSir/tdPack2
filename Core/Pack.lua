@@ -74,7 +74,11 @@ function Pack:FindSlot(item, tarSlot)
     end
 end
 
-function Pack:Start()
+function Pack:Start(opts)
+    if opts.bank and not opts.bag and not self.isBankOpened then
+        return
+    end
+
     if self.status ~= STATUS_FREE then
         self:Warning(L['Packing now'])
         return
@@ -95,6 +99,7 @@ function Pack:Start()
         return
     end
 
+    self.opts = opts
     self:SetStatus(STATUS_READY)
     self:ScheduleRepeatingTimer('OnIdle', 0.05)
 end
@@ -120,13 +125,17 @@ end
 
 function Pack:IterateBags()
     return coroutine.wrap(function()
-        for _, bag in ipairs(ns.GetBags()) do
-            coroutine.yield(bag)
+        if self:IsOptionBag() then
+            for _, bag in ipairs(ns.GetBags()) do
+                coroutine.yield(bag)
+            end
         end
 
-        if self.isBankOpened then
-            for _, bag in ipairs(ns.GetBanks()) do
-                coroutine.yield(bag)
+        if self:IsOptionBank() then
+            if self.isBankOpened then
+                for _, bag in ipairs(ns.GetBanks()) do
+                    coroutine.yield(bag)
+                end
             end
         end
     end)
@@ -152,7 +161,7 @@ function Pack:Stack()
             return true
         end
 
-        if not self.isBankOpened then
+        if not self:IsOptionBank() or not self:IsOptionBag() then
             return false
         end
 
@@ -199,10 +208,12 @@ function Pack:PackReady()
 
     local bag, bank
 
-    bag = ns.Bag:New('bag')
-    tinsert(self.bags, bag)
+    if self:IsOptionBag() then
+        bag = ns.Bag:New('bag')
+        tinsert(self.bags, bag)
+    end
 
-    if self.isBankOpened then
+    if self:IsOptionBank() then
         bank = ns.Bag:New('bank')
         tinsert(self.bags, bank)
 
@@ -227,7 +238,10 @@ function Pack:PackReady()
 
         bank:Sort()
     end
-    bag:Sort()
+
+    if bag then
+        bag:Sort()
+    end
 end
 
 function Pack:Pack()
@@ -312,4 +326,16 @@ function Pack:OnIdle()
     if proc then
         proc(self)
     end
+end
+
+function Pack:IsOptionBag()
+    return self.opts.bag
+end
+
+function Pack:IsOptionBank()
+    return self.opts.bank and self.isBankOpened
+end
+
+function Pack:IsOptionReverse()
+    return self.opts.reverse
 end
