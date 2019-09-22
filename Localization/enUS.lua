@@ -19,13 +19,28 @@ L['Player in combat'] = true
 L['Please drop the item, money or skills.'] = true
 L['Pack finish.'] = true
 
-L['<Left Click> '] = true
-L['<Right Click> '] = true
-L['Pack bags'] = true
-L['Reverse Pack'] = true
+L['Reverse pack'] = true
 L['Enable chat message'] = true
-L['Open options'] = true
 
+L['Left Click'] = true
+L['Right Click'] = true
+
+L['Bag button features'] = true
+L['Bank button features'] = true
+
+
+-- for actions
+L.None = true
+L.SORT = 'Pack all'
+L.SORT_BAG = 'Pack bag'
+L.SORT_BAG_ASC = 'Pack bag asc'
+L.SORT_BAG_DESC = 'Pack bag desc'
+L.SORT_BANK = 'Pack bank'
+L.SORT_BANK_ASC = 'Pack bank asc'
+L.SORT_BANK_DESC = 'Pack bank desc'
+L.OPEN_OPTIONS = 'Open options'
+
+-- for rules
 L.KeywordMount = 'Summons and dismisses'
 L.KeywordFood = 'Must remain seated while eating'
 L.KeywordWater = 'Must remain seated while drinking'

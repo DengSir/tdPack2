@@ -5,4 +5,5 @@
     <Include file="Core\Core.xml"/>
     <Include file="Order\Order.xml"/>
     <Include file="UI\UI.xml"/>
+    <Include file="Button\Button.xml"/>
 </Ui>

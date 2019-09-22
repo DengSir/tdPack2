@@ -19,7 +19,7 @@ function Inventorian.Frame:Create(...)
     button:SetPoint('TOPRIGHT', -40, -27)
     button:SetSize(32, 32)
 
-    ns.SetupButton(button)
+    ns.SetupButton(button, f:IsBank())
 
     button.Icon = button:CreateTexture(nil, 'BACKGROUND')
     button.Icon:SetTexture(ns.ICON)

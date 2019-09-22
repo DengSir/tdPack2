@@ -9,5 +9,7 @@ end
 
 local ns = select(2, ...)
 
-tdBag:RegisterPluginButton('tdPack2', ns.ICON, ns.SetupButton)
+tdBag:RegisterPluginButton('tdPack2', ns.ICON, function(button, frame)
+    ns.SetupButton(button, frame:GetFrameID() == 'bank')
+end)
 

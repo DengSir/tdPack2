@@ -3,6 +3,10 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/20/2019, 1:24:08 AM
 
+if true then
+    return
+end
+
 local ns = select(2, ...)
 local Addon = ns.Addon
 

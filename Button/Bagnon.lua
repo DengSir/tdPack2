@@ -11,13 +11,11 @@ local ns = select(2, ...)
 local orig_ListMenuButtons = Bagnon.Frame.ListMenuButtons
 local buttons = {}
 
-local function CreateButton(frame)
-    if not buttons[frame] then
-        local button = CreateFrame('Button', nil, frame, 'BagnonMenuButtonTemplate')
-        button.Icon:SetTexture(ns.ICON)
-        ns.SetupButton(button)
-        buttons[frame] = button
-    end
+local function CreateButton(frame, isBank)
+    local button = CreateFrame('Button', nil, frame, 'BagnonMenuButtonTemplate')
+    button.Icon:SetTexture(ns.ICON)
+    ns.SetupButton(button, isBank)
+    buttons[frame] = button
     return buttons[frame]
 end
 
@@ -25,6 +23,6 @@ function Bagnon.Frame:ListMenuButtons()
     orig_ListMenuButtons(self)
     local frameId = self:GetFrameID()
     if frameId == 'inventory' or frameId == 'bank' then
-        tinsert(self.menuButtons, CreateButton(self))
+        tinsert(self.menuButtons, buttons[self] or CreateButton(self, frameId == 'bank'))
     end
 end

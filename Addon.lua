@@ -22,7 +22,24 @@ local METHODS = tInvert{CMD_ALL, CMD_BAG, CMD_BANK}
 local ORDERS = tInvert{ORDER_ASC, ORDER_DESC}
 
 function Addon:OnInitialize(args)
-    local defaults = {profile = {reverse = false, console = true}}
+    local defaults = {
+        profile = {
+            reverse = false,
+            console = true,
+            actions = {
+                bag = {
+                    [ns.CLICK_TOKENS.LEFT] = 'SORT', --
+                    [ns.CLICK_TOKENS.RIGHT] = 'OPEN_OPTIONS', --
+                    [ns.CLICK_TOKENS.CONTROL_LEFT] = 'SORT_BAG', --
+                }, --
+                bank = {
+                    [ns.CLICK_TOKENS.LEFT] = 'SORT', --
+                    [ns.CLICK_TOKENS.RIGHT] = 'OPEN_OPTIONS', --
+                    [ns.CLICK_TOKENS.CONTROL_LEFT] = 'SORT_BANK', --
+                }, --
+            },
+        },
+    }
 
     self.db = LibStub('AceDB-3.0'):New('TDDB_PACK2', defaults, true)
 
@@ -89,4 +106,53 @@ end
 
 function Addon:Pack(...)
     ns.Pack:Start(self:ParseArgs(...))
+end
+
+local ACTIONS = {
+    SORT = function()
+        Addon:Pack()
+    end,
+    SORT_BAG = function()
+        Addon:Pack('bag')
+    end,
+    SORT_BAG_ASC = function()
+        Addon:Pack('bag', 'asc')
+    end,
+    SORT_BAG_DESC = function()
+        Addon:Pack('bag', 'desc')
+    end,
+    SORT_BANK = function()
+        Addon:Pack('bank')
+    end,
+    SORT_BANK_ASC = function()
+        Addon:Pack('bank', 'asc')
+    end,
+    SORT_BANK_DESC = function()
+        Addon:Pack('bank', 'desc')
+    end,
+    OPEN_RULE_OPTIONS = function()
+        Addon:OpenRuleOption()
+    end,
+    OPEN_OPTIONS = function()
+        Addon:OpenOption()
+    end,
+}
+
+function Addon:RunAction(bagType, token)
+    local action = self:GetBagClickOption(bagType, token)
+    if not action then
+        return
+    end
+    local func = ACTIONS[action]
+    if func then
+        func()
+    end
+end
+
+function Addon:GetBagClickOption(bagType, token)
+    return self.db.profile.actions[bagType][token] or nil
+end
+
+function Addon:SetBagClickOption(bagType, token, action)
+    self.db.profile.actions[bagType][token] = action
 end

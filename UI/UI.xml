@@ -1,9 +1,8 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="Option.lua"/>
-    <Script file="Button.lua"/>
-    <Script file="tdBag.lua"/>
-    <Script file="Bagnon.lua"/>
-    <Script file="Combuctor.lua"/>
-    <Script file="Blizzard.lua"/>
-    <Script file="Inventorian.lua"/>
+    <Include file="Template.xml"/>
+    <Script file="ScrollFrame.lua"/>
+    <Script file="TreeView.lua"/>
+    <Script file="Rule.lua"/>
+    <Script file="RuleItem.lua"/>
 </Ui>

@@ -12,6 +12,7 @@ local GetContainerItemLink, GetContainerItemID, GetContainerItemInfo = GetContai
 
 ---@type ns
 local ns = select(2, ...)
+local L = ns.L
 
 local function riter(t, i)
     i = i - 1
@@ -198,4 +199,15 @@ else
     function ns.IsFamilyContains(bagFamily, itemFamily)
         return bagFamily == itemFamily
     end
+end
+
+function ns.GetClickToken(button, control, shift, alt)
+    local key
+    if button == 'LeftButton' then
+        key = 1
+    elseif button == 'RightButton' then
+        key = 2
+    end
+
+    return key + (control and 0x10000 or 0) + (shift and 0x20000 or 0) + (alt and 0x40000 or 0)
 end
