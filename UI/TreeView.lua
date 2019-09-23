@@ -5,9 +5,9 @@
 
 local ns = select(2, ...)
 
-local METHOD_AFTER = 1
-local METHOD_BEFORE = 2
-local METHOD_IN = 3
+local WHERE_AFTER = 1
+local WHERE_BEFORE = 2
+local WHERE_IN = 3
 
 local TreeStatus = ns.Addon:NewClass('TreeStatus')
 
@@ -89,33 +89,37 @@ function TreeView:OnItemDragStart(button)
     tremove(button.parent, button.index)
 
     button:SetParent(UIParent)
+    button:SetFrameStrata('DIALOG')
     button:StartMoving()
     button:LockHighlight()
+
     self:Refresh()
-    self:ScheduleRepeatingTimer('OnTimer', 0.2)
-    self:ScheduleRepeatingTimer('UpdateInsert', 0.05)
+    self:ScheduleRepeatingTimer('OnTimer', 0.1)
+    self:ScheduleRepeatingTimer('UpdateInsert', 0.03)
     self:UpdateInsert()
 end
 
 function TreeView:OnItemDragStop(button)
     button:StopMovingOrSizing()
-    button:Hide()
     button:UnlockHighlight()
+    button:Hide()
+    button:SetFrameStrata('MEDIUM')
 
     if self.putTarget then
-        if self.putMethod == METHOD_BEFORE then
+        if self.putWhere == WHERE_BEFORE then
             tinsert(self.putTarget.parent, self.putTarget.index, button.item)
-        elseif self.putMethod == METHOD_AFTER then
+        elseif self.putWhere == WHERE_AFTER then
             tinsert(self.putTarget.parent, self.putTarget.index + 1, button.item)
         else
-            local parent = self.putTarget.item.children or {}
-            self.putTarget.item.children = parent
-            tinsert(parent, button.item)
+            local parent = self.putTarget.item
+            parent.children = parent.children or {}
+            tinsert(parent.children, button.item)
         end
-        self.putMethod = nil
+        self.putWhere = nil
         self.putTarget = nil
         self:Fire('OnOrdered')
     else
+        print(button.index)
         tinsert(button.parent, button.index, button.item)
     end
 
@@ -143,48 +147,61 @@ function TreeView:UpdateInsert()
 
         local bg = inserter:CreateTexture(nil, 'ARTWORK')
         bg:SetAllPoints(true)
-        bg:SetColorTexture(1, 0, 0)
+        bg:SetColorTexture(0, 1, 1, 0.4)
 
         self.inserter = inserter
     end
 
-    local top = self.pickingButton:GetTop()
-    local halfHeight = self.buttonHeight / 2
-    local method
-    local target
+    local where, target, last
+    if abs(self:GetLeft() - self.pickingButton:GetLeft()) < self:GetWidth() then
+        local top = self.pickingButton:GetTop()
 
-    for _, button in ipairs(self.buttons) do
-        if button:IsVisible() then
-            local delta = button:GetTop() - top
-            if delta > 0 and delta < halfHeight then
-                target = button
-                if self:IsItemHasChildren(button.item) and self:IsItemExpend(button.item) then
-                    method = METHOD_IN
-                else
-                    method = METHOD_AFTER
+        for _, button in ipairs(self.buttons) do
+            if button:IsVisible() then
+                local delta = button:GetTop() - top
+                local canPutIn = self:Fire('OnCheckItemCanPutIn', self.pickingButton.item, button.item)
+                local canPutInParent = self:Fire('OnCheckItemCanPutIn', self.pickingButton.item, button.parent)
+
+                if abs(delta) < self.buttonHeight / 4 and canPutIn then
+                    target = button
+                    where = WHERE_IN
+                elseif delta < 0 and abs(delta) < self.buttonHeight and canPutInParent then
+                    target = button
+                    where = WHERE_BEFORE
+                elseif delta > 0 and delta < self.buttonHeight * 2 / 3 and not self:IsItemExpend(button.item) and
+                    canPutInParent then
+                    target = button
+                    where = WHERE_AFTER
                 end
-                break
-            elseif delta < 0 and abs(delta) < halfHeight then
-                target = button
-                method = METHOD_BEFORE
-                break
+
+                if target then
+                    break
+                end
+                last = button
             end
         end
     end
 
+    -- if not target and last then
+    --     if last:GetBottom() - top < self.buttonHeight then
+    --         where = WHERE_AFTER
+    --         target = {parent = self.treeStatus.itemTree, index = #self.treeStatus.itemTree}
+    --     end
+    -- end
+
     if target then
         self.putTarget = target
-        self.putMethod = method
+        self.putWhere = where
 
         self.inserter:ClearAllPoints()
         self.inserter:SetWidth(self:GetWidth() - 5 - (target.depth - 1) * 20)
         self.inserter:Show()
 
-        if method == METHOD_AFTER then
-            self.inserter:SetPoint('RIGHT', target, 'BOTTOMRIGHT')
+        if where == WHERE_AFTER then
+            self.inserter:SetPoint('TOPRIGHT', target, 'BOTTOMRIGHT')
             self.inserter:SetHeight(3)
-        elseif method == METHOD_BEFORE then
-            self.inserter:SetPoint('RIGHT', target, 'TOPRIGHT')
+        elseif where == WHERE_BEFORE then
+            self.inserter:SetPoint('BOTTOMRIGHT', target, 'TOPRIGHT')
             self.inserter:SetHeight(3)
         else
             self.inserter:SetPoint('TOPRIGHT', target, 'TOPRIGHT')
@@ -192,7 +209,7 @@ function TreeView:UpdateInsert()
         end
     else
         self.putTarget = nil
-        self.putMethod = nil
+        self.putWhere = nil
         self.inserter:Hide()
     end
 end
@@ -233,7 +250,8 @@ function TreeView:update()
     for i = buttonCount + 1, #buttons do
         buttons[i]:Hide()
     end
-    HybridScrollFrame_Update(self, itemCount * buttonHeight, containerHeight)
+    HybridScrollFrame_Update(self, itemCount * (buttonHeight + self.itemSpacing) - self.itemSpacing + self.paddingTop +
+                                 self.paddingBottom, containerHeight)
 end
 
 function TreeView:SetItemTree(itemTree)
@@ -247,9 +265,6 @@ function TreeView:ToggleItem(item)
 end
 
 function TreeView:IsItemExpend(item)
-    return not self.treeStatus.fold[item]
-end
-
-function TreeView:IsItemHasChildren(item)
-    return type(item) == 'table' and type(item.children) == 'table' and #item.children > 0
+    return not self.treeStatus.fold[item] and type(item) == 'table' and type(item.children) == 'table' and
+               #item.children > 0
 end

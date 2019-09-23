@@ -13,8 +13,10 @@ ns.Rule = Rule
 function Rule:OnInitialize()
     self.orderCache = setmetatable({}, {__mode = 'v'})
 
-    self.junkOrder = ns.JunkOrder:New(ns.DEFAULT_CUSTOM_ORDER)
-    self.customOrder = ns.CustomOrder:New(ns.DEFAULT_CUSTOM_ORDER)
+    local sortingProfile = Addon.db.profile.rules.sorting
+
+    self.junkOrder = ns.JunkOrder:New(sortingProfile)
+    self.customOrder = ns.CustomOrder:New(sortingProfile)
     self.equipLocOrder = ns.EquipLocOrder:New(ns.DEFAULT_EQUIP_LOC_ORDER)
     self.levelOrder = function(item)
         return format('%04d', 9999 - item:GetItemLevel())

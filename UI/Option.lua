@@ -88,10 +88,10 @@ function Addon:LoadOptionFrame()
         name = ADDON,
 
         get = function(item)
-            return self.db.profile[item[#item]]
+            return self.profile[item[#item]]
         end,
         set = function(item, value)
-            self.db.profile[item[#item]] = value
+            self.profile[item[#item]] = value
         end,
 
         args = {

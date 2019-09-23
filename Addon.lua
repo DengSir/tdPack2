@@ -26,6 +26,7 @@ function Addon:OnInitialize(args)
         profile = {
             reverse = false,
             console = true,
+            firstLoad = true,
             actions = {
                 bag = {
                     [ns.CLICK_TOKENS.LEFT] = 'SORT', --
@@ -38,10 +39,18 @@ function Addon:OnInitialize(args)
                     [ns.CLICK_TOKENS.CONTROL_LEFT] = 'SORT_BANK', --
                 }, --
             },
+            rules = {},
         },
     }
 
     self.db = LibStub('AceDB-3.0'):New('TDDB_PACK2', defaults, true)
+    self.profile = self.db.profile
+
+    if self.profile.firstLoad then
+        print('First Load')
+        self.profile.rules.sorting = ns.DEFAULT_CUSTOM_ORDER
+        self.profile.firstLoad = false
+    end
 
     self:RegisterChatCommand('tdp', 'OnSlash')
 
@@ -90,7 +99,7 @@ function Addon:ParseArgs(...)
     end
 
     if not order then
-        opts.reverse = self.db.profile.reverse
+        opts.reverse = self.profile.reverse
     elseif order == ORDER_ASC then
         opts.reverse = false
     elseif order == ORDER_DESC then
@@ -101,7 +110,7 @@ function Addon:ParseArgs(...)
 end
 
 function Addon:IsConsoleEnabled()
-    return self.db.profile.console
+    return self.profile.console
 end
 
 function Addon:Pack(...)
@@ -150,9 +159,9 @@ function Addon:RunAction(bagType, token)
 end
 
 function Addon:GetBagClickOption(bagType, token)
-    return self.db.profile.actions[bagType][token] or nil
+    return self.profile.actions[bagType][token] or nil
 end
 
 function Addon:SetBagClickOption(bagType, token, action)
-    self.db.profile.actions[bagType][token] = action
+    self.profile.actions[bagType][token] = action
 end

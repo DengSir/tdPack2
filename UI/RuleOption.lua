@@ -16,6 +16,7 @@ function RuleOption:Setup()
     Frame:RegisterForDrag('LeftButton')
     Frame.portrait:SetMask([[Textures\MinimapMask]])
     Frame.portrait:SetTexture(ns.ICON)
+    Frame.TitleText:SetText('tdPack2')
 
     Frame:SetAttribute('UIPanelLayout-enabled', true)
     Frame:SetAttribute('UIPanelLayout-defined', true)
@@ -23,14 +24,23 @@ function RuleOption:Setup()
     Frame:SetAttribute('UIPanelLayout-area', 'left')
     Frame:SetAttribute('UIPanelLayout-pushable', 4)
 
+    local sorting = Addon.profile.rules.sorting
+
     local Rule = ns.TreeView:Bind(Frame.Rule)
     Rule:SetItemTemplate('tdPack2RuleItemTemplate')
-    Rule:SetItemTree(ns.DEFAULT_CUSTOM_ORDER)
+    Rule:SetItemTree(Addon.profile.rules.sorting)
     Rule:SetCallback('OnItemFormatting', function(_, ...)
         self:OnItemFormatting(...)
     end)
     Rule:SetCallback('OnInserterShown', function(_, inserter, target, isBefore)
         self:OnInserterShown(inserter, target, isBefore)
+    end)
+    Rule:SetCallback('OnCheckItemCanPutIn', function(_, from, to)
+        if type(from) == 'table' then
+            return type(to) == 'table'
+        else
+            return to == sorting
+        end
     end)
     Rule:SetCallback('OnItemEnter', function(_, button)
         self:ShowTooltip(button, button.item)
@@ -45,22 +55,35 @@ function RuleOption:Setup()
 end
 
 function RuleOption:OnItemFormatting(button, item, depth)
+    local name, icon, rule
     if type(item) == 'number' then
-        local name, _, _, _, _, quality = ns.GetItemInfo(item)
-        local icon = GetItemIcon(item)
-        local color = name and quality and select(4, GetItemQualityColor(quality)) or RED_FONT_COLOR:GenerateHexColor()
+        local quality, color
+        name, _, _, _, _, quality = ns.GetItemInfo(item)
+        color = name and quality and select(4, GetItemQualityColor(quality)) or RED_FONT_COLOR:GenerateHexColor()
 
-        button.Text:SetText(format('|T%s:16|t |c%s%s|r', icon, color, name or L['Loading item data...']))
+        name = format('|c%s%s|r', color, name or L['Loading item data...'])
+        icon = GetItemIcon(item)
     elseif type(item) == 'string' then
-        button.Text:SetText(item)
+        name = item
     else
-        local text = item.comment or item.rule
-        if item.icon then
-            text = format('|T%s:16|t %s', item.icon, text)
+        if item.comment then
+            name = item.comment
+            rule = item.rule
+        else
+            name = item.rule
+            rule = ''
         end
-        button.Text:SetText(text)
+
+        if item.children and #item.children > 0 then
+            name = name .. format('|cff00ffff(%s)|r', #item.children)
+        end
+
+        icon = item.icon
     end
+
     button.Text:SetPoint('LEFT', 5 + 20 * (depth - 1), 0)
+    button.Text:SetText(format('|T%s:16|t %s', icon or [[Interface\Icons\INV_MISC_QUESTIONMARK]], name))
+    button.Rule:SetText(rule or '')
 end
 
 function RuleOption:ShowTooltip(button, item)

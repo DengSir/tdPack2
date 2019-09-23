@@ -6,16 +6,23 @@
                 <FontString parentKey="Text" inherits="GameFontNormal" justifyH="LEFT" wordWrap="false">
                     <Anchors>
                         <Anchor point="LEFT" x="5" y="0" />
+                    </Anchors>
+                </FontString>
+                <FontString parentKey="Rule" inherits="GameFontDisableSmall" justifyH="RIGHT" wordWrap="false">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeKey="$parent.Text" x="5" y="0" />
                         <Anchor point="RIGHT" x="-5" y="0" />
-                        <!-- <Anchor point="RIGHT" relativeKey="$parent.Count" relativePoint="LEFT" x="-5" y="0" /> -->
                     </Anchors>
                 </FontString>
             </Layer>
             <Layer level="BACKGROUND">
             </Layer>
         </Layers>
+        <NormalTexture>
+            <Color r="1" g="1" b="1" a="0.03" />
+        </NormalTexture>
         <HighlightTexture>
-            <Color r="1" g="1" b="1" a="0.2" />
+            <Color r="1" g="1" b="1" a="0.1" />
         </HighlightTexture>
         <Scripts>
             <OnLoad>
@@ -23,7 +30,7 @@
             </OnLoad>
         </Scripts>
     </Button>
-    <Frame name="tdPack2RuleOptionFrameTemplate" parent="UIParent" hidden="true" movable="true" enableMouse="true" frameStrata="MEDIUM" inherits="ButtonFrameTemplate" virtual="true">
+    <Frame name="tdPack2RuleOptionFrameTemplate" parent="UIParent" hidden="true" enableMouse="true" toplevel="true" inherits="ButtonFrameTemplate" virtual="true">
         <Size x="337" y="423" />
         <Anchors>
             <Anchor point="CENTER" />
@@ -44,13 +51,5 @@
                 </Frames>
             </ScrollFrame>
         </Frames>
-        <Scripts>
-            <OnMouseDown>
-                self:StartMoving()
-            </OnMouseDown>
-            <OnMouseUp>
-                self:StopMovingOrSizing()
-            </OnMouseUp>
-        </Scripts>
     </Frame>
 </Ui>

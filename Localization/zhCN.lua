@@ -32,6 +32,7 @@ L.SORT_BAG_DESC = '逆序整理背包'
 L.SORT_BANK = '整理银行'
 L.SORT_BANK_ASC = '顺序整理银行'
 L.SORT_BANK_DESC = '逆序整理银行'
+L.OPEN_RULE_OPTIONS = '打开规则设置'
 L.OPEN_OPTIONS = '打开设置'
 
 -- rules comment

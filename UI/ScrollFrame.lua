@@ -8,7 +8,14 @@ local ns = select(2, ...)
 local ScrollFrame = ns.Addon:NewClass('ScrollFrame', 'ScrollFrame')
 ns.ScrollFrame = ScrollFrame
 
+ScrollFrame.GetOffset = HybridScrollFrame_GetOffset
+ScrollFrame.SetOffset = HybridScrollFrame_SetOffset
+
 function ScrollFrame:Constructor()
+    self.paddingTop = 3
+    self.paddingBottom = 3
+    self.itemSpacing = 3
+    self.buttonHeight = 10
     self.unused = {}
     self.buttons = setmetatable({}, {
         __index = function(t, i)
@@ -18,8 +25,9 @@ function ScrollFrame:Constructor()
             return button
         end,
     })
+    self.scrollBar:SetMinMaxValues(0, 1)
+    self.scrollBar:SetValue(0)
     self:SetScript('OnSizeChanged', self.OnSizeChanged)
-    self:OnSizeChanged(self:GetSize())
 end
 
 function ScrollFrame:OnUpdate()
@@ -38,6 +46,7 @@ end
 
 function ScrollFrame:SetItemTemplate(itemTemplate)
     self.itemTemplate = itemTemplate
+    self.buttonHeight = self.buttons[1]:GetHeight()
 end
 
 function ScrollFrame:GetButton(index)
@@ -52,8 +61,9 @@ function ScrollFrame:GetButton(index)
 
     local y = (index - 1)
     if y > 0 then
-        y = -y * (self.buttonHeight or self:GetButton(1):GetHeight())
+        y = -y * (self.buttonHeight + self.itemSpacing)
     end
+    y = y - self.paddingTop
 
     button.scrollFrame = self
     button:SetPoint('TOPLEFT', 0, y)
@@ -68,5 +78,3 @@ end
 function ScrollFrame:RestoreButton(button)
     tinsert(self.unused, button)
 end
-
-ScrollFrame.GetOffset = HybridScrollFrame_GetOffset
