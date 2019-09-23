@@ -150,7 +150,6 @@ function TreeView:UpdateInsert()
 
     local top = self.pickingButton:GetTop()
     local halfHeight = self.buttonHeight / 2
-    local isBefore = false
     local method
     local target
 

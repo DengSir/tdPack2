@@ -20,37 +20,39 @@ local PROJECTILE = GetItemClassInfo(LE_ITEM_CLASS_PROJECTILE) -- 弹药
 local REAGENT = GetItemClassInfo(LE_ITEM_CLASS_REAGENT) -- 材料
 local FISHINGPOLE = GetItemSubClassInfo(LE_ITEM_CLASS_WEAPON, LE_ITEM_WEAPON_FISHINGPOLE) -- 鱼竿
 
+local function Type(name, icon, children)
+    return {rule = 'type:' .. name, comment = name, icon = icon, children = children}
+end
+
+local function Tip(key, icon, children)
+    return {rule = 'tip:' .. L['Keyword' .. key], comment = L['Comment' .. key], icon = icon, children = children}
+end
+
 ns.DEFAULT_CUSTOM_ORDER = {
     HEARTHSTONE_ITEM_ID, -- 炉石
-    {rule = 'tip:' .. L.KeywordMount}, -- 坐骑
+    Tip('Mount', 132261), -- 坐骑
     5060, -- 潜行者工具
     2901, -- 矿工锄
     5956, -- 铁匠锤
     7005, -- 剥皮刀
-    {rule = 'type:' .. FISHINGPOLE}, -- 鱼竿
-    {rule = 'type:' .. WEAPON}, -- 武器
-    {rule = 'type:' .. ARMOR}, -- 护甲
-    {rule = 'type:' .. CONTAINER}, -- 容器
-    {rule = 'type:' .. QUIVER}, -- 箭袋
-    {rule = 'type:' .. PROJECTILE}, -- 弹药
-    {rule = 'type:' .. RECIPE}, -- 配方
-    {
-        rule = 'type:' .. TRADEGOODS,
-        children = {
-            {rule = 'tip:' .. L.KeywordClass}, -- 职业
-        },
-    }, -- 商品
-    {
-        rule = 'type:' .. CONSUMABLE,
-        children = {
-            {rule = 'tip:' .. L.KeywordClass}, -- 职业
-            {rule = 'tip:' .. L.KeywordFood}, -- 食物
-            {rule = 'tip:' .. L.KeywordWater}, -- 水
-        },
-    }, -- 消耗品
-    {rule = 'type:' .. MISC}, -- 杂项
-    {rule = 'type:' .. REAGENT}, -- 材料
-    {rule = 'type:' .. QUEST}, -- 任务
+    Type(FISHINGPOLE, 132932), -- 鱼竿
+    Type(WEAPON, 135345), -- 武器
+    Type(ARMOR, 132722), -- 护甲
+    Type(CONTAINER, 133652), -- 容器
+    Type(QUIVER, 134407), -- 箭袋
+    Type(PROJECTILE, 132382), -- 弹药
+    Type(RECIPE, 134939), -- 配方
+    Type(TRADEGOODS, 132905, {
+        Tip('Class', 132273), -- 职业
+    }), -- 商品
+    Type(CONSUMABLE, 134829, {
+        Tip('Class', 132273), -- 职业
+        Tip('Food', 133945), -- 食物
+        Tip('Water', 132794), -- 水
+    }), -- 消耗品
+    Type(MISC, [[Interface\Icons\INV_MISC_QUESTIONMARK]]), -- 杂项
+    Type(REAGENT, 133587), -- 材料
+    Type(QUEST, [[Interface\ContainerFrame\UI-Icon-QuestBang]]), -- 任务
 }
 
 ns.DEFAULT_EQUIP_LOC_ORDER = {

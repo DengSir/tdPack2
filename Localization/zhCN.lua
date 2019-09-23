@@ -1,6 +1,8 @@
 
 local L = LibStub('AceLocale-3.0'):NewLocale(..., 'zhCN')
-if not L then return end
+if not L then
+    return
+end
 
 L['Leave bank, pack cancel.'] = '离开银行，整理中止。'
 L['Player enter combat, pack cancel.'] = '进入战斗，整理中止。'
@@ -31,6 +33,12 @@ L.SORT_BANK = '整理银行'
 L.SORT_BANK_ASC = '顺序整理银行'
 L.SORT_BANK_DESC = '逆序整理银行'
 L.OPEN_OPTIONS = '打开设置'
+
+-- rules comment
+L.CommentMount = '坐骑'
+L.CommentClass = '职业物品'
+L.CommentFood = '食物'
+L.CommentWater = '饮水'
 
 -- for rules
 L.KeywordMount = '使用： 召唤或解散'

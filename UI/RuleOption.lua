@@ -7,6 +7,8 @@ local ns = select(2, ...)
 local Addon = ns.Addon
 local L = ns.L
 
+local GameTooltip = GameTooltip
+
 local RuleOption = Addon:NewModule('RuleOption', 'AceEvent-3.0')
 
 function RuleOption:Setup()
@@ -31,11 +33,7 @@ function RuleOption:Setup()
         self:OnInserterShown(inserter, target, isBefore)
     end)
     Rule:SetCallback('OnItemEnter', function(_, button)
-        GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
-        if type(button.item) == 'number' then
-            GameTooltip:SetHyperlink('item:' .. button.item)
-        end
-        GameTooltip:Show()
+        self:ShowTooltip(button, button.item)
     end)
     Rule:SetCallback('OnItemLeave', GameTooltip_Hide)
     Rule:SetCallback('OnOrdered', function()
@@ -56,9 +54,28 @@ function RuleOption:OnItemFormatting(button, item, depth)
     elseif type(item) == 'string' then
         button.Text:SetText(item)
     else
-        button.Text:SetText(item.rule)
+        local text = item.comment or item.rule
+        if item.icon then
+            text = format('|T%s:16|t %s', item.icon, text)
+        end
+        button.Text:SetText(text)
     end
     button.Text:SetPoint('LEFT', 5 + 20 * (depth - 1), 0)
+end
+
+function RuleOption:ShowTooltip(button, item)
+    GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
+    if type(item) == 'number' then
+        GameTooltip:SetHyperlink('item:' .. item)
+    elseif type(button.item) == 'table' then
+        if item.comment then
+            GameTooltip:AddLine(item.comment)
+        end
+        if item.rule then
+            GameTooltip:AddLine(item.rule, 1, 1, 1)
+        end
+    end
+    GameTooltip:Show()
 end
 
 function RuleOption:Open()
