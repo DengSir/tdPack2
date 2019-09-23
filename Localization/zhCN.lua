@@ -19,6 +19,8 @@ L['Right Click'] = '右键'
 L['Bag button features'] = '背包按钮功能'
 L['Bank button features'] = '银行按钮功能'
 
+L['Loading item data...'] = true
+
 -- for actions
 L.None = '无'
 L.SORT = '整理全部'

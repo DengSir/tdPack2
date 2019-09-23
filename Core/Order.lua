@@ -11,10 +11,33 @@ local Addon = ns.Addon
 local Order = Addon:NewClass('Order')
 ns.Order = Order
 
+function Order:Constructor(profile)
+    self.profile = profile
+    self:RequestRebuild()
+end
+
 function Order:GetOrder(item)
     error('Not implemented')
 end
 
 function Order._Meta:__call(item)
     return self:GetOrder(item)
+end
+
+function Order:RequestRebuild()
+    if not self.isDirty then
+        self.isDirty = true
+
+        local getOrder = self.GetOrder
+        self.GetOrder = function(self, ...)
+            self:Build()
+            self.isDirty = nil
+            self.GetOrder = getOrder
+            return self:GetOrder(...)
+        end
+    end
+end
+
+function Order:Build()
+    error('Not implemented')
 end

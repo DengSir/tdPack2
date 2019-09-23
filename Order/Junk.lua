@@ -14,13 +14,13 @@ local CONJURED_ITEM_MATCHS = 'tip:' .. L.KeywordConjuredItem
 local JunkOrder = ns.Addon:NewClass('JunkOrder', ns.Order)
 ns.JunkOrder = JunkOrder
 
-function JunkOrder:Constructor(profile)
+function JunkOrder:Constructor()
     self.orders = {}
-    self:Build(profile)
 end
 
-function JunkOrder:Build(profile)
-    for i, v in ipairs(profile) do
+function JunkOrder:Build()
+    wipe(self.orders)
+    for i, v in ipairs(self.profile) do
         if type(v) == 'number' then
             self.orders[v] = true
         end

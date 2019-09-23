@@ -1,3 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="Option.lua"/>
+    <Include file="Template.xml"/>
+    <Script file="ScrollFrame.lua"/>
+    <Script file="TreeView.lua"/>
+    <Script file="RuleOption.lua"/>
 </Ui>

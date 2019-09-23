@@ -9,12 +9,8 @@ local ns = select(2, ...)
 local EquipLocOrder = ns.Addon:NewClass('EquipLocOrder', ns.Order)
 ns.EquipLocOrder = EquipLocOrder
 
-function EquipLocOrder:Constructor(profile)
-    self:Build(profile)
-end
-
-function EquipLocOrder:Build(profile)
-    self.orders, self.default = ns.ToOrderCache(profile)
+function EquipLocOrder:Build()
+    self.orders, self.default = ns.ToOrderCache(self.profile)
 end
 
 ---@param item Item

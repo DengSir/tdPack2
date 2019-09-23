@@ -12,6 +12,7 @@ local ns = select(2, ...)
 
 local LibSearch = LibStub('LibItemSearch-1.2')
 
+---@class CustomOrder: Order
 local CustomOrder = ns.Addon:NewClass('CustomOrder', ns.Order)
 ns.CustomOrder = CustomOrder
 
@@ -32,7 +33,6 @@ function CustomOrder:Constructor(profile)
 
     self.simpleOrders = {}
     self.advanceRules = {}
-    self:Build(profile, self.advanceRules)
 end
 
 function CustomOrder:GetAdvanceOrder(link, rules)
@@ -71,10 +71,10 @@ function CustomOrder:BuildInternal(profile, rules, last)
     return last
 end
 
-function CustomOrder:Build(profile)
+function CustomOrder:Build()
     wipe(self.advanceRules)
     wipe(self.simpleOrders)
-    self.default = self:BuildInternal(profile, self.advanceRules, 0)
+    self.default = self:BuildInternal(self.profile, self.advanceRules, 0)
 end
 
 ---@param item Item

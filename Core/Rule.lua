@@ -7,7 +7,7 @@
 local ns = select(2, ...)
 local Addon = ns.Addon
 
-local Rule = ns.Addon:NewModule('Rule')
+local Rule = ns.Addon:NewModule('Rule', 'AceEvent-3.0')
 ns.Rule = Rule
 
 function Rule:OnInitialize()
@@ -28,6 +28,16 @@ function Rule:OnInitialize()
         else
             return format('%04d', item:GetItemCount())
         end
+    end
+
+    self.orders = {self.junkOrder, self.customOrder, self.equipLocOrder}
+
+    self:RegisterMessage('TDPACK_RULE_ORDERED')
+end
+
+function Rule:TDPACK_RULE_ORDERED()
+    for _, order in pairs(self.orders) do
+        order:RequestRebuild()
     end
 end
 
