@@ -68,7 +68,7 @@ function Addon:LoadOptionFrame()
                     {name = L.SORT_BANK, value = 'SORT_BANK'}, --
                     {name = L.SORT_BANK_ASC, value = 'SORT_BANK_ASC'}, --
                     {name = L.SORT_BANK_DESC, value = 'SORT_BANK_DESC'}, --
-                    {name = L.OPEN_RULE_OPTIONS, value = 'OPEN_RULE_OPTIONS'}, --
+                    -- {name = L.OPEN_RULE_OPTIONS, value = 'OPEN_RULE_OPTIONS'}, --
                     {name = L.OPEN_OPTIONS, value = 'OPEN_OPTIONS'}, --
                 },
                 get = function()
