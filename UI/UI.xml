@@ -3,5 +3,7 @@
     <Include file="Template.xml"/>
     <Script file="ScrollFrame.lua"/>
     <Script file="TreeView.lua"/>
+    <Script file="Frame.lua"/>
+    <Script file="SortingFrame.lua"/>
     <Script file="RuleOption.lua"/>
 </Ui>

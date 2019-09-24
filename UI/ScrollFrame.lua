@@ -3,12 +3,12 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 10/20/2018, 7:46:03 PM
 
-local ns = select(2, ...)
-
 local setmetatable, assert, type = setmetatable, assert, type
 local tinsert, tremove, tIndexOf = table.insert, table.remove, tIndexOf
 
 local CreateFrame = CreateFrame
+
+local ns = select(2, ...)
 
 local ScrollFrame = ns.Addon:NewClass('ScrollFrame', 'ScrollFrame')
 ns.ScrollFrame = ScrollFrame

@@ -52,8 +52,8 @@ ns.DEFAULT_CUSTOM_ORDER = {
         Tip('Food', 133945), -- 食物
         Tip('Water', 132794), -- 水
     }), -- 消耗品
-    Type(MISC), -- 杂项
     Type(REAGENT, 133587), -- 材料
+    Type(MISC), -- 其它
     Type(QUEST, [[Interface\ContainerFrame\UI-Icon-QuestBang]]), -- 任务
 }
 

@@ -36,20 +36,33 @@
             <Anchor point="CENTER" />
         </Anchors>
         <Frames>
-            <ScrollFrame parentKey="RuleFrame" inherits="HybridScrollFrameTemplate">
+            <Frame parentKey="SortingFrame">
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeKey="$parent.Inset" relativePoint="TOPLEFT" x="5" y="-4" />
-                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" relativePoint="BOTTOMRIGHT" x="-20" y="3" />
+                    <Anchor point="TOPLEFT" relativeKey="$parent.Inset" relativePoint="TOPLEFT" />
+                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" relativePoint="BOTTOMRIGHT" />
                 </Anchors>
                 <Frames>
-                    <Slider parentKey="scrollBar" inherits="HybridScrollBarTemplate">
+                    <ScrollFrame parentKey="List" inherits="HybridScrollFrameTemplate">
                         <Anchors>
-                            <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="0" y="-14" />
-                            <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="0" y="13" />
+                            <Anchor point="TOPLEFT" relativeKey="$parent.Inset" relativePoint="TOPLEFT" x="5" y="-4" />
+                            <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" relativePoint="BOTTOMRIGHT" x="-20" y="3" />
                         </Anchors>
-                    </Slider>
+                        <Frames>
+                            <Slider parentKey="scrollBar" inherits="HybridScrollBarTemplate">
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="0" y="-14" />
+                                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="0" y="13" />
+                                </Anchors>
+                            </Slider>
+                        </Frames>
+                    </ScrollFrame>
+                    <!-- <Button parentKey="Add" inherits="MagicButtonTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="BOTTOMLEFT" />
+                        </Anchors>
+                    </Button> -->
                 </Frames>
-            </ScrollFrame>
+            </Frame>
         </Frames>
     </Frame>
 </Ui>

@@ -87,8 +87,18 @@ function TreeView:BindScript(button, ...)
     end
 end
 
+local function OnClick(button, click)
+    if click == 'LeftButton' then
+        button.treeView:Fire('OnItemClick', button)
+    else
+        button.treeView:Fire('OnItemRightClick', button)
+    end
+end
+
 function TreeView:OnItemCreated(button)
     button.treeView = self
+    button:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
+    button:SetScript('OnClick', OnClick)
     self:BindScript(button, 'OnDragStart', 'OnDragStop', 'OnEnter', 'OnLeave')
 end
 
@@ -128,7 +138,6 @@ function TreeView:OnItemDragStop(button)
         self.putTarget = nil
         self:Fire('OnOrdered')
     else
-        print(button.index)
         tinsert(button.parent, button.index, button.item)
     end
 
@@ -142,10 +151,12 @@ function TreeView:OnItemDragStop(button)
 end
 
 function TreeView:OnTimer()
-    if self.pickingButton:GetTop() > self:GetTop() then
-        self.scrollBar:SetValue(self.scrollBar:GetValue() - self.buttonHeight)
-    elseif self.pickingButton:GetBottom() < self:GetBottom() then
-        self.scrollBar:SetValue(self.scrollBar:GetValue() + self.buttonHeight)
+    if abs(self:GetLeft() - self.pickingButton:GetLeft()) < self:GetWidth() then
+        if self.pickingButton:GetTop() > self:GetTop() then
+            self.scrollBar:SetValue(self.scrollBar:GetValue() - self.buttonHeight)
+        elseif self.pickingButton:GetBottom() < self:GetBottom() then
+            self.scrollBar:SetValue(self.scrollBar:GetValue() + self.buttonHeight)
+        end
     end
 end
 
@@ -191,12 +202,12 @@ function TreeView:UpdateInsert()
         end
     end
 
-    -- if not target and last then
-    --     if last:GetBottom() - top < self.buttonHeight then
-    --         where = WHERE_AFTER
-    --         target = {parent = self.treeStatus.itemTree, index = #self.treeStatus.itemTree}
-    --     end
-    -- end
+    if not target and self.spacerButton and self.spacerButton:IsShown() then
+        if abs(self.spacerButton:GetTop() - self.pickingButton:GetTop()) < self.buttonHeight then
+            where = WHERE_BEFORE
+            target = self.spacerButton
+        end
+    end
 
     if target then
         self.putTarget = target
@@ -230,12 +241,13 @@ function TreeView:update()
     local containerHeight = self:GetHeight()
     local buttonHeight = self.buttonHeight or buttons[1]:GetHeight()
     local itemCount = treeStatus:GetCount()
-    local maxCount = ceil(containerHeight / buttonHeight) + 1
+    local maxCount = ceil(containerHeight / buttonHeight)
     local buttonCount = min(maxCount, itemCount)
 
     self.buttonHeight = buttonHeight
 
     local iter = treeStatus:Iterate(offset + 1)
+    local bottomButton
 
     for i = 1, buttonCount do
         local index = i + offset
@@ -243,9 +255,9 @@ function TreeView:update()
         if index > itemCount then
             button:Hide()
         else
-            local depth, item, index, parent = iter()
+            local depth, item, itemIndex, parent = iter()
 
-            button.index = index
+            button.index = itemIndex
             button.parent = parent
             button.depth = depth
             button.item = item
@@ -253,7 +265,32 @@ function TreeView:update()
             button:SetID(index)
             button:Show()
             self:Fire('OnItemFormatting', button, item, depth)
+
+            if index == itemCount then
+                bottomButton = button
+            end
         end
+    end
+
+    if bottomButton then
+        local button = self.spacerButton
+        if not button then
+            button = CreateFrame('Button', nil, self:GetScrollChild())
+            button:SetHeight(self.buttonHeight)
+            button:Disable()
+            self.spacerButton = button
+        end
+
+        button.depth = 1
+        button.parent = self.treeStatus.itemTree
+        button.index = #self.treeStatus.itemTree + 1
+
+        button:ClearAllPoints()
+        button:SetPoint('TOPLEFT', bottomButton, 'BOTTOMLEFT', 0, -3)
+        button:SetPoint('TOPRIGHT', bottomButton, 'BOTTOMRIGHT', 0, -3)
+        button:Show()
+    elseif self.spacerButton then
+        self.spacerButton:Hide()
     end
 
     for i = buttonCount + 1, #buttons do

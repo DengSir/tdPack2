@@ -116,7 +116,7 @@ function Addon:LoadOptionFrame()
     self.options = dialog:AddToBlizOptions(ADDON, ADDON)
 end
 
-local OpenToCategory = function(options)
+local function OpenToCategory(options)
     InterfaceOptionsFrame_OpenToCategory(options)
     InterfaceOptionsFrame_OpenToCategory(options)
     OpenToCategory = InterfaceOptionsFrame_OpenToCategory
