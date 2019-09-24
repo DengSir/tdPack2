@@ -1,4 +1,5 @@
 
+---@class L
 local L = LibStub('AceLocale-3.0'):NewLocale(..., 'zhCN')
 if not L then return end
 
@@ -31,8 +32,8 @@ L.SORT_BANK_DESC = '逆序整理银行'
 L.OPEN_OPTIONS = '打开设置'
 
 -- for rules
-L.KeywordMount = '使用： 召唤或解散'
-L.KeywordFood = '进食时必须保持坐姿'
-L.KeywordWater = '喝水时必须保持坐姿'
-L.KeywordClass = '职业：'
-L.KeywordConjuredItem = '魔法制造的物品'
+L.KEYWORD_MOUNT = '使用： 召唤或解散'
+L.KEYWORD_FOOD = '进食时必须保持坐姿'
+L.KEYWORD_WATER = '喝水时必须保持坐姿'
+L.KEYWORD_CLASS = '职业：'
+L.KEYWORD_CONJURED_ITEM = '魔法制造的物品'

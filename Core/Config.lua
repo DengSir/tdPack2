@@ -5,6 +5,7 @@
 
 ---@type ns
 local ns = select(2, ...)
+---@type L
 local L = ns.L
 
 local WEAPON = GetItemClassInfo(LE_ITEM_CLASS_WEAPON) -- 武器
@@ -22,7 +23,7 @@ local FISHINGPOLE = GetItemSubClassInfo(LE_ITEM_CLASS_WEAPON, LE_ITEM_WEAPON_FIS
 
 ns.DEFAULT_CUSTOM_ORDER = {
     HEARTHSTONE_ITEM_ID, -- 炉石
-    {rule = 'tip:' .. L.KeywordMount}, -- 坐骑
+    {rule = 'tip:' .. L.KEYWORD_MOUNT}, -- 坐骑
     5060, -- 潜行者工具
     2901, -- 矿工锄
     5956, -- 铁匠锤
@@ -37,15 +38,15 @@ ns.DEFAULT_CUSTOM_ORDER = {
     {
         rule = 'type:' .. TRADEGOODS,
         children = {
-            {rule = 'tip:' .. L.KeywordClass}, -- 职业
+            {rule = 'tip:' .. L.KEYWORD_CLASS}, -- 职业
         },
     }, -- 商品
     {
         rule = 'type:' .. CONSUMABLE,
         children = {
-            {rule = 'tip:' .. L.KeywordClass}, -- 职业
-            {rule = 'tip:' .. L.KeywordFood}, -- 食物
-            {rule = 'tip:' .. L.KeywordWater}, -- 水
+            {rule = 'tip:' .. L.KEYWORD_CLASS}, -- 职业
+            {rule = 'tip:' .. L.KEYWORD_FOOD}, -- 食物
+            {rule = 'tip:' .. L.KEYWORD_WATER}, -- 水
         },
     }, -- 消耗品
     {rule = 'type:' .. MISC}, -- 杂项

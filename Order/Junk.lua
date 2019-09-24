@@ -6,10 +6,10 @@
 ---@type ns
 local ns = select(2, ...)
 local LibSearch = LibStub('LibItemSearch-1.2')
-
+---@type L
 local L = ns.L
 
-local CONJURED_ITEM_MATCHS = 'tip:' .. L.KeywordConjuredItem
+local CONJURED_ITEM_MATCHS = 'tip:' .. L.KEYWORD_CONJURED_ITEM
 
 local JunkOrder = ns.Addon:NewClass('JunkOrder', ns.Order)
 ns.JunkOrder = JunkOrder
