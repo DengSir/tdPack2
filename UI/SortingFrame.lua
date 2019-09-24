@@ -29,6 +29,7 @@ function SortingFrame:Constructor()
     local List = ns.TreeView:Bind(self.List)
 
     local profile = Addon.profile.rules.sorting
+    self.profile = profile
 
     List:SetItemTemplate('tdPack2RuleItemTemplate')
     List:SetItemTree(profile)
@@ -57,8 +58,56 @@ function SortingFrame:Constructor()
     end)
 
     local Menu = CreateFrame('Frame', 'tdPack2SortingListMenu', self, 'UIDropDownMenuTemplate')
-    UIDropDownMenu_Initialize(Menu, EasyMenu_Initialize, 'MENU', nil, {})
+    UIDropDownMenu_Initialize(Menu, function(frame, level, menuList)
+        for i, v in ipairs(menuList) do
+            if v.text then
+                v.index = i
+                UIDropDownMenu_AddButton(v, level)
+            else
+                UIDropDownMenu_AddSeparator(level)
+            end
+        end
+    end, 'MENU', nil, {})
     self.Menu = Menu
+end
+
+function SortingFrame:SetupEvents()
+    self:RegisterMessage('TDPACK_RULE_ORDERED', 'Refresh')
+    self:RegisterEvent('GET_ITEM_INFO_RECEIVED', 'Refresh')
+    self:RegisterEvent('CURSOR_UPDATE')
+    self:CURSOR_UPDATE()
+end
+
+function SortingFrame:Refresh()
+    self.List:Refresh()
+end
+
+function SortingFrame:CURSOR_UPDATE()
+    local cursorType, itemId, itemLink = GetCursorInfo()
+    if cursorType ~= 'item' then
+        if self.cursorHolder then
+            self.cursorHolder:Hide()
+        end
+        return
+    end
+
+    if not self.cursorHolder then
+        local frame = CreateFrame('Button', nil, self.List)
+        frame:RegisterForClicks('LeftButtonUp')
+        frame:SetAllPoints(true)
+        frame:SetFrameLevel(self:GetFrameLevel() + 100)
+        frame:SetScript('OnClick', function(frame)
+            if not tIndexOf(self.profile, frame.item) then
+                ClearCursor()
+                tinsert(self.profile, frame.item)
+                self:SendMessage('TDPACK_RULE_ORDERED')
+            end
+        end)
+        self.cursorHolder = frame
+    end
+
+    self.cursorHolder.item = itemId
+    self.cursorHolder:Show()
 end
 
 function SortingFrame:OnItemFormatting(button, item, depth)
@@ -121,6 +170,30 @@ function SortingFrame:ShowRuleMenu(button, item)
             text = format('|T%s:14|t %s', icon, name),
             notCheckable = true,
             isTitle = true,
+        }, {
+            hasArrow = false,
+            dist = 0,
+            isTitle = true,
+            isUninteractable = true,
+            notCheckable = true,
+            iconOnly = true,
+            icon = 'Interface\\Common\\UI-TooltipDivider-Transparent',
+            tCoordLeft = 0,
+            tCoordRight = 1,
+            tCoordTop = 0,
+            tCoordBottom = 1,
+            tSizeX = 0,
+            tSizeY = 8,
+            tFitDropDownSizeX = true,
+            iconInfo = {
+                tCoordLeft = 0,
+                tCoordRight = 1,
+                tCoordTop = 0,
+                tCoordBottom = 1,
+                tSizeX = 0,
+                tSizeY = 8,
+                tFitDropDownSizeX = true,
+            },
         }, { --
             text = ADD,
             notCheckable = true,

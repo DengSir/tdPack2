@@ -18,16 +18,14 @@ ScrollFrame.SetOffset = HybridScrollFrame_SetOffset
 
 function ScrollFrame:Constructor()
     self.paddingTop = 3
-    self.paddingBottom = 3
+    self.paddingBottom = 13
     self.itemSpacing = 3
     self.buttonHeight = 10
     self.unused = {}
     self.buttons = setmetatable({}, {
         __index = function(t, i)
             assert(type(i) == 'number')
-            local button = self:GetButton(i)
-            t[i] = button
-            return button
+            return self:GetButton(i)
         end,
     })
     self.scrollBar:SetMinMaxValues(0, 1)
@@ -51,10 +49,28 @@ end
 
 function ScrollFrame:SetItemTemplate(itemTemplate)
     self.itemTemplate = itemTemplate
-    self.buttonHeight = self.buttons[1]:GetHeight()
+    self.itemHeight = self.buttons[1]:GetHeight()
+    self.buttonHeight = self.itemHeight + self.itemSpacing
 end
 
 function ScrollFrame:GetButton(index)
+    local button = self:AllocButton()
+
+    local y = (index - 1)
+    if y > 0 then
+        y = -y * self.buttonHeight
+    end
+    y = y - self.paddingTop
+
+    print(index, y, self.buttons, self.itemSpacing)
+
+    button:SetPoint('TOPLEFT', 0, y)
+    button:SetPoint('TOPRIGHT', 0, y)
+    self.buttons[index] = button
+    return button
+end
+
+function ScrollFrame:AllocButton()
     local button = tremove(self.unused)
     if button then
         button:SetParent(self:GetScrollChild())
@@ -64,22 +80,7 @@ function ScrollFrame:GetButton(index)
         self:Fire('OnItemCreated', button)
     end
 
-    local y = (index - 1)
-    if y > 0 then
-        y = -y * (self.buttonHeight + self.itemSpacing)
-    end
-    y = y - self.paddingTop
-
+    button:SetWidth(self:GetWidth())
     button.scrollFrame = self
-    button:SetPoint('TOPLEFT', 0, y)
-    button:SetPoint('TOPRIGHT', 0, y)
     return button
-end
-
-function ScrollFrame:ReleaseButton(button)
-    self.buttons[tIndexOf(self.buttons, button)] = nil
-end
-
-function ScrollFrame:RestoreButton(button)
-    tinsert(self.unused, button)
 end

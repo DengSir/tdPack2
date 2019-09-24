@@ -104,8 +104,13 @@ end
 
 function TreeView:OnItemDragStart(button)
     self.pickingButton = button
-    self:ReleaseButton(button)
-    tremove(button.parent, button.index)
+    local i = tIndexOf(self.buttons, button)
+    if i then
+        self.buttons[i] = nil
+    end
+    if button.index then
+        tremove(button.parent, button.index)
+    end
 
     button:SetParent(UIParent)
     button:SetFrameStrata('DIALOG')
@@ -146,7 +151,7 @@ function TreeView:OnItemDragStop(button)
     end
     self.pickingButton = nil
     self:CancelAllTimers()
-    self:RestoreButton(button)
+    tinsert(self.unused, button)
     self:Refresh()
 end
 
@@ -182,13 +187,13 @@ function TreeView:UpdateInsert()
                 local canPutIn = self:Fire('OnCheckItemCanPutIn', self.pickingButton.item, button.item)
                 local canPutInParent = self:Fire('OnCheckItemCanPutIn', self.pickingButton.item, button.parent)
 
-                if abs(delta) < self.buttonHeight / 4 and canPutIn then
+                if abs(delta) < self.itemHeight / 4 and canPutIn then
                     target = button
                     where = WHERE_IN
-                elseif delta < 0 and abs(delta) < self.buttonHeight and canPutInParent then
+                elseif delta < 0 and abs(delta) < self.itemHeight and canPutInParent then
                     target = button
                     where = WHERE_BEFORE
-                elseif delta > 0 and delta < self.buttonHeight * 2 / 3 and not self:IsItemExpend(button.item) and
+                elseif delta > 0 and delta < self.itemHeight * 2 / 3 and not self:IsItemExpend(button.item) and
                     canPutInParent then
                     target = button
                     where = WHERE_AFTER
@@ -203,7 +208,7 @@ function TreeView:UpdateInsert()
     end
 
     if not target and self.spacerButton and self.spacerButton:IsShown() then
-        if abs(self.spacerButton:GetTop() - self.pickingButton:GetTop()) < self.buttonHeight then
+        if abs(self.spacerButton:GetTop() - self.pickingButton:GetTop()) < self.itemHeight then
             where = WHERE_BEFORE
             target = self.spacerButton
         end
@@ -239,12 +244,12 @@ function TreeView:update()
     local buttons = self.buttons
     local treeStatus = self.treeStatus
     local containerHeight = self:GetHeight()
-    local buttonHeight = self.buttonHeight or buttons[1]:GetHeight()
+    local buttonHeight = self.buttonHeight
     local itemCount = treeStatus:GetCount()
     local maxCount = ceil(containerHeight / buttonHeight)
     local buttonCount = min(maxCount, itemCount)
 
-    self.buttonHeight = buttonHeight
+    print(buttonHeight)
 
     local iter = treeStatus:Iterate(offset + 1)
     local bottomButton
@@ -276,7 +281,7 @@ function TreeView:update()
         local button = self.spacerButton
         if not button then
             button = CreateFrame('Button', nil, self:GetScrollChild())
-            button:SetHeight(self.buttonHeight)
+            button:SetHeight(self.itemHeight)
             button:Disable()
             self.spacerButton = button
         end
@@ -296,8 +301,8 @@ function TreeView:update()
     for i = buttonCount + 1, #buttons do
         buttons[i]:Hide()
     end
-    HybridScrollFrame_Update(self, itemCount * (buttonHeight + self.itemSpacing) - self.itemSpacing + self.paddingTop +
-                                 self.paddingBottom, containerHeight)
+    HybridScrollFrame_Update(self, itemCount * buttonHeight - self.itemSpacing + self.paddingTop + self.paddingBottom,
+                             containerHeight)
 end
 
 function TreeView:SetItemTree(itemTree)

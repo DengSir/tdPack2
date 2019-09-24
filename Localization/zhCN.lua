@@ -21,6 +21,10 @@ L['Right Click'] = '右键'
 L['Bag button features'] = '背包按钮功能'
 L['Bank button features'] = '银行按钮功能'
 
+L['Before this'] = true
+L['After this'] = true
+L['In this'] = true
+
 L['Loading item data...'] = true
 
 -- for actions

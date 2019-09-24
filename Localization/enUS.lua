@@ -28,6 +28,12 @@ L['Right Click'] = true
 L['Bag button features'] = true
 L['Bank button features'] = true
 
+L['Before this'] = true
+L['After this'] = true
+L['In this'] = true
+
+L['Loading item data...'] = true
+
 
 -- for actions
 L.None = true
@@ -39,6 +45,12 @@ L.SORT_BANK = 'Pack bank'
 L.SORT_BANK_ASC = 'Pack bank asc'
 L.SORT_BANK_DESC = 'Pack bank desc'
 L.OPEN_OPTIONS = 'Open options'
+
+-- rules comment
+L.CommentMount = 'Mount'
+L.CommentClass = 'Class items'
+L.CommentFood = 'Food'
+L.CommentWater = 'Water'
 
 -- for rules
 L.KeywordMount = 'Summons and dismisses'
