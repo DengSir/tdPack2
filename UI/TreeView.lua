@@ -5,6 +5,15 @@
 
 local ns = select(2, ...)
 
+local setmetatable, ipairs, type, select = setmetatable, ipairs, type, select
+local tinsert, tremove = table.insert, table.remove
+local ceil, min, abs = math.ceil, math.min, math.abs
+local coroutine = coroutine
+
+local CreateFrame, HybridScrollFrame_Update = CreateFrame, HybridScrollFrame_Update
+
+local UIParent = UIParent
+
 local WHERE_AFTER = 1
 local WHERE_BEFORE = 2
 local WHERE_IN = 3

@@ -7,51 +7,67 @@ local ns = select(2, ...)
 local Addon = ns.Addon
 local L = ns.L
 
-local GameTooltip = GameTooltip
+local type, select = type, select
+local format = string.format
+
+local GetItemQualityColor, GetItemIcon = GetItemQualityColor, GetItemIcon
+local CreateFrame, ShowUIPanel = CreateFrame, ShowUIPanel
+
+local UIParent, GameTooltip = UIParent, GameTooltip
+
+local RED_FONT_COLOR_HEX = RED_FONT_COLOR:GenerateHexColor()
 
 local RuleOption = Addon:NewModule('RuleOption', 'AceEvent-3.0')
 
 function RuleOption:Setup()
-    local Frame = CreateFrame('Frame', nil, UIParent, 'tdPack2RuleOptionFrameTemplate')
-    Frame:RegisterForDrag('LeftButton')
-    Frame.portrait:SetMask([[Textures\MinimapMask]])
-    Frame.portrait:SetTexture(ns.ICON)
-    Frame.TitleText:SetText('tdPack2')
+    self:InitRootFrame()
+    self:InitRuleFrame()
+end
 
-    Frame:SetAttribute('UIPanelLayout-enabled', true)
-    Frame:SetAttribute('UIPanelLayout-defined', true)
-    Frame:SetAttribute('UIPanelLayout-whileDead', true)
-    Frame:SetAttribute('UIPanelLayout-area', 'left')
-    Frame:SetAttribute('UIPanelLayout-pushable', 4)
+function RuleOption:InitRootFrame()
+    local RootFrame = CreateFrame('Frame', nil, UIParent, 'tdPack2RuleOptionFrameTemplate')
+    RootFrame:RegisterForDrag('LeftButton')
+    RootFrame.portrait:SetMask([[Textures\MinimapMask]])
+    RootFrame.portrait:SetTexture(ns.ICON)
+    RootFrame.TitleText:SetText('tdPack2')
 
+    RootFrame:SetAttribute('UIPanelLayout-enabled', true)
+    RootFrame:SetAttribute('UIPanelLayout-defined', true)
+    RootFrame:SetAttribute('UIPanelLayout-whileDead', true)
+    RootFrame:SetAttribute('UIPanelLayout-area', 'left')
+    RootFrame:SetAttribute('UIPanelLayout-pushable', 4)
+
+    self.RootFrame = RootFrame
+end
+
+function RuleOption:InitRuleFrame()
     local sorting = Addon.profile.rules.sorting
 
-    local Rule = ns.TreeView:Bind(Frame.Rule)
-    Rule:SetItemTemplate('tdPack2RuleItemTemplate')
-    Rule:SetItemTree(Addon.profile.rules.sorting)
-    Rule:SetCallback('OnItemFormatting', function(_, ...)
+    local RuleFrame = ns.TreeView:Bind(self.RootFrame.RuleFrame)
+    RuleFrame:SetItemTemplate('tdPack2RuleItemTemplate')
+    RuleFrame:SetItemTree(Addon.profile.rules.sorting)
+    RuleFrame:SetCallback('OnItemFormatting', function(_, ...)
         self:OnItemFormatting(...)
     end)
-    Rule:SetCallback('OnInserterShown', function(_, inserter, target, isBefore)
+    RuleFrame:SetCallback('OnInserterShown', function(_, inserter, target, isBefore)
         self:OnInserterShown(inserter, target, isBefore)
     end)
-    Rule:SetCallback('OnCheckItemCanPutIn', function(_, from, to)
+    RuleFrame:SetCallback('OnCheckItemCanPutIn', function(_, from, to)
         if type(from) == 'table' then
             return type(to) == 'table'
         else
             return to == sorting
         end
     end)
-    Rule:SetCallback('OnItemEnter', function(_, button)
-        self:ShowTooltip(button, button.item)
+    RuleFrame:SetCallback('OnItemEnter', function(_, button)
+        self:ShowRuleTooltip(button, button.item)
     end)
-    Rule:SetCallback('OnItemLeave', GameTooltip_Hide)
-    Rule:SetCallback('OnOrdered', function()
+    RuleFrame:SetCallback('OnItemLeave', GameTooltip_Hide)
+    RuleFrame:SetCallback('OnOrdered', function()
         self:SendMessage('TDPACK_RULE_ORDERED')
     end)
 
-    self.Frame = Frame
-    self.Rule = Frame.Rule
+    self.RuleFrame = RuleFrame
 end
 
 function RuleOption:OnItemFormatting(button, item, depth)
@@ -59,7 +75,7 @@ function RuleOption:OnItemFormatting(button, item, depth)
     if type(item) == 'number' then
         local quality, color
         name, _, _, _, _, quality = ns.GetItemInfo(item)
-        color = name and quality and select(4, GetItemQualityColor(quality)) or RED_FONT_COLOR:GenerateHexColor()
+        color = name and quality and select(4, GetItemQualityColor(quality)) or RED_FONT_COLOR_HEX
 
         name = format('|c%s%s|r', color, name or L['Loading item data...'])
         icon = GetItemIcon(item)
@@ -86,7 +102,7 @@ function RuleOption:OnItemFormatting(button, item, depth)
     button.Rule:SetText(rule or '')
 end
 
-function RuleOption:ShowTooltip(button, item)
+function RuleOption:ShowRuleTooltip(button, item)
     GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
     if type(item) == 'number' then
         GameTooltip:SetHyperlink('item:' .. item)
@@ -104,7 +120,7 @@ end
 function RuleOption:Open()
     self:Setup()
     self.Open = function()
-        ShowUIPanel(self.Frame)
+        ShowUIPanel(self.RootFrame)
     end
     self:Open()
 end

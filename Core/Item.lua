@@ -6,13 +6,16 @@
 ---@type ns
 local ns = select(2, ...)
 
+local IsEquippableItem = IsEquippableItem
+
 ---@class Item: Base
 local Item = ns.Addon:NewClass('Item', ns.Base)
 ns.Item = Item
 
 function Item:Constructor(parent, bag, slot)
     local itemId = ns.GetBagSlotID(bag, slot)
-    local itemName, itemLink, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture = ns.GetItemInfo(itemId)
+    local itemName, itemLink, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture =
+        ns.GetItemInfo(itemId)
 
     self.itemId = itemId
     self.itemName = itemName

@@ -9,6 +9,8 @@ local LibSearch = LibStub('LibItemSearch-1.2')
 
 local L = ns.L
 
+local GetItemInfo = GetItemInfo
+
 local CONJURED_ITEM_MATCHS = 'tip:' .. L.KeywordConjuredItem
 
 local JunkOrder = ns.Addon:NewClass('JunkOrder', ns.Order)

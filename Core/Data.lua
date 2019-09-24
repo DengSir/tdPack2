@@ -7,6 +7,8 @@
 local ns = select(2, ...)
 local L = ns.L
 
+local tinsert, tconcat = table.insert, table.concat
+
 local function GenerateClickData(button, control, shift, alt)
     local sb = {}
     if control then
@@ -25,7 +27,7 @@ local function GenerateClickData(button, control, shift, alt)
         tinsert(sb, L['Right Click'])
     end
 
-    local name = table.concat(sb, '-')
+    local name = tconcat(sb, '-')
     return {name = name, token = ns.GetClickToken(button, control, shift, alt)}
 end
 

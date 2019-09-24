@@ -5,6 +5,8 @@
 
 local select, ipairs = select, ipairs
 local tinsert, tremove, wipe = table.insert, table.remove, wipe
+local format = string.format
+local coroutine = coroutine
 
 local InCombatLockdown, UnitIsDead, GetCursorInfo = InCombatLockdown, UnitIsDead, GetCursorInfo
 

@@ -7,6 +7,8 @@
 local ns = select(2, ...)
 local L = ns.L
 
+local GetItemClassInfo, GetItemSubClassInfo = GetItemClassInfo, GetItemSubClassInfo
+
 local WEAPON = GetItemClassInfo(LE_ITEM_CLASS_WEAPON) -- 武器
 local ARMOR = GetItemClassInfo(LE_ITEM_CLASS_ARMOR) -- 护甲
 local CONTAINER = GetItemClassInfo(LE_ITEM_CLASS_CONTAINER) -- 容器

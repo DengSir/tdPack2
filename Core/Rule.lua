@@ -7,6 +7,10 @@
 local ns = select(2, ...)
 local Addon = ns.Addon
 
+local pairs, setmetatable = pairs, setmetatable
+local format = string.format
+local tconcat = table.concat
+
 local Rule = ns.Addon:NewModule('Rule', 'AceEvent-3.0')
 ns.Rule = Rule
 
@@ -72,7 +76,7 @@ function Rule:BuildOrder(item)
         levelQuality = quality .. level
     end
 
-    return table.concat({
+    return tconcat({
         self.junkOrder(item), --
         self.customOrder(item), --
         self.equipLocOrder(item), --

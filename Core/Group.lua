@@ -5,7 +5,6 @@
 
 local select, ipairs, fastrandom = select, ipairs, fastrandom
 local tinsert, tremove = table.insert, table.remove
-local band = bit.band
 local random = fastrandom or math.random
 
 local InCombatLockdown = InCombatLockdown

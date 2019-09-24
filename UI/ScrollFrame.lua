@@ -5,6 +5,11 @@
 
 local ns = select(2, ...)
 
+local setmetatable, assert, type = setmetatable, assert, type
+local tinsert, tremove, tIndexOf = table.insert, table.remove, tIndexOf
+
+local CreateFrame = CreateFrame
+
 local ScrollFrame = ns.Addon:NewClass('ScrollFrame', 'ScrollFrame')
 ns.ScrollFrame = ScrollFrame
 

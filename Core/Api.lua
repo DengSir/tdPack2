@@ -3,7 +3,9 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/30/2019, 11:46:11 PM
 
-local select, type, assert, tonumber = select, type, assert, tonumber
+local select, type, assert, ipairs = select, type, assert, ipairs
+local tonumber, band = tonumber, bit.band
+local tostring, format, strrep = tostring, string.format, string.rep
 
 local GetItemInfo, GetItemFamily, GetPetInfoBySpeciesID = GetItemInfo, GetItemFamily, GetPetInfoBySpeciesID
 local GetContainerNumSlots, GetContainerNumFreeSlots = GetContainerNumSlots, GetContainerNumFreeSlots
@@ -193,7 +195,7 @@ end
 
 if ns.IsRetail then
     function ns.IsFamilyContains(bagFamily, itemFamily)
-        return bit.band(bagFamily, itemFamily) > 0
+        return band(bagFamily, itemFamily) > 0
     end
 else
     function ns.IsFamilyContains(bagFamily, itemFamily)

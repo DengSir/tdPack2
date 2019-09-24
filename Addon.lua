@@ -3,6 +3,8 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/30/2019, 11:36:34 PM
 
+local select, unpack = select, table.unpack or unpack
+
 ---@type ns
 local ADDON, ns = ...
 local Addon = LibStub('AceAddon-3.0'):NewAddon(ADDON, 'LibClass-2.0', 'AceConsole-3.0')
@@ -47,7 +49,6 @@ function Addon:OnInitialize(args)
     self.profile = self.db.profile
 
     if self.profile.firstLoad then
-        print('First Load')
         self.profile.rules.sorting = ns.DEFAULT_CUSTOM_ORDER
         self.profile.firstLoad = false
     end
@@ -62,6 +63,7 @@ end
 function Addon:OnSlash(text)
     local args = {}
     local cmd, offset
+    local method, order
     repeat
         cmd, offset = self:GetArgs(text, nil, offset)
         if METHODS[cmd] then
