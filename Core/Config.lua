@@ -28,12 +28,12 @@ local function Type(name, icon, children)
 end
 
 local function Tip(key, icon, children)
-    return {rule = 'tip:' .. L['Keyword' .. key], comment = L['Comment' .. key], icon = icon, children = children}
+    return {rule = 'tip:' .. L['KEYWORD_' .. key], comment = L['COMMENT_' .. key], icon = icon, children = children}
 end
 
 ns.DEFAULT_CUSTOM_ORDER = {
     HEARTHSTONE_ITEM_ID, -- 炉石
-    Tip('Mount', 132261), -- 坐骑
+    Tip('MOUNT', 132261), -- 坐骑
     5060, -- 潜行者工具
     2901, -- 矿工锄
     5956, -- 铁匠锤
@@ -46,12 +46,12 @@ ns.DEFAULT_CUSTOM_ORDER = {
     Type(PROJECTILE, 132382), -- 弹药
     Type(RECIPE, 134939), -- 配方
     Type(TRADEGOODS, 132905, {
-        Tip('Class', 132273), -- 职业
+        Tip('CLASS', 132273), -- 职业
     }), -- 商品
     Type(CONSUMABLE, 134829, {
-        Tip('Class', 132273), -- 职业
-        Tip('Food', 133945), -- 食物
-        Tip('Water', 132794), -- 水
+        Tip('CLASS', 132273), -- 职业
+        Tip('FOOD', 133945), -- 食物
+        Tip('WATER', 132794), -- 水
     }), -- 消耗品
     Type(REAGENT, 133587), -- 材料
     Type(MISC), -- 其它

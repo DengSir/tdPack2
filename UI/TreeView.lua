@@ -25,21 +25,19 @@ function TreeStatus:Constructor()
 end
 
 function TreeStatus:Iterate(start)
-    local index = 0
-
-    local function Iterate(tree, depth)
-        for i, item in ipairs(tree) do
-            index = index + 1
-            if not start or index >= start then
-                coroutine.yield(depth, item, i, tree)
-            end
-            if type(item) == 'table' and type(item.children) == 'table' and not self.fold[item] then
-                Iterate(item.children, depth + 1)
+    return coroutine.wrap(function()
+        local index = 0
+        local function Iterate(tree, depth)
+            for i, item in ipairs(tree) do
+                index = index + 1
+                if not start or index >= start then
+                    coroutine.yield(depth, item, i, tree)
+                end
+                if type(item) == 'table' and type(item.children) == 'table' and not self.fold[item] then
+                    Iterate(item.children, depth + 1)
+                end
             end
         end
-    end
-
-    return coroutine.wrap(function()
         return Iterate(self.itemTree, 1)
     end)
 end

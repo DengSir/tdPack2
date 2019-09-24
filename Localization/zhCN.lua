@@ -41,10 +41,10 @@ L.OPEN_RULE_OPTIONS = '打开规则设置'
 L.OPEN_OPTIONS = '打开设置'
 
 -- rules comment
-L.CommentMount = '坐骑'
-L.CommentClass = '职业物品'
-L.CommentFood = '食物'
-L.CommentWater = '饮水'
+L.COMMENT_MOUNT = '坐骑'
+L.COMMENT_CLASS = '职业物品'
+L.COMMENT_FOOD = '食物'
+L.COMMENT_WATER = '饮水'
 
 -- for rules
 L.KEYWORD_MOUNT = '使用： 召唤或解散'

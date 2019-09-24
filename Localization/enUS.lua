@@ -47,10 +47,10 @@ L.SORT_BANK_DESC = 'Pack bank desc'
 L.OPEN_OPTIONS = 'Open options'
 
 -- rules comment
-L.CommentMount = 'Mount'
-L.CommentClass = 'Class items'
-L.CommentFood = 'Food'
-L.CommentWater = 'Water'
+L.COMMENT_MOUNT = 'Mount'
+L.COMMENT_CLASS = 'Class items'
+L.COMMENT_FOOD = 'Food'
+L.COMMENT_WATER = 'Water'
 
 -- for rules
 L.KEYWORD_MOUNT = 'Summons and dismisses'

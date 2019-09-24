@@ -26,13 +26,12 @@ local SortingFrame = Addon:NewClass('SortingFrame', ns.Frame)
 ns.SortingFrame = SortingFrame
 
 function SortingFrame:Constructor()
+    self.profile = Addon.profile.rules.sorting
+
     local List = ns.TreeView:Bind(self.List)
 
-    local profile = Addon.profile.rules.sorting
-    self.profile = profile
-
     List:SetItemTemplate('tdPack2RuleItemTemplate')
-    List:SetItemTree(profile)
+    List:SetItemTree(self.profile)
     List:SetCallback('OnItemFormatting', function(_, ...)
         self:OnItemFormatting(...)
     end)
@@ -43,7 +42,7 @@ function SortingFrame:Constructor()
         if type(from) == 'table' then
             return type(to) == 'table'
         else
-            return to == profile
+            return to == self.profile
         end
     end)
     List:SetCallback('OnItemEnter', function(_, button)
@@ -68,6 +67,7 @@ function SortingFrame:Constructor()
             end
         end
     end, 'MENU', nil, {})
+
     self.Menu = Menu
 end
 
@@ -84,30 +84,48 @@ end
 
 function SortingFrame:CURSOR_UPDATE()
     local cursorType, itemId, itemLink = GetCursorInfo()
-    if cursorType ~= 'item' then
-        if self.cursorHolder then
-            self.cursorHolder:Hide()
+    if cursorType == 'item' then
+        local catcher = self.cursorCatcher or self:CreateCursorCatcher()
+        catcher:Open(itemId)
+    elseif self.cursorCatcher then
+        self.cursorCatcher:Hide()
+    end
+end
+
+function SortingFrame:CreateCursorCatcher()
+    local frame = CreateFrame('Button', nil, self.List)
+    frame:RegisterForClicks('LeftButtonUp')
+    frame:SetAllPoints(true)
+    frame:SetFrameLevel(self:GetFrameLevel() + 100)
+    frame:SetNormalFontObject('GameFontHighlightHuge')
+    frame:SetScript('OnClick', function(frame)
+        if not tIndexOf(self.profile, frame.item) then
+            ClearCursor()
+            tinsert(self.profile, frame.item)
+            self.List.scrollBar:SetValue(select(2, self.List.scrollBar:GetMinMaxValues()))
+            self:SendMessage('TDPACK_RULE_ORDERED')
         end
-        return
+    end)
+
+    local bg = frame:CreateTexture(nil, 'BACKGROUND')
+    bg:SetAllPoints(true)
+    bg:SetColorTexture(0, 0, 0, 0.8)
+
+    local ht = frame:CreateTexture(nil, 'ARTWORK')
+    ht:SetAllPoints(true)
+
+    frame.Open = function(frame, item)
+        local exists = tIndexOf(self.profile, item)
+        local color = exists and RED_FONT_COLOR or GREEN_FONT_COLOR
+        ht:SetColorTexture(color.r, color.g, color.b, 0.3)
+
+        frame.item = item
+        frame:SetText(exists and L['Already exists'] or L['Click to add'])
+        frame:Show()
     end
 
-    if not self.cursorHolder then
-        local frame = CreateFrame('Button', nil, self.List)
-        frame:RegisterForClicks('LeftButtonUp')
-        frame:SetAllPoints(true)
-        frame:SetFrameLevel(self:GetFrameLevel() + 100)
-        frame:SetScript('OnClick', function(frame)
-            if not tIndexOf(self.profile, frame.item) then
-                ClearCursor()
-                tinsert(self.profile, frame.item)
-                self:SendMessage('TDPACK_RULE_ORDERED')
-            end
-        end)
-        self.cursorHolder = frame
-    end
-
-    self.cursorHolder.item = itemId
-    self.cursorHolder:Show()
+    self.cursorCatcher = frame
+    return frame
 end
 
 function SortingFrame:OnItemFormatting(button, item, depth)
@@ -162,70 +180,43 @@ function SortingFrame:GetRuleInfo(item)
     end
 end
 
+local SEPARATOR = {isSeparator = true}
+local GUI = LibStub('tdGUI-1.0')
+
 function SortingFrame:ShowRuleMenu(button, item)
     local name, icon, rule = self:GetRuleInfo(item)
 
-    ToggleDropDownMenu(1, nil, self.Menu, 'cursor', 3, -3, {
+    GUI:ToggleMenu(button, {
         { --
             text = format('|T%s:14|t %s', icon, name),
-            notCheckable = true,
             isTitle = true,
-        }, {
-            hasArrow = false,
-            dist = 0,
-            isTitle = true,
-            isUninteractable = true,
-            notCheckable = true,
-            iconOnly = true,
-            icon = 'Interface\\Common\\UI-TooltipDivider-Transparent',
-            tCoordLeft = 0,
-            tCoordRight = 1,
-            tCoordTop = 0,
-            tCoordBottom = 1,
-            tSizeX = 0,
-            tSizeY = 8,
-            tFitDropDownSizeX = true,
-            iconInfo = {
-                tCoordLeft = 0,
-                tCoordRight = 1,
-                tCoordTop = 0,
-                tCoordBottom = 1,
-                tSizeX = 0,
-                tSizeY = 8,
-                tFitDropDownSizeX = true,
-            },
-        }, { --
+        }, SEPARATOR, {
             text = ADD,
-            notCheckable = true,
             hasArrow = true,
-            menuList = {
-                { --
+            menuTable = {
+                {
                     text = L['Before this'],
-                    notCheckable = true,
                     func = function()
+                        GUI:CloseMenu()
                         self:ShowAddDialog(button, WHERE_BEFORE)
-                        CloseDropDownMenus()
                     end,
-                }, { --
+                }, {
                     text = L['After this'],
-                    notCheckable = true,
                     func = function()
+                        GUI:CloseMenu()
                         self:ShowAddDialog(button, WHERE_AFTER)
-                        CloseDropDownMenus()
                     end,
-                }, { --
+                }, {
                     text = L['In this'],
-                    notCheckable = true,
                     disabled = not ns.IsAdvanceRule(button.item),
                     func = function()
+                        GUI:CloseMenu()
                         self:ShowAddDialog(button, WHERE_IN)
-                        CloseDropDownMenus()
                     end,
                 },
             },
         }, {
             text = DELETE,
-            notCheckable = true,
             func = function(...)
                 tremove(button.parent, button.index)
                 self:SendMessage('TDPACK_RULE_ORDERED')
@@ -233,16 +224,12 @@ function SortingFrame:ShowRuleMenu(button, item)
             end,
         }, {
             text = EDIT,
-            notCheckable = true,
             disabled = not ns.IsAdvanceRule(button.item),
             func = function(...)
 
             end,
-        }, { --
-            text = CANCEL,
-            notCheckable = true,
-        }, --
-    }, button)
+        }, SEPARATOR, {text = CANCEL},
+    })
 end
 
 function SortingFrame:ShowAddDialog(button, where)
