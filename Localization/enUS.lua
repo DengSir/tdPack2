@@ -53,9 +53,9 @@ L.CommentFood = 'Food'
 L.CommentWater = 'Water'
 
 -- for rules
-L.KeywordMount = 'Summons and dismisses'
-L.KeywordFood = 'Must remain seated while eating'
-L.KeywordWater = 'Must remain seated while drinking'
-L.KeywordClass = 'Classes'
-L.KeywordConjuredItem = 'Conjured Item'
+L.KEYWORD_MOUNT = 'Summons and dismisses'
+L.KEYWORD_FOOD = 'Must remain seated while eating'
+L.KEYWORD_WATER = 'Must remain seated while drinking'
+L.KEYWORD_CLASS = 'Classes'
+L.KEYWORD_CONJURED_ITEM = 'Conjured Item'
 --@end-debug@

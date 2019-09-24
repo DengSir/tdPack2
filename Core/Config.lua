@@ -5,6 +5,7 @@
 
 ---@type ns
 local ns = select(2, ...)
+---@type L
 local L = ns.L
 
 local GetItemClassInfo, GetItemSubClassInfo = GetItemClassInfo, GetItemSubClassInfo
