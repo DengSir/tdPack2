@@ -10,5 +10,6 @@
     <Script file="Group.lua"/>
     <Script file="Bag.lua"/>
     <Script file="Pack.lua"/>
+    <Script file="Search.lua"/>
     <Script file="Compat.lua"/>
 </Ui>

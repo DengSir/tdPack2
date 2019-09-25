@@ -23,17 +23,30 @@ local PROJECTILE = GetItemClassInfo(LE_ITEM_CLASS_PROJECTILE) -- 弹药
 local REAGENT = GetItemClassInfo(LE_ITEM_CLASS_REAGENT) -- 材料
 local FISHINGPOLE = GetItemSubClassInfo(LE_ITEM_CLASS_WEAPON, LE_ITEM_WEAPON_FISHINGPOLE) -- 鱼竿
 
+local function Rule(rule, comment, icon, children)
+    return {rule = rule, comment = comment, icon = icon, children = children}
+end
+
 local function Type(name, icon, children)
     return {rule = 'type:' .. name, comment = name, icon = icon, children = children}
 end
 
-local function Tip(key, icon, children)
+local function TipL(key, icon, children)
     return {rule = 'tip:' .. L['KEYWORD_' .. key], comment = L['COMMENT_' .. key], icon = icon, children = children}
+end
+
+local function Tip(tip, icon, children)
+    return Rule('tip:' .. tip, icon, children)
+end
+
+local function Spell(id, icon, children)
+    local spellName = GetSpellInfo(id)
+    return Rule('spell:' .. spellName, spellName, icon, children)
 end
 
 ns.DEFAULT_CUSTOM_ORDER = {
     HEARTHSTONE_ITEM_ID, -- 炉石
-    Tip('MOUNT', 132261), -- 坐骑
+    TipL('MOUNT', 132261), -- 坐骑
     5060, -- 潜行者工具
     2901, -- 矿工锄
     5956, -- 铁匠锤
@@ -46,16 +59,20 @@ ns.DEFAULT_CUSTOM_ORDER = {
     Type(PROJECTILE, 132382), -- 弹药
     Type(RECIPE, 134939), -- 配方
     Type(TRADEGOODS, 132905, {
-        Tip('CLASS', 132273), -- 职业
+        TipL('CLASS', 132273), -- 职业
     }), -- 商品
     Type(CONSUMABLE, 134829, {
-        Tip('CLASS', 132273), -- 职业
-        Tip('FOOD', 133945), -- 食物
-        Tip('WATER', 132794), -- 水
+        TipL('CLASS', 132273), -- 职业
+        Spell(433, 133945), -- 食物
+        Spell(430, 132794), -- 水
+        Spell(439, 134830), -- 治疗药水
+        Spell(438, 134851), -- 法力药水
     }), -- 消耗品
     Type(REAGENT, 133587), -- 材料
     Type(MISC), -- 其它
-    Type(QUEST, [[Interface\ContainerFrame\UI-Icon-QuestBang]]), -- 任务
+    Type(QUEST, [[Interface\ContainerFrame\UI-Icon-QuestBang]], {
+        Tip(ITEM_STARTS_QUEST), --
+    }), -- 任务
 }
 
 ns.DEFAULT_EQUIP_LOC_ORDER = {
