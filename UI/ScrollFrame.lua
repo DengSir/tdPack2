@@ -10,6 +10,7 @@ local CreateFrame = CreateFrame
 
 local ns = select(2, ...)
 
+---@class ScrollFrame
 local ScrollFrame = ns.Addon:NewClass('ScrollFrame', 'ScrollFrame')
 ns.ScrollFrame = ScrollFrame
 
@@ -61,8 +62,6 @@ function ScrollFrame:GetButton(index)
         y = -y * self.buttonHeight
     end
     y = y - self.paddingTop
-
-    print(index, y, self.buttons, self.itemSpacing)
 
     button:SetPoint('TOPLEFT', 0, y)
     button:SetPoint('TOPRIGHT', 0, y)

@@ -13,7 +13,7 @@ local Item = ns.Addon:NewClass('Item', ns.Base)
 ns.Item = Item
 
 function Item:Constructor(parent, bag, slot)
-    local itemId = ns.GetBagSlotID(bag, slot)
+    local itemId = ns.GetBagSlotId(bag, slot)
     local itemName, itemLink, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture =
         ns.GetItemInfo(itemId)
 

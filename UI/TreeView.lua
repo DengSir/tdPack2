@@ -56,6 +56,7 @@ function TreeStatus:GetCount()
     return GetCount(self.itemTree, 1)
 end
 
+---@class TreeView: ScrollFrame
 local TreeView = ns.Addon:NewClass('TreeView', ns.ScrollFrame)
 ns.TreeView = TreeView
 
@@ -66,6 +67,9 @@ function TreeView:Constructor()
     self:SetCallback('OnItemCreated', self.OnItemCreated)
     self:SetCallback('OnItemDragStart', self.OnItemDragStart)
     self:SetCallback('OnItemDragStop', self.OnItemDragStop)
+    self.mouseHolder = CreateFrame('Frame', nil, self)
+    self.mouseHolder:SetPoint('TOPLEFT', -20, 20)
+    self.mouseHolder:SetPoint('BOTTOMRIGHT', 20, -20)
 end
 
 local ITEM_SCRIPTS = setmetatable({}, {
@@ -101,7 +105,6 @@ function TreeView:OnItemCreated(button)
 end
 
 function TreeView:OnItemDragStart(button)
-    self.pickingButton = button
     local i = tIndexOf(self.buttons, button)
     if i then
         self.buttons[i] = nil
@@ -109,23 +112,53 @@ function TreeView:OnItemDragStart(button)
     if button.index then
         tremove(button.parent, button.index)
     end
+    self:Refresh()
+    self:StartSorting(button)
+end
 
+function TreeView:OnItemDragStop()
+    self:CommitSorting()
+end
+
+function TreeView:StartSorting(button)
     button:SetParent(UIParent)
     button:SetFrameStrata('DIALOG')
     button:StartMoving()
     button:LockHighlight()
+    button:Show()
 
-    self:Refresh()
+    self.sortingButton = button
     self:ScheduleRepeatingTimer('OnTimer', 0.1)
     self:ScheduleRepeatingTimer('UpdateInsert', 0.03)
     self:UpdateInsert()
 end
 
-function TreeView:OnItemDragStop(button)
+function TreeView:StopSorting()
+    local button = self.sortingButton
+    if not button then
+        return
+    end
+
+    if self.inserter then
+        self.inserter:Hide()
+    end
+
     button:StopMovingOrSizing()
     button:UnlockHighlight()
     button:Hide()
     button:SetFrameStrata('MEDIUM')
+
+    self.sortingButton = nil
+    self:CancelAllTimers()
+    tinsert(self.unused, button)
+    self:Refresh()
+end
+
+function TreeView:CommitSorting()
+    local button = self.sortingButton
+    if not button then
+        return
+    end
 
     if self.putTarget then
         if self.putWhere == WHERE_BEFORE then
@@ -139,51 +172,41 @@ function TreeView:OnItemDragStop(button)
         end
         self.putWhere = nil
         self.putTarget = nil
-        self:Fire('OnOrdered')
-    else
+    elseif button.parent and button.index then
         tinsert(button.parent, button.index, button.item)
+    else
+        return
     end
-
-    if self.inserter then
-        self.inserter:Hide()
-    end
-    self.pickingButton = nil
-    self:CancelAllTimers()
-    tinsert(self.unused, button)
-    self:Refresh()
+    self:Fire('OnSorted')
+    self:StopSorting()
 end
 
 function TreeView:OnTimer()
-    if abs(self:GetLeft() - self.pickingButton:GetLeft()) < self:GetWidth() then
-        if self.pickingButton:GetTop() > self:GetTop() then
+    local isOver = self.mouseHolder:IsMouseOver()
+    if isOver then
+        if self.sortingButton:GetTop() > self:GetTop() then
             self.scrollBar:SetValue(self.scrollBar:GetValue() - self.buttonHeight)
-        elseif self.pickingButton:GetBottom() < self:GetBottom() then
+        elseif self.sortingButton:GetBottom() < self:GetBottom() then
             self.scrollBar:SetValue(self.scrollBar:GetValue() + self.buttonHeight)
         end
+    else
+        if self.sortingOver ~= isOver then
+            self:Fire('OnSortingOut')
+        end
     end
+    self.sortingOver = isOver
 end
 
 function TreeView:UpdateInsert()
-    if not self.inserter then
-        local inserter = CreateFrame('Frame', nil, self:GetScrollChild())
-        inserter:SetSize(self:GetWidth(), 2)
-
-        local bg = inserter:CreateTexture(nil, 'ARTWORK')
-        bg:SetAllPoints(true)
-        bg:SetColorTexture(0, 1, 1, 0.4)
-
-        self.inserter = inserter
-    end
-
     local where, target, last
-    if abs(self:GetLeft() - self.pickingButton:GetLeft()) < self:GetWidth() then
-        local top = self.pickingButton:GetTop()
+    if self.mouseHolder:IsMouseOver() then
+        local top = self.sortingButton:GetTop()
 
         for _, button in ipairs(self.buttons) do
             if button:IsVisible() then
                 local delta = button:GetTop() - top
-                local canPutIn = self:Fire('OnCheckItemCanPutIn', self.pickingButton.item, button.item)
-                local canPutInParent = self:Fire('OnCheckItemCanPutIn', self.pickingButton.item, button.parent)
+                local canPutIn = self:Fire('OnCheckItemCanPutIn', self.sortingButton.item, button.item)
+                local canPutInParent = self:Fire('OnCheckItemCanPutIn', self.sortingButton.item, button.parent)
 
                 if abs(delta) < self.itemHeight / 4 and canPutIn then
                     target = button
@@ -203,18 +226,29 @@ function TreeView:UpdateInsert()
                 last = button
             end
         end
-    end
 
-    if not target and self.spacerButton and self.spacerButton:IsShown() then
-        if abs(self.spacerButton:GetTop() - self.pickingButton:GetTop()) < self.itemHeight then
-            where = WHERE_BEFORE
-            target = self.spacerButton
+        if not target and self.spacerButton and self.spacerButton:IsShown() then
+            if abs(self.spacerButton:GetTop() - top) < self.itemHeight then
+                where = WHERE_BEFORE
+                target = self.spacerButton
+            end
         end
     end
 
     if target then
         self.putTarget = target
         self.putWhere = where
+
+        if not self.inserter then
+            local inserter = CreateFrame('Frame', nil, self:GetScrollChild())
+            inserter:SetSize(self:GetWidth(), 2)
+
+            local bg = inserter:CreateTexture(nil, 'ARTWORK')
+            bg:SetAllPoints(true)
+            bg:SetColorTexture(0, 1, 1, 0.4)
+
+            self.inserter = inserter
+        end
 
         self.inserter:ClearAllPoints()
         self.inserter:SetWidth(self:GetWidth() - 5 - (target.depth - 1) * 20)
@@ -233,7 +267,9 @@ function TreeView:UpdateInsert()
     else
         self.putTarget = nil
         self.putWhere = nil
-        self.inserter:Hide()
+        if self.inserter then
+            self.inserter:Hide()
+        end
     end
 end
 
@@ -246,8 +282,6 @@ function TreeView:update()
     local itemCount = treeStatus:GetCount()
     local maxCount = ceil(containerHeight / buttonHeight)
     local buttonCount = min(maxCount, itemCount)
-
-    print(buttonHeight)
 
     local iter = treeStatus:Iterate(offset + 1)
     local bottomButton

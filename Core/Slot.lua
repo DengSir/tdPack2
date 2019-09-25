@@ -29,7 +29,7 @@ end
 
 ---@return number|string
 function Slot:GetItemId()
-    return ns.GetBagSlotID(self.bag, self.slot)
+    return ns.GetBagSlotId(self.bag, self.slot)
 end
 
 ---@return number

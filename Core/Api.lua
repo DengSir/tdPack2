@@ -9,8 +9,11 @@ local tostring, format, strrep = tostring, string.format, string.rep
 
 local GetItemInfo, GetItemFamily, GetPetInfoBySpeciesID = GetItemInfo, GetItemFamily, GetPetInfoBySpeciesID
 local GetContainerNumSlots, GetContainerNumFreeSlots = GetContainerNumSlots, GetContainerNumFreeSlots
-local GetContainerItemLink, GetContainerItemID, GetContainerItemInfo = GetContainerItemLink, GetContainerItemID,
-                                                                       GetContainerItemInfo
+local GetContainerItemLink, GetContainerItemID = GetContainerItemLink, GetContainerItemID
+local GetContainerItemInfo = GetContainerItemInfo
+local GetCursorPosition = GetCursorPosition
+
+local UIParent = UIParent
 
 ---@type ns
 local ns = select(2, ...)
@@ -145,7 +148,7 @@ function ns.GetItemId(itemLink)
     end
 end
 
-function ns.GetBagSlotID(bag, slot)
+function ns.GetBagSlotId(bag, slot)
     local itemLink = GetContainerItemLink(bag, slot)
     if not itemLink then
         return
@@ -176,7 +179,7 @@ function ns.GetBagSlotCount(bag, slot)
 end
 
 function ns.GetBagSlotFamily(bag, slot)
-    return ns.GetItemFamily(ns.GetBagSlotID(bag, slot))
+    return ns.GetItemFamily(ns.GetBagSlotId(bag, slot))
 end
 
 function ns.IsBagSlotLocked(bag, slot)
@@ -216,4 +219,10 @@ end
 
 function ns.IsAdvanceRule(item)
     return type(item) == 'table'
+end
+
+function ns.GetCursorPosition()
+    local x, y = GetCursorPosition()
+    local scale = UIParent:GetScale()
+    return x / scale, y / scale
 end
