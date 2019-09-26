@@ -18,6 +18,7 @@ function Inventorian.Frame:Create(...)
     local button = CreateFrame('Button', nil, f)
     button:SetPoint('TOPRIGHT', -40, -27)
     button:SetSize(32, 32)
+    button:SetHighlightTexture([[Interface\Minimap\UI-Minimap-ZoomButton-Highlight]])
 
     ns.SetupButton(button, f:IsBank())
 
