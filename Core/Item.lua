@@ -67,6 +67,10 @@ function Item:IsEquippable()
     return self.info.itemEquippable
 end
 
+function Item:HasSpell()
+    return not not self.info.itemSpellName
+end
+
 function Item:NeedSaveToBank()
     if tdPack:IsLoadToBag() then
         return ns.Rule:NeedSaveToBank(self) and not ns.Rule:NeedLoadToBag(self)

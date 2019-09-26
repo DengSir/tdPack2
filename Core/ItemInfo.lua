@@ -6,7 +6,7 @@
 ---@type ns
 local ns = select(2, ...)
 
-local IsEquippableItem = IsEquippableItem
+local IsEquippableItem, GetItemSpell = IsEquippableItem, GetItemSpell
 
 local ItemInfo = ns.Addon:NewClass('ItemInfo')
 ns.ItemInfo = ItemInfo
@@ -30,6 +30,7 @@ function ItemInfo:Constructor(itemId)
     self.itemTexture = itemTexture or 0
     self.itemFamily = ns.GetItemFamily(itemId) or 0
     self.itemEquippable = IsEquippableItem(itemId) or false
+    self.itemSpellName, self.itemSpellId = GetItemSpell(itemId)
 
     self.cache[itemId] = self
 end

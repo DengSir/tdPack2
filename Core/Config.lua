@@ -70,7 +70,7 @@ ns.DEFAULT_CUSTOM_ORDER = {
     Type(REAGENT, 133587), -- 材料
     Type(MISC, 134400), -- 其它
     Type(QUEST, [[Interface\ContainerFrame\UI-Icon-QuestBang]], {
-        Tip(ITEM_STARTS_QUEST), --
+        Tip(ITEM_STARTS_QUEST), -- 接任务
     }), -- 任务
 }
 

@@ -17,6 +17,9 @@ ns.Rule = Rule
 function Rule:OnInitialize()
     local sortingProfile = Addon.db.profile.rules.sorting
 
+    self.nameOrder = ns.Item.GetItemName
+    self.typeOrder = ns.Item.GetItemType
+    self.subTypeOrder = ns.Item.GetItemSubType
     self.customOrder = ns.CustomOrder:New(sortingProfile)
     self.equipLocOrder = ns.EquipLocOrder:New(ns.DEFAULT_EQUIP_LOC_ORDER)
     self.levelQualityOrder = function(item)
@@ -29,6 +32,9 @@ function Rule:OnInitialize()
             return format('%02d,%04d', quality, level)
         end
     end
+    self.spellOrder = function(item)
+        return item:HasSpell() and '0' or '1'
+    end
 
     self.staticOrder = ns.CachableOrder:New({
         GetKey = function(item)
@@ -38,10 +44,11 @@ function Rule:OnInitialize()
             return tconcat({
                 self.customOrder(item), --
                 self.equipLocOrder(item), --
-                item:GetItemType(), --
-                item:GetItemSubType(), --
+                self.typeOrder(item), --
+                self.subTypeOrder(item), --
+                self.spellOrder(item), --
                 self.levelQualityOrder(item), --
-                item:GetItemName(),
+                self.nameOrder(item),
             }, ',')
         end,
     })
