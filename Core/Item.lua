@@ -5,6 +5,7 @@
 
 ---@type ns
 local ns = select(2, ...)
+local ItemInfo = ns.ItemInfo
 
 local IsEquippableItem = IsEquippableItem
 
@@ -14,28 +15,56 @@ ns.Item = Item
 
 function Item:Constructor(parent, bag, slot)
     local itemId = ns.GetBagSlotId(bag, slot)
-    local itemName, itemLink, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture =
-        ns.GetItemInfo(itemId)
-
-    self.itemId = itemId
-    self.itemName = itemName
-    self.itemLink = itemLink
-    self.itemType = itemType
-    self.itemSubType = itemSubType
-    self.itemEquipLoc = itemEquipLoc
-    self.itemQuality = itemQuality
-    self.itemLevel = itemLevel
-    self.itemTexture = itemTexture
-    self.itemFamily = ns.GetItemFamily(itemId)
-    self.itemCount = ns.GetBagSlotCount(bag, slot)
-end
-
-function Item:GetFamily()
-    return self.itemFamily or 0
+    self.itemCount = ns.GetBagSlotCount(bag, slot) or 1
+    self.info = ns.ItemInfo:Get(itemId)
 end
 
 function Item:GetItemCount()
-    return self.itemCount or 0
+    return self.itemCount
+end
+
+function Item:GetFamily()
+    return self.info.itemFamily
+end
+
+function Item:GetItemId()
+    return self.info.itemId
+end
+
+function Item:GetItemName()
+    return self.info.itemName
+end
+
+function Item:GetItemLink()
+    return self.info.itemLink
+end
+
+function Item:GetItemType()
+    return self.info.itemType
+end
+
+function Item:GetItemSubType()
+    return self.info.itemSubType
+end
+
+function Item:GetItemLevel()
+    return self.info.itemLevel
+end
+
+function Item:GetItemQuality()
+    return self.info.itemQuality
+end
+
+function Item:GetItemTexture()
+    return self.info.itemTexture
+end
+
+function Item:GetItemEquipLoc()
+    return self.info.itemEquipLoc
+end
+
+function Item:IsEquippable()
+    return self.info.itemEquippable
 end
 
 function Item:NeedSaveToBank()
@@ -52,44 +81,4 @@ function Item:NeedLoadToBag()
     else
         return ns.Rule:NeedLoadToBag(self)
     end
-end
-
-function Item:GetItemId()
-    return self.itemId or 0
-end
-
-function Item:GetItemName()
-    return self.itemName or ''
-end
-
-function Item:GetItemLink()
-    return self.itemLink or ''
-end
-
-function Item:GetItemType()
-    return self.itemType or ''
-end
-
-function Item:GetItemSubType()
-    return self.itemSubType or ''
-end
-
-function Item:GetItemLevel()
-    return self.itemLevel or 0
-end
-
-function Item:GetItemQuality()
-    return self.itemQuality or 1
-end
-
-function Item:GetItemTexture()
-    return self.itemTexture or ''
-end
-
-function Item:GetItemEquipLoc()
-    return self.itemEquipLoc or ''
-end
-
-function Item:IsEquippable()
-    return IsEquippableItem(self.itemId)
 end

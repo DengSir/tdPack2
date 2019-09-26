@@ -2,4 +2,5 @@
     <Script file="Junk.lua"/>
     <Script file="Custom.lua"/>
     <Script file="EquipLoc.lua"/>
+    <Script file="Cachable.lua"/>
 </Ui>

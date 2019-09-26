@@ -5,7 +5,7 @@
 
 local ipairs, type = ipairs, type
 local tinsert, wipe = table.insert, table.wipe
-local format = string.format
+local format, tostring = string.format, tostring
 
 ---@type ns
 local ns = select(2, ...)
@@ -21,13 +21,14 @@ function CustomOrder:Constructor(profile)
             return self.simpleOrders[item:GetItemId()]
         end, function(item)
             return self:GetAdvanceOrder(item:GetItemLink())
-        end, function(item)
-            return self.simpleOrders['#' .. item:GetItemType() .. '##' .. item:GetItemSubType()]
-        end, function(item)
-            return self.simpleOrders['##' .. item:GetItemSubType()]
-        end, function(item)
-            return self.simpleOrders['#' .. item:GetItemType()]
         end,
+        -- function(item)
+        --     return self.simpleOrders['#' .. item:GetItemType() .. '##' .. item:GetItemSubType()]
+        -- end, function(item)
+        --     return self.simpleOrders['##' .. item:GetItemSubType()]
+        -- end, function(item)
+        --     return self.simpleOrders['#' .. item:GetItemType()]
+        -- end,
     }
 
     self.simpleOrders = {}
@@ -74,6 +75,7 @@ function CustomOrder:Build()
     wipe(self.advanceRules)
     wipe(self.simpleOrders)
     self.default = self:BuildInternal(self.profile, self.advanceRules, 0)
+    self.formatter = '%0' .. #tostring(self.default) .. 'd'
 end
 
 ---@param item Item
@@ -88,5 +90,5 @@ function CustomOrder:GetOrderInternal(item)
 end
 
 function CustomOrder:GetOrder(item)
-    return format('%08d', self:GetOrderInternal(item))
+    return format(self.formatter, self:GetOrderInternal(item))
 end
