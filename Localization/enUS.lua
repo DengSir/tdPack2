@@ -49,12 +49,8 @@ L.OPEN_OPTIONS = 'Open options'
 -- rules comment
 L.COMMENT_MOUNT = 'Mount'
 L.COMMENT_CLASS = 'Class items'
-L.COMMENT_FOOD = 'Food'
-L.COMMENT_WATER = 'Water'
 
 -- for rules
 L.KEYWORD_MOUNT = 'Summons and dismisses'
-L.KEYWORD_FOOD = 'Must remain seated while eating'
-L.KEYWORD_WATER = 'Must remain seated while drinking'
 L.KEYWORD_CLASS = 'Classes'
 --@end-debug@

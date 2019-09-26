@@ -226,3 +226,17 @@ function ns.GetCursorPosition()
     local scale = UIParent:GetScale()
     return x / scale, y / scale
 end
+
+local function CopyTo(src, dest)
+    dest = dest or {}
+    for k, v in pairs(src) do
+        if type(v) == 'table' then
+            dest[k] = CopyTo(v, {})
+        else
+            dest[k] = v
+        end
+    end
+    return dest
+end
+
+ns.CopyTo = CopyTo

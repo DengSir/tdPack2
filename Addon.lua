@@ -4,10 +4,11 @@
 -- @Date   : 8/30/2019, 11:36:34 PM
 
 local select, unpack = select, table.unpack or unpack
+local CopyTable = CopyTable
 
 ---@type ns
 local ADDON, ns = ...
-local Addon = LibStub('AceAddon-3.0'):NewAddon(ADDON, 'LibClass-2.0', 'AceConsole-3.0')
+local Addon = LibStub('AceAddon-3.0'):NewAddon(ADDON, 'LibClass-2.0', 'AceConsole-3.0', 'AceEvent-3.0')
 
 ns.Addon = Addon
 ns.L = LibStub('AceLocale-3.0'):GetLocale(ADDON)
@@ -34,6 +35,7 @@ function Addon:OnInitialize(args)
                     [ns.CLICK_TOKENS.LEFT] = 'SORT', --
                     [ns.CLICK_TOKENS.RIGHT] = 'OPEN_OPTIONS', --
                     [ns.CLICK_TOKENS.CONTROL_LEFT] = 'SORT_BAG', --
+                    [ns.CLICK_TOKENS.CONTROL_RIGHT] = 'OPEN_RULE_OPTIONS', --
                 }, --
                 bank = {
                     [ns.CLICK_TOKENS.LEFT] = 'SORT', --
@@ -49,7 +51,7 @@ function Addon:OnInitialize(args)
     self.profile = self.db.profile
 
     if self.profile.firstLoad then
-        self.profile.rules.sorting = ns.DEFAULT_CUSTOM_ORDER
+        self.profile.rules.sorting = CopyTable(ns.DEFAULT_CUSTOM_ORDER)
         self.profile.firstLoad = false
     end
 
@@ -166,4 +168,10 @@ end
 
 function Addon:SetBagClickOption(bagType, token, action)
     self.profile.actions[bagType][token] = action
+end
+
+function Addon:ResetSortingRules()
+    local profile = wipe(self.profile.rules.sorting)
+    ns.CopyTo(ns.DEFAULT_CUSTOM_ORDER, profile)
+    self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
 end

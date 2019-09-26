@@ -5,7 +5,7 @@
 
 ---@type ns
 local ns = select(2, ...)
-local LibSearch = LibStub('LibItemSearch-1.2')
+local Search = ns.Search
 
 local GetItemInfo = GetItemInfo
 
@@ -46,7 +46,7 @@ function JunkOrder:IsJunk(item)
 end
 
 local IsConjuredItem = ns.memorizenilable(function(itemId)
-    return LibSearch:Matches('item:' .. itemId, CONJURED_ITEM_MATCHS)
+    return Search:Matches('item:' .. itemId, CONJURED_ITEM_MATCHS)
 end)
 
 function JunkOrder:IsConjuredItem(item)

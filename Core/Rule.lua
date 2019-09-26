@@ -38,10 +38,10 @@ function Rule:OnInitialize()
 
     self.orders = {self.junkOrder, self.customOrder, self.equipLocOrder}
 
-    self:RegisterMessage('TDPACK_RULE_ORDERED')
+    self:RegisterMessage('TDPACK_SORTING_RULES_UPDATE')
 end
 
-function Rule:TDPACK_RULE_ORDERED()
+function Rule:TDPACK_SORTING_RULES_UPDATE()
     for _, order in pairs(self.orders) do
         order:RequestRebuild()
     end

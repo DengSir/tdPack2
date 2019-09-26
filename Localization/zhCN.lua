@@ -43,11 +43,7 @@ L.OPEN_OPTIONS = '打开设置'
 -- rules comment
 L.COMMENT_MOUNT = '坐骑'
 L.COMMENT_CLASS = '职业物品'
-L.COMMENT_FOOD = '食物'
-L.COMMENT_WATER = '饮水'
 
 -- for rules
 L.KEYWORD_MOUNT = '使用： 召唤或解散'
-L.KEYWORD_FOOD = '进食时必须保持坐姿'
-L.KEYWORD_WATER = '喝水时必须保持坐姿'
 L.KEYWORD_CLASS = '职业：'

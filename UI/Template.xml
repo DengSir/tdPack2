@@ -10,7 +10,7 @@
                 </FontString>
                 <FontString parentKey="Rule" inherits="GameFontDisableSmall" justifyH="RIGHT" wordWrap="false">
                     <Anchors>
-                        <Anchor point="LEFT" relativeKey="$parent.Text" x="5" y="0" />
+                        <Anchor point="LEFT" relativeKey="$parent.Text" relativePoint="RIGHT" x="5" y="0" />
                         <Anchor point="RIGHT" x="-5" y="0" />
                     </Anchors>
                 </FontString>
@@ -56,11 +56,11 @@
                             </Slider>
                         </Frames>
                     </ScrollFrame>
-                    <!-- <Button parentKey="Add" inherits="MagicButtonTemplate">
+                    <Button parentKey="Reset" inherits="MagicButtonTemplate" text="DEFAULTS">
                         <Anchors>
                             <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="BOTTOMLEFT" />
                         </Anchors>
-                    </Button> -->
+                    </Button>
                 </Frames>
             </Frame>
         </Frames>

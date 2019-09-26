@@ -9,8 +9,7 @@ local format = string.format
 
 ---@type ns
 local ns = select(2, ...)
-
-local LibSearch = LibStub('LibItemSearch-1.2')
+local Search = ns.Search
 
 ---@class CustomOrder: Order
 local CustomOrder = ns.Addon:NewClass('CustomOrder', ns.Order)
@@ -37,7 +36,7 @@ end
 
 function CustomOrder:GetAdvanceOrder(link, rules)
     for _, v in ipairs(rules or self.advanceRules) do
-        if LibSearch:Matches(link, v.rule) then
+        if Search:Matches(link, v.rule) then
             if v.children then
                 local order = self:GetAdvanceOrder(link, v.children)
                 if order then

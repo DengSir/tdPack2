@@ -56,7 +56,11 @@ function SortingFrame:Constructor()
     end)
     List:SetCallback('OnItemLeave', GameTooltip_Hide)
     List:SetCallback('OnSorted', function()
-        self:SendMessage('TDPACK_RULE_ORDERED')
+        self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
+    end)
+
+    self.Reset:SetScript('OnClick', function()
+        Addon:ResetSortingRules()
     end)
 
     local Menu = CreateFrame('Frame', 'tdPack2SortingListMenu', self, 'UIDropDownMenuTemplate')
@@ -75,7 +79,8 @@ function SortingFrame:Constructor()
 end
 
 function SortingFrame:SetupEvents()
-    self:RegisterMessage('TDPACK_RULE_ORDERED', 'Refresh')
+    self:RegisterMessage('TDPACK_SORTING_RULES_UPDATE', 'Refresh')
+    self:RegisterMessage('TDPACK_SORTING_RULES_RESET', 'Refresh')
     self:RegisterEvent('GET_ITEM_INFO_RECEIVED', 'Refresh')
     self:RegisterEvent('CURSOR_UPDATE')
     self:CURSOR_UPDATE()
@@ -206,6 +211,7 @@ function SortingFrame:GetRuleInfo(item)
             rule = item.rule
         else
             name = item.rule
+            rule = item.rule
         end
         return name, item.icon or DEFAULT_ICON, rule
     end
@@ -250,7 +256,7 @@ function SortingFrame:ShowRuleMenu(button, item)
             text = DELETE,
             func = function(...)
                 tremove(button.parent, button.index)
-                self:SendMessage('TDPACK_RULE_ORDERED')
+                self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
             end,
         }, {
             text = EDIT,
