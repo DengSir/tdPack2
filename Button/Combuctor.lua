@@ -14,7 +14,11 @@ function Combuctor.Frame:New(...)
     local f = orig_FrameNew(self, ...)
 
     local button = CreateFrame('Button', nil, f, 'CombuctorBagToggleTemplate')
-    ns.SetupButton(button, f:IsBank())
+    ns.SetupButton(button, ... == 'bank')
+
+    if f.sortButton then
+        f.sortButton:Hide()
+    end
 
     button.Icon:SetTexture(ns.ICON)
     button:SetPoint('RIGHT', f.bagToggle, 'LEFT', 0, 0)
