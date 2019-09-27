@@ -3,11 +3,18 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/26/2019, 2:09:42 AM
 
-local select = select
-local GetItemInfo, GetItemSpell, IsEquippableItem = GetItemInfo, GetItemSpell, IsEquippableItem
-
+---@type ns
 local ns = select(2, ...)
 
+---- LUA
+local select, pairs = select, pairs
+
+---- WOW
+local GetItemInfo = GetItemInfo
+local GetItemSpell = GetItemSpell
+local IsEquippableItem = IsEquippableItem
+
+---- LIBS
 local CustomSearch = LibStub('CustomSearch-1.0')
 local ItemSearch = LibStub('LibItemSearch-1.2')
 
@@ -66,6 +73,6 @@ Filters.equippable = {
     end,
 }
 
-for k, v in pairs(Filters) do
-    ItemSearch.Filters[k] = v
-end
+-- for k, v in pairs(Filters) do
+--     ItemSearch.Filters[k] = v
+-- end

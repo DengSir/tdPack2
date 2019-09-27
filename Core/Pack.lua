@@ -3,18 +3,29 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/31/2019, 3:14:49 AM
 
+---@type ns
+local ns = select(2, ...)
+
+---- NS
+local L = ns.L
+local Addon = ns.Addon
+local Bag = ns.Bag
+local Slot = ns.Slot
+local BAG_TYPE = ns.BAG_TYPE
+
+---- LUA
+local ripairs = ns.ripairs
 local select, ipairs = select, ipairs
 local tinsert, tremove, wipe = table.insert, table.remove, wipe
 local format = string.format
 local coroutine = coroutine
 
-local InCombatLockdown, UnitIsDead, GetCursorInfo = InCombatLockdown, UnitIsDead, GetCursorInfo
+---- WOW
+local GetCursorInfo = GetCursorInfo
+local InCombatLockdown = InCombatLockdown
+local UnitIsDead = UnitIsDead
 
----@type ns
-local ns = select(2, ...)
-local ripairs = ns.ripairs
-local L = ns.L
-
+----@class Pack
 local Pack = ns.Addon:NewModule('Pack', 'AceEvent-3.0', 'AceTimer-3.0')
 
 local STATUS_FREE = 0
@@ -114,10 +125,10 @@ function Pack:Stop()
 end
 
 function Pack:Message(text)
-    if not ns.Addon:IsConsoleEnabled() then
+    if not Addon:IsConsoleEnabled() then
         return
     end
-    ns.Addon:Print(text)
+    Addon:Print(text)
 end
 
 function Pack:Warning(text)
@@ -145,7 +156,7 @@ end
 function Pack:StackReady()
     for bag in self:IterateBags() do
         for slot = 1, ns.GetBagNumSlots(bag) do
-            tinsert(self.slots, ns.Slot:New(nil, bag, slot))
+            tinsert(self.slots, Slot:New(nil, bag, slot))
         end
     end
 end
@@ -210,12 +221,12 @@ function Pack:PackReady()
     local bag, bank
 
     if self:IsOptionBag() then
-        bag = ns.Bag:New('bag')
+        bag = Bag:New(BAG_TYPE.BAG)
         tinsert(self.bags, bag)
     end
 
     if self:IsOptionBank() then
-        bank = ns.Bag:New('bank')
+        bank = Bag:New(BAG_TYPE.BANK)
         tinsert(self.bags, bank)
 
         -- if tdPack:IsLoadToBag() and tdPack:IsSaveToBank() then

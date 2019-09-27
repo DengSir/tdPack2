@@ -5,10 +5,9 @@
 
 ---@type ns
 local ns = select(2, ...)
-local Addon = ns.Addon
 
 ---@class Order
-local Order = Addon:NewClass('Order')
+local Order = ns.Addon:NewClass('Order')
 
 function Order:Constructor(profile)
     self.profile = profile

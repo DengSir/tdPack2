@@ -3,16 +3,21 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/27/2019, 6:24:10 PM
 
+local rawget, setmetatable = rawget, setmetatable
+
 ---@type ns
 local ns = select(2, ...)
 
+---- NS
 local ItemInfo = ns.ItemInfo
+
+---@class ItemInfoCache
 local ItemInfoCache = ns.Addon:NewModule('ItemInfoCache', 'AceEvent-3.0')
 
 function ItemInfoCache:OnInitialize()
     self.cache = setmetatable({}, {
         __index = function(t, itemId)
-            t[itemId] = ns.ItemInfo:New(itemId)
+            t[itemId] = ItemInfo:New(itemId)
             return t[itemId]
         end,
     })
@@ -31,7 +36,8 @@ function ItemInfoCache:Build(itemId)
     end
 end
 
-function ItemInfoCache:GET_ITEM_INFO_RECEIVED(itemId, ok)
+function ItemInfoCache:GET_ITEM_INFO_RECEIVED(_, itemId, ok)
+    print(itemId, ok)
     if ok then
         self:Build(itemId)
     end

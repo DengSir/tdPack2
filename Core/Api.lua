@@ -3,21 +3,26 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/30/2019, 11:46:11 PM
 
-local select, type, assert, ipairs = select, type, assert, ipairs
-local tonumber, band = tonumber, bit.band
-local tostring, format, strrep = tostring, string.format, string.rep
-
-local GetItemFamily, GetItemInfoInstant = GetItemFamily, GetItemInfoInstant
-local GetContainerNumSlots, GetContainerNumFreeSlots = GetContainerNumSlots, GetContainerNumFreeSlots
-local GetContainerItemLink, GetContainerItemID = GetContainerItemLink, GetContainerItemID
-local GetContainerItemInfo = GetContainerItemInfo
-local GetCursorPosition = GetCursorPosition
-
-local UIParent = UIParent
-
 ---@type ns
 local ns = select(2, ...)
-local L = ns.L
+
+---- LUA
+local select, type, assert, ipairs = select, type, assert, ipairs
+local tostring, format, strrep = tostring, string.format, string.rep
+local tonumber, band = tonumber, bit.band
+
+---- WOW
+local GetContainerItemID = GetContainerItemID
+local GetContainerItemInfo = GetContainerItemInfo
+local GetContainerItemLink = GetContainerItemLink
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots
+local GetContainerNumSlots = GetContainerNumSlots
+local GetCursorPosition = GetCursorPosition
+local GetItemFamily = GetItemFamily
+local GetItemInfoInstant = GetItemInfoInstant
+
+---- UI
+local UIParent = UIParent
 
 local function riter(t, i)
     i = i - 1

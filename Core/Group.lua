@@ -3,15 +3,21 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/30/2019, 11:41:51 PM
 
-local select, ipairs, fastrandom = select, ipairs, fastrandom
+---@type ns
+local ns = select(2, ...)
+
+---- NS
+local Slot = ns.Slot
+local Item = ns.Item
+
+---- LUA
+local ripairs = ns.ripairs
+local select, ipairs = select, ipairs
 local tinsert, tremove = table.insert, table.remove
 local random = fastrandom or math.random
 
+---- WOW
 local InCombatLockdown = InCombatLockdown
-
----@type ns
-local ns = select(2, ...)
-local ripairs = ns.ripairs
 
 ---@class Group: Base
 local Group = ns.Addon:NewClass('Group', ns.Base)
@@ -38,7 +44,7 @@ function Group:InitSlots()
         for _, bag in ripairs(bags) do
             if ns.GetBagFamily(bag) == self.family then
                 for slot = ns.GetBagNumSlots(bag), 1, -1 do
-                    tinsert(self.slots, ns.Slot:New(self, bag, slot))
+                    tinsert(self.slots, Slot:New(self, bag, slot))
                 end
             end
         end
@@ -46,7 +52,7 @@ function Group:InitSlots()
         for _, bag in ipairs(bags) do
             if ns.GetBagFamily(bag) == self.family then
                 for slot = 1, ns.GetBagNumSlots(bag) do
-                    tinsert(self.slots, ns.Slot:New(self, bag, slot))
+                    tinsert(self.slots, Slot:New(self, bag, slot))
                 end
             end
         end
@@ -66,7 +72,7 @@ end
 function Group:InitItems()
     for _, slot in ipairs(self.slots) do
         if not ns.IsBagSlotEmpty(slot:GetBag(), slot:GetSlot()) then
-            tinsert(self.items, ns.Item:New(self, slot:GetBag(), slot:GetSlot()))
+            tinsert(self.items, Item:New(self, slot:GetBag(), slot:GetSlot()))
         end
     end
 end
@@ -126,8 +132,8 @@ end
 
 ---@return Slot
 function Group:GetIdleSlot()
-    local step = fastrandom(0, 1) == 0 and -1 or 1
-    local e = fastrandom(1, self:GetItemCount())
+    local step = random(0, 1) == 0 and -1 or 1
+    local e = random(1, self:GetItemCount())
     local i = e
 
     repeat

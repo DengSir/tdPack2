@@ -3,10 +3,12 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/31/2019, 3:29:19 AM
 
-local InCombatLockdown, PickupContainerItem = InCombatLockdown, PickupContainerItem
-
 ---@type ns
 local ns = select(2, ...)
+
+---- WOW
+local InCombatLockdown = InCombatLockdown
+local PickupContainerItem = PickupContainerItem
 
 ---@class Slot: Base
 local Slot = ns.Addon:NewClass('Slot', ns.Base)

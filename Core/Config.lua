@@ -8,8 +8,10 @@ local ns = select(2, ...)
 ---@type L
 local L = ns.L
 
+---- WOW
 local GetSpellInfo = GetSpellInfo
-local GetItemClassInfo, GetItemSubClassInfo = GetItemClassInfo, GetItemSubClassInfo
+local GetItemClassInfo = GetItemClassInfo
+local GetItemSubClassInfo = GetItemSubClassInfo
 
 local CONTAINER = GetItemClassInfo(LE_ITEM_CLASS_CONTAINER) -- 容器
 local QUIVER = GetItemClassInfo(LE_ITEM_CLASS_QUIVER) -- 箭袋

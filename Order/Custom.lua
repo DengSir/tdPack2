@@ -3,13 +3,14 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/1/2019, 12:50:23 AM
 
-local ipairs, type = ipairs, type
-local tinsert, wipe = table.insert, table.wipe
-local format, tostring = string.format, tostring
-
 ---@type ns
 local ns = select(2, ...)
 local Search = ns.Search
+
+---- LUA
+local ipairs, type = ipairs, type
+local tinsert, wipe = table.insert, table.wipe
+local format, tostring = string.format, tostring
 
 ---@class CustomOrder: Order
 local CustomOrder = ns.Addon:NewClass('CustomOrder', ns.Order)

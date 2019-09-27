@@ -5,10 +5,18 @@
 
 ---@type ns
 local ns = select(2, ...)
+
+---- LUA
+local wipe = table.wipe or wipe
+local type, ipairs = type, ipairs
+
+---- NS
 local Search = ns.Search
 
+---- WOW
 local GetItemInfo = GetItemInfo
 
+---- LOCAL
 local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 local CONJURED_ITEM_MATCHS = 'tip:' .. ITEM_CONJURED
 

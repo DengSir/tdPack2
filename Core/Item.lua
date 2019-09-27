@@ -5,8 +5,11 @@
 
 ---@type ns
 local ns = select(2, ...)
+
+---- NS
 local ItemInfoCache = ns.ItemInfoCache
 
+---- WOW
 local IsEquippableItem = IsEquippableItem
 
 ---@class Item: Base
@@ -15,7 +18,7 @@ local Item = ns.Addon:NewClass('Item', ns.Base)
 function Item:Constructor(parent, bag, slot)
     local itemId = ns.GetBagSlotId(bag, slot)
     self.itemCount = ns.GetBagSlotCount(bag, slot) or 1
-    self.info = ns.ItemInfoCache:Get(itemId)
+    self.info = ItemInfoCache:Get(itemId)
 end
 
 function Item:GetItemCount()

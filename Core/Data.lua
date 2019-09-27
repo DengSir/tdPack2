@@ -5,8 +5,11 @@
 
 ---@type ns
 local ns = select(2, ...)
+
+---- NS
 local L = ns.L
 
+---- WOW
 local tinsert, tconcat = table.insert, table.concat
 
 local function GenerateClickData(button, control, shift, alt)
@@ -51,4 +54,20 @@ ns.CLICK_LIST = {
     GenerateClickData('RightButton', nil, 1), --
     GenerateClickData('LeftButton', nil, nil, 1), --
     GenerateClickData('RightButton', nil, nil, 1), --
+}
+
+ns.BAG_TYPE = {
+    BAG = 'bag', --
+    BANK = 'bank', --
+}
+
+ns.COMMAND = {
+    ALL = 'all', --
+    BAG = 'bag', --
+    BANK = 'bank', --
+}
+
+ns.ORDER = {
+    ASC = 'asc', --
+    DESC = 'desc', --
 }

@@ -3,18 +3,24 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/28/2019, 10:37:26 PM
 
-local select, pairs, ipairs = select, pairs, ipairs
-local tinsert, tremove, wipe = table.insert, table.remove, wipe
-
 ---@type ns
 local ns = select(2, ...)
+
+---- LUA
 local ripairs = ns.ripairs
+local select, pairs, ipairs = select, pairs, ipairs
+local tinsert, tremove, wipe = table.insert, table.remove, wipe or table.wipe
+
+---- NS
+local BAG_TYPE = ns.BAG_TYPE
+local Group = ns.Group
+local Rule = ns.Rule
 
 ---@class Bag
 local Bag = ns.Addon:NewClass('Bag')
 
 function Bag:Constructor(bagClass)
-    self.bags = bagClass == 'bag' and ns.GetBags() or ns.GetBanks()
+    self.bags = bagClass == BAG_TYPE.BAG and ns.GetBags() or ns.GetBanks()
     self.groups = {}
     self.swapItems = {}
     self:InitGroups()
@@ -27,7 +33,7 @@ function Bag:InitGroups()
         if bagFamily and not initedGroups[bagFamily] then
             initedGroups[bagFamily] = true
 
-            local group = ns.Group:New(self, bagFamily)
+            local group = Group:New(self, bagFamily)
             if bagFamily == 0 then
                 self.groups[0] = group
             else
@@ -119,7 +125,7 @@ function Bag:GetSwapItems()
             end
         end
     end
-    ns.Rule:SortItems(self.swapItems)
+    Rule:SortItems(self.swapItems)
 
     return self.swapItems
 end

@@ -5,20 +5,25 @@
 
 ---@type ns
 local ns = select(2, ...)
-local Addon = ns.Addon
 
+---- NS
+local Addon = ns.Addon
+local Item = ns.Item
+
+---- LUA
 local pairs, setmetatable = pairs, setmetatable
 local format = string.format
-local tconcat = table.concat
+local tconcat, sort = table.concat, table.sort or sort
 
-local Rule = ns.Addon:NewModule('Rule', 'AceEvent-3.0')
+---@class Rule
+local Rule = Addon:NewModule('Rule', 'AceEvent-3.0')
 
 function Rule:OnInitialize()
     local sortingProfile = Addon.db.profile.rules.sorting
 
-    self.nameOrder = ns.Item.GetItemName
-    self.typeOrder = ns.Item.GetItemType
-    self.subTypeOrder = ns.Item.GetItemSubType
+    self.nameOrder = Item.GetItemName
+    self.typeOrder = Item.GetItemType
+    self.subTypeOrder = Item.GetItemSubType
     self.customOrder = ns.CustomOrder:New(sortingProfile)
     self.equipLocOrder = ns.EquipLocOrder:New(ns.DEFAULT_EQUIP_LOC_ORDER)
     self.levelQualityOrder = function(item)
@@ -47,7 +52,7 @@ function Rule:OnInitialize()
                 self.subTypeOrder(item), --
                 self.spellOrder(item), --
                 self.levelQualityOrder(item), --
-                self.nameOrder(item),--
+                self.nameOrder(item), --
             }, ',')
         end,
     })

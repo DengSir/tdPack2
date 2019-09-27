@@ -104,8 +104,8 @@ function Addon:LoadOptionFrame()
                     console = {type = 'toggle', name = L['Enable chat message'], width = 'full', order = orderGen()},
                 },
             },
-            bag = generateButton('bag', L['Bag button features']),
-            bank = generateButton('bank', L['Bank button features']),
+            [ns.BAG_TYPE.BAG] = generateButton(ns.BAG_TYPE.BAG, L['Bag button features']),
+            [ns.BAG_TYPE.BANK] = generateButton(ns.BAG_TYPE.BANK, L['Bank button features']),
         },
     }
 

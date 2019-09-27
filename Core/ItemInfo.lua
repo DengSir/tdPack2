@@ -6,7 +6,10 @@
 ---@type ns
 local ns = select(2, ...)
 
-local IsEquippableItem, GetItemSpell, GetItemInfo = IsEquippableItem, GetItemSpell, GetItemInfo
+---- WOW
+local GetItemInfo = GetItemInfo
+local GetItemSpell = GetItemSpell
+local IsEquippableItem = IsEquippableItem
 
 ---@class ItemInfo
 local ItemInfo = ns.Addon:NewClass('ItemInfo')
