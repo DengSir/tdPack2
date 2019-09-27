@@ -5,22 +5,25 @@
 
 ---@type ns
 local ns = select(2, ...)
-local ItemInfo = ns.ItemInfo
+local ItemInfoCache = ns.ItemInfoCache
 
 local IsEquippableItem = IsEquippableItem
 
 ---@class Item: Base
 local Item = ns.Addon:NewClass('Item', ns.Base)
-ns.Item = Item
 
 function Item:Constructor(parent, bag, slot)
     local itemId = ns.GetBagSlotId(bag, slot)
     self.itemCount = ns.GetBagSlotCount(bag, slot) or 1
-    self.info = ns.ItemInfo:Get(itemId)
+    self.info = ns.ItemInfoCache:Get(itemId)
 end
 
 function Item:GetItemCount()
     return self.itemCount
+end
+
+function Item:IsReady()
+    return self.info:IsReady()
 end
 
 function Item:GetFamily()

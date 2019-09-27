@@ -7,7 +7,7 @@ local select, type, assert, ipairs = select, type, assert, ipairs
 local tonumber, band = tonumber, bit.band
 local tostring, format, strrep = tostring, string.format, string.rep
 
-local GetItemInfo, GetItemFamily, GetPetInfoBySpeciesID = GetItemInfo, GetItemFamily, GetPetInfoBySpeciesID
+local GetItemFamily, GetItemInfoInstant = GetItemFamily, GetItemInfoInstant
 local GetContainerNumSlots, GetContainerNumFreeSlots = GetContainerNumSlots, GetContainerNumFreeSlots
 local GetContainerItemLink, GetContainerItemID = GetContainerItemLink, GetContainerItemID
 local GetContainerItemInfo = GetContainerItemInfo
@@ -71,11 +71,6 @@ end
 local BAGS_SET = tInvert(BAGS)
 local BANKS_SET = tInvert(BANKS)
 
-function ns.IsItemContainer(itemId)
-    local itemEquipLoc = select(5, ns.GetItemInfo(itemId))
-    return itemEquipLoc and itemEquipLoc == 'INVTYPE_BAG'
-end
-
 function ns.IsBag(id)
     return BAGS_SET[id]
 end
@@ -92,23 +87,6 @@ function ns.GetBanks()
     return BANKS
 end
 
-function ns.GetItemInfo(itemId)
-    local itemName, itemLink, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture
-    if type(itemId) == 'number' then
-        itemName, itemLink, itemQuality, itemLevel, _, itemType, itemSubType, _, itemEquipLoc, itemTexture =
-            GetItemInfo(itemId)
-    elseif type(itemId) == 'string' then
-        assert(false)
-
-        local SpeciesID
-        SpeciesID, itemLevel, itemQuality = itemId:match('battlepet:(%d+):(%d+):(%d+)')
-        itemName, itemTexture, itemSubType = GetPetInfoBySpeciesID(tonumber(SpeciesID))
-        itemType = BATTLE_PET
-        itemSubType = BATTLE_PET_SUBTYPES[itemSubType]
-    end
-    return itemName, itemLink, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture
-end
-
 function ns.GetItemFamily(itemId)
     if not itemId then
         return 0
@@ -116,7 +94,7 @@ function ns.GetItemFamily(itemId)
     if type(itemId) == 'string' then
         return 0
     end
-    if ns.IsItemContainer(itemId) then
+    if select(4, GetItemInfoInstant(itemId)) == 'INVTYPE_BAG' then
         return 0
     end
     return GetItemFamily(itemId)
@@ -166,12 +144,9 @@ function ns.IsBagSlotFull(bag, slot)
         return false
     end
 
-    local stackCount = select(8, GetItemInfo(itemId))
-    if stackCount == 1 then
-        return true
-    end
-
-    return stackCount == ns.GetBagSlotCount(bag, slot)
+    local info = ns.ItemInfoCache:Get(itemId)
+    local stackCount = info.itemStackCount or 1
+    return stackCount == 1 or stackCount == ns.GetBagSlotCount(bag, slot)
 end
 
 function ns.GetBagSlotCount(bag, slot)

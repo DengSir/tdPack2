@@ -13,7 +13,6 @@ local Search = ns.Search
 
 ---@class CustomOrder: Order
 local CustomOrder = ns.Addon:NewClass('CustomOrder', ns.Order)
-ns.CustomOrder = CustomOrder
 
 function CustomOrder:Constructor(profile)
     self.methods = {

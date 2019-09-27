@@ -13,7 +13,6 @@ local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 local CONJURED_ITEM_MATCHS = 'tip:' .. ITEM_CONJURED
 
 local JunkOrder = ns.Addon:NewClass('JunkOrder', ns.Order)
-ns.JunkOrder = JunkOrder
 
 function JunkOrder:Constructor()
     self.orders = {}

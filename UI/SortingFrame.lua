@@ -18,8 +18,10 @@ local WHERE_AFTER = 1
 local WHERE_BEFORE = 2
 local WHERE_IN = 3
 
+---@type ns
 local ns = select(2, ...)
 local Addon = ns.Addon
+local ItemInfoCache = ns.ItemInfoCache
 local L = ns.L
 
 ---@class SortingFrame: Frame
@@ -195,13 +197,17 @@ end
 function SortingFrame:GetRuleInfo(item)
     local t = type(item)
     if t == 'number' then
-        local quality, color
-        local name, _, _, _, _, quality = ns.GetItemInfo(item)
-        color = name and quality and select(4, GetItemQualityColor(quality)) or RED_FONT_COLOR_HEX
-
-        name = format('|c%s%s|r', color, name or L['Loading item data...'])
+        local name, color
         local icon = GetItemIcon(item)
-        return name, icon or DEFAULT_ICON
+        local info = ItemInfoCache:Get(item)
+        if info:IsReady() then
+            name = info.itemName
+            color = select(4, GetItemQualityColor(info.itemQuality))
+        else
+            name = RETRIEVING_ITEM_INFO
+            color = RED_FONT_COLOR_HEX
+        end
+        return format('|c%s%s|r', color, name), icon
     elseif t == 'string' then
         return item, DEFAULT_ICON
     elseif t == 'table' then

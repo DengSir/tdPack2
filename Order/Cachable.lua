@@ -6,7 +6,6 @@
 local ns = select(2, ...)
 
 local CachableOrder = ns.Addon:NewClass('CachableOrder', ns.Order)
-ns.CachableOrder = CachableOrder
 
 function CachableOrder:Constructor(opts)
     self.cache = opts.cache or {}

@@ -12,7 +12,6 @@ local format = string.format
 local tconcat = table.concat
 
 local Rule = ns.Addon:NewModule('Rule', 'AceEvent-3.0')
-ns.Rule = Rule
 
 function Rule:OnInitialize()
     local sortingProfile = Addon.db.profile.rules.sorting
@@ -48,7 +47,7 @@ function Rule:OnInitialize()
                 self.subTypeOrder(item), --
                 self.spellOrder(item), --
                 self.levelQualityOrder(item), --
-                self.nameOrder(item),
+                self.nameOrder(item),--
             }, ',')
         end,
     })

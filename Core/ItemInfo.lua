@@ -6,35 +6,39 @@
 ---@type ns
 local ns = select(2, ...)
 
-local IsEquippableItem, GetItemSpell = IsEquippableItem, GetItemSpell
+local IsEquippableItem, GetItemSpell, GetItemInfo = IsEquippableItem, GetItemSpell, GetItemInfo
 
+---@class ItemInfo
 local ItemInfo = ns.Addon:NewClass('ItemInfo')
-ns.ItemInfo = ItemInfo
-
-ItemInfo.cache = {}
 
 function ItemInfo:Constructor(itemId)
-    local itemName, itemLink, itemType, itemSubType, itemEquipLoc, itemQuality, itemLevel, itemTexture =
-        ns.GetItemInfo(itemId)
-
-    assert(itemName)
-
     self.itemId = itemId
-    self.itemName = itemName or ''
-    self.itemLink = itemLink or ''
-    self.itemType = itemType or ''
-    self.itemSubType = itemSubType or ''
-    self.itemEquipLoc = itemEquipLoc or ''
-    self.itemQuality = itemQuality or 1
-    self.itemLevel = itemLevel or 0
-    self.itemTexture = itemTexture or 0
-    self.itemFamily = ns.GetItemFamily(itemId) or 0
-    self.itemEquippable = IsEquippableItem(itemId) or false
-    self.itemSpellName, self.itemSpellId = GetItemSpell(itemId)
-
-    self.cache[itemId] = self
+    self:Build()
 end
 
-function ItemInfo:Get(itemId)
-    return ItemInfo.cache[itemId] or ItemInfo:New(itemId)
+function ItemInfo:Build()
+    local itemName, itemLink, itemQuality, itemLevel, _, itemType, itemSubType, itemStackCount, itemEquipLoc,
+          itemTexture = GetItemInfo(self.itemId)
+
+    if itemName then
+        self.notReady = nil
+        self.itemName = itemName or ''
+        self.itemLink = itemLink or ''
+        self.itemType = itemType or ''
+        self.itemSubType = itemSubType or ''
+        self.itemStackCount = itemStackCount
+        self.itemEquipLoc = itemEquipLoc or ''
+        self.itemQuality = itemQuality or 1
+        self.itemLevel = itemLevel or 0
+        self.itemTexture = itemTexture or 0
+        self.itemFamily = ns.GetItemFamily(self.itemId) or 0
+        self.itemEquippable = IsEquippableItem(self.itemId) or false
+        self.itemSpellName, self.itemSpellId = GetItemSpell(self.itemId)
+    else
+        self.notReady = true
+    end
+end
+
+function ItemInfo:IsReady()
+    return not self.notReady
 end

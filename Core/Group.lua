@@ -15,7 +15,6 @@ local ripairs = ns.ripairs
 
 ---@class Group: Base
 local Group = ns.Addon:NewClass('Group', ns.Base)
-ns.Group = Group
 
 function Group:Constructor(parent, family)
     self.family = family

@@ -16,7 +16,6 @@ local ripairs = ns.ripairs
 local L = ns.L
 
 local Pack = ns.Addon:NewModule('Pack', 'AceEvent-3.0', 'AceTimer-3.0')
-ns.Pack = Pack
 
 local STATUS_FREE = 0
 local STATUS_READY = 1

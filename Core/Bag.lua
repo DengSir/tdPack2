@@ -12,7 +12,6 @@ local ripairs = ns.ripairs
 
 ---@class Bag
 local Bag = ns.Addon:NewClass('Bag')
-ns.Bag = Bag
 
 function Bag:Constructor(bagClass)
     self.bags = bagClass == 'bag' and ns.GetBags() or ns.GetBanks()

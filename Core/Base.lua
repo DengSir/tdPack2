@@ -8,7 +8,6 @@ local ns = select(2, ...)
 
 ---@class Base
 local Base = ns.Addon:NewClass('Base')
-ns.Base = Base
 
 function Base:SetParent(parent)
     self.parent = parent

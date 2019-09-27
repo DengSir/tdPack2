@@ -10,7 +10,6 @@ local ns = select(2, ...)
 
 ---@class Slot: Base
 local Slot = ns.Addon:NewClass('Slot', ns.Base)
-ns.Slot = Slot
 
 function Slot:Constructor(parent, bag, slot)
     self.bag = bag

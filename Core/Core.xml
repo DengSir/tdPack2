@@ -6,11 +6,12 @@
     <Script file="Data.lua"/>
     <Script file="Config.lua"/>
     <Script file="Rule.lua"/>
-    <Script file="ItemInfo.lua"/>
     <Script file="Item.lua"/>
     <Script file="Slot.lua"/>
     <Script file="Group.lua"/>
     <Script file="Bag.lua"/>
     <Script file="Pack.lua"/>
+    <Script file="ItemInfo.lua"/>
+    <Script file="ItemInfoCache.lua"/>
     <Script file="Compat.lua"/>
 </Ui>

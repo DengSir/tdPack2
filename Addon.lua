@@ -62,6 +62,17 @@ function Addon:OnInitialize(args)
     end
 end
 
+function Addon:OnModuleCreated(module)
+    local name = module:GetName()
+    assert(not ns[name])
+    ns[name] = module
+end
+
+function Addon:OnClassCreated(class, name)
+    assert(not ns[name])
+    ns[name] = class
+end
+
 function Addon:OnSlash(text)
     local args = {}
     local cmd, offset

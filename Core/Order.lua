@@ -9,7 +9,6 @@ local Addon = ns.Addon
 
 ---@class Order
 local Order = Addon:NewClass('Order')
-ns.Order = Order
 
 function Order:Constructor(profile)
     self.profile = profile

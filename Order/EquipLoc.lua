@@ -7,7 +7,6 @@
 local ns = select(2, ...)
 
 local EquipLocOrder = ns.Addon:NewClass('EquipLocOrder', ns.Order)
-ns.EquipLocOrder = EquipLocOrder
 
 function EquipLocOrder:Build()
     self.orders, self.default = ns.ToOrderCache(self.profile)
