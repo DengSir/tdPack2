@@ -18,51 +18,26 @@
             <Layer level="BACKGROUND">
             </Layer>
         </Layers>
-        <NormalTexture>
-            <Color r="1" g="1" b="1" a="0.03" />
-        </NormalTexture>
-        <HighlightTexture>
-            <Color r="1" g="1" b="1" a="0.1" />
-        </HighlightTexture>
+		<NormalTexture parentKey="NormalTexture" atlas="voicechat-channellist-row-background" alphaMode="ADD"/>
+		<HighlightTexture parentKey="HighlightTexture" atlas="voicechat-channellist-row-highlight" alphaMode="ADD"/>
         <Scripts>
             <OnLoad>
                 self:RegisterForDrag('LeftButton')
             </OnLoad>
         </Scripts>
     </Button>
-    <Frame name="tdPack2RuleOptionFrameTemplate" parent="UIParent" hidden="true" enableMouse="true" toplevel="true" inherits="ButtonFrameTemplate" virtual="true">
-        <Size x="337" y="423" />
+    <ScrollFrame name="tdPack2RuleViewTemplate" inherits="HybridScrollFrameTemplate" virtual="true">
         <Anchors>
-            <Anchor point="CENTER" />
+            <Anchor point="TOPLEFT" relativeKey="$parent.Inset" relativePoint="TOPLEFT" x="5" y="-4" />
+            <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" relativePoint="BOTTOMRIGHT" x="-20" y="3" />
         </Anchors>
         <Frames>
-            <Frame parentKey="SortingFrame">
+            <Slider parentKey="scrollBar" inherits="HybridScrollBarTemplate">
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeKey="$parent.Inset" relativePoint="TOPLEFT" />
-                    <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" relativePoint="BOTTOMRIGHT" />
+                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="0" y="-14" />
+                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="0" y="13" />
                 </Anchors>
-                <Frames>
-                    <ScrollFrame parentKey="List" inherits="HybridScrollFrameTemplate">
-                        <Anchors>
-                            <Anchor point="TOPLEFT" relativeKey="$parent.Inset" relativePoint="TOPLEFT" x="5" y="-4" />
-                            <Anchor point="BOTTOMRIGHT" relativeKey="$parent.Inset" relativePoint="BOTTOMRIGHT" x="-20" y="3" />
-                        </Anchors>
-                        <Frames>
-                            <Slider parentKey="scrollBar" inherits="HybridScrollBarTemplate">
-                                <Anchors>
-                                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="0" y="-14" />
-                                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="0" y="13" />
-                                </Anchors>
-                            </Slider>
-                        </Frames>
-                    </ScrollFrame>
-                    <Button parentKey="Reset" inherits="MagicButtonTemplate" text="DEFAULTS">
-                        <Anchors>
-                            <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="BOTTOMLEFT" />
-                        </Anchors>
-                    </Button>
-                </Frames>
-            </Frame>
+            </Slider>
         </Frames>
-    </Frame>
+    </ScrollFrame>
 </Ui>

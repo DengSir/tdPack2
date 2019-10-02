@@ -62,6 +62,8 @@ function Addon:LoadOptionFrame()
                 values = {
                     {name = L['None'], value = false}, --
                     {name = L.SORT, value = 'SORT'}, --
+                    {name = L.SORT_ASC, value = 'SORT_ASC'}, --
+                    {name = L.SORT_DESC, value = 'SORT_DESC'}, --
                     {name = L.SORT_BAG, value = 'SORT_BAG'}, --
                     {name = L.SORT_BAG_ASC, value = 'SORT_BAG_ASC'}, --
                     {name = L.SORT_BAG_DESC, value = 'SORT_BAG_DESC'}, --
@@ -102,6 +104,17 @@ function Addon:LoadOptionFrame()
                 args = {
                     reverse = {type = 'toggle', name = L['Reverse pack'], width = 'full', order = orderGen()},
                     console = {type = 'toggle', name = L['Enable chat message'], width = 'full', order = orderGen()},
+                    resetSorting = {
+                        type = 'execute',
+                        name = L['Reset sorting rules'],
+                        width = 'full',
+                        order = orderGen(),
+                        confirm = true,
+                        confirmText = L['Are you sure to |cffff1919RESET|r sorting rules?'],
+                        func = function()
+                            Addon:ResetSortingRules()
+                        end,
+                    },
                 },
             },
             [ns.BAG_TYPE.BAG] = generateButton(ns.BAG_TYPE.BAG, L['Bag button features']),

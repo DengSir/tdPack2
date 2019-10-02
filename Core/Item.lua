@@ -18,6 +18,7 @@ local Item = ns.Addon:NewClass('Item', ns.Base)
 function Item:Constructor(parent, bag, slot)
     local itemId = ns.GetBagSlotId(bag, slot)
     self.itemCount = ns.GetBagSlotCount(bag, slot) or 1
+    self.itemLink = ns.GetBagSlotLink(bag, slot) or ''
     self.info = ItemInfoCache:Get(itemId)
 end
 
@@ -42,7 +43,7 @@ function Item:GetItemName()
 end
 
 function Item:GetItemLink()
-    return self.info.itemLink
+    return self.itemLink
 end
 
 function Item:GetItemType()
@@ -71,10 +72,6 @@ end
 
 function Item:IsEquippable()
     return self.info.itemEquippable
-end
-
-function Item:HasSpell()
-    return not not self.info.itemSpellName
 end
 
 function Item:NeedSaveToBank()

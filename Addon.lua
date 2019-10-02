@@ -14,6 +14,8 @@ ns.Addon = Addon
 ns.L = LibStub('AceLocale-3.0'):GetLocale(ADDON)
 ns.ICON = [[Interface\AddOns\tdPack2\Resource\INV_Pet_Broom]]
 ns.IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+ns.UNKNOWN_ICON = 134400
+ns.GUI = LibStub('tdGUI-1.0')
 
 function Addon:OnInitialize(args)
     local defaults = {
@@ -22,17 +24,18 @@ function Addon:OnInitialize(args)
             console = true,
             firstLoad = true,
             actions = {
-                bag = {
-                    [ns.CLICK_TOKENS.LEFT] = 'SORT', --
-                    [ns.CLICK_TOKENS.RIGHT] = 'OPEN_OPTIONS', --
-                    [ns.CLICK_TOKENS.CONTROL_LEFT] = 'SORT_BAG', --
-                    [ns.CLICK_TOKENS.CONTROL_RIGHT] = 'OPEN_RULE_OPTIONS', --
-                }, --
-                bank = {
-                    [ns.CLICK_TOKENS.LEFT] = 'SORT', --
-                    [ns.CLICK_TOKENS.RIGHT] = 'OPEN_OPTIONS', --
-                    [ns.CLICK_TOKENS.CONTROL_LEFT] = 'SORT_BANK', --
-                }, --
+                [ns.COMMAND.BAG] = {
+                    [ns.CLICK_TOKENS.LEFT] = 'SORT',
+                    [ns.CLICK_TOKENS.RIGHT] = 'OPEN_OPTIONS',
+                    [ns.CLICK_TOKENS.CONTROL_LEFT] = 'SORT_BAG',
+                    [ns.CLICK_TOKENS.CONTROL_RIGHT] = 'OPEN_RULE_OPTIONS',
+                },
+                [ns.COMMAND.BANK] = {
+                    [ns.CLICK_TOKENS.LEFT] = 'SORT',
+                    [ns.CLICK_TOKENS.RIGHT] = 'OPEN_OPTIONS',
+                    [ns.CLICK_TOKENS.CONTROL_LEFT] = 'SORT_BANK',
+                    [ns.CLICK_TOKENS.CONTROL_RIGHT] = 'OPEN_RULE_OPTIONS',
+                },
             },
             rules = {},
         },
@@ -52,6 +55,7 @@ end
 
 function Addon:OnModuleCreated(module)
     local name = module:GetName()
+    print(name)
     assert(not ns[name])
     ns[name] = module
 end
@@ -76,5 +80,14 @@ end
 function Addon:ResetSortingRules()
     local profile = wipe(self.profile.rules.sorting)
     ns.CopyTo(ns.DEFAULT_CUSTOM_ORDER, profile)
+    self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
+end
+
+function Addon:AddRule(item, where)
+    if where ~= self.profile.rules.sorting then
+        where.children = where.children or {}
+        where = where.children
+    end
+    tinsert(where, item)
     self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
 end

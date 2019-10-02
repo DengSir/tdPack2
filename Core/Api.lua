@@ -19,7 +19,9 @@ local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local GetCursorPosition = GetCursorPosition
 local GetItemFamily = GetItemFamily
+local GetItemIcon = GetItemIcon
 local GetItemInfoInstant = GetItemInfoInstant
+local GetItemQualityColor = GetItemQualityColor
 
 ---- UI
 local UIParent = UIParent
@@ -113,10 +115,6 @@ function ns.GetBagNumSlots(bag)
     return GetContainerNumSlots(bag)
 end
 
-function ns.FindSlot(item, tarSlot)
-    return ns.Pack:FindSlot(item, tarSlot)
-end
-
 function ns.GetItemId(itemLink)
     if not itemLink then
         return
@@ -129,6 +127,10 @@ function ns.GetItemId(itemLink)
     else
         return (tonumber(itemLink:match('item:(%d+)')))
     end
+end
+
+function ns.GetBagSlotLink(bag, slot)
+    return GetContainerItemLink(bag, slot)
 end
 
 function ns.GetBagSlotId(bag, slot)
@@ -220,3 +222,34 @@ local function CopyTo(src, dest)
 end
 
 ns.CopyTo = CopyTo
+
+local DEFAULT_ICON = 134400
+local RED_FONT_COLOR_HEX = RED_FONT_COLOR:GenerateHexColor()
+function ns.GetRuleInfo(item)
+    local t = type(item)
+    if t == 'number' then
+        local name, color
+        local icon = GetItemIcon(item)
+        local info = ns.ItemInfoCache:Get(item)
+        if info:IsReady() then
+            name = info.itemName
+            color = select(4, GetItemQualityColor(info.itemQuality))
+        else
+            name = RETRIEVING_ITEM_INFO
+            color = RED_FONT_COLOR_HEX
+        end
+        return format('|c%s%s|r', color, name), icon
+    elseif t == 'string' then
+        return item, DEFAULT_ICON
+    elseif t == 'table' then
+        local name, rule
+        if item.comment then
+            name = item.comment
+            rule = item.rule
+        else
+            name = item.rule
+            rule = item.rule
+        end
+        return name, item.icon or DEFAULT_ICON, rule
+    end
+end

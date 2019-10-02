@@ -20,7 +20,7 @@ ScrollFrame.SetOffset = HybridScrollFrame_SetOffset
 function ScrollFrame:Constructor()
     self.paddingTop = 3
     self.paddingBottom = 13
-    self.itemSpacing = 3
+    self.itemSpacing = 0
     self.buttonHeight = 10
     self.unused = {}
     self.buttons = setmetatable({}, {

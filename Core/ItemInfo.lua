@@ -36,7 +36,6 @@ function ItemInfo:Build()
         self.itemTexture = itemTexture or 0
         self.itemFamily = ns.GetItemFamily(self.itemId) or 0
         self.itemEquippable = IsEquippableItem(self.itemId) or false
-        self.itemSpellName, self.itemSpellId = GetItemSpell(self.itemId)
     else
         self.notReady = true
     end

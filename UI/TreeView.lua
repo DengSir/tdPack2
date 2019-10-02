@@ -255,10 +255,10 @@ function TreeView:UpdateInsert()
         self.inserter:Show()
 
         if where == WHERE_AFTER then
-            self.inserter:SetPoint('TOPRIGHT', target, 'BOTTOMRIGHT')
+            self.inserter:SetPoint('TOPRIGHT', target, 'BOTTOMRIGHT', 0, 1.5)
             self.inserter:SetHeight(3)
         elseif where == WHERE_BEFORE then
-            self.inserter:SetPoint('BOTTOMRIGHT', target, 'TOPRIGHT')
+            self.inserter:SetPoint('BOTTOMRIGHT', target, 'TOPRIGHT', 0, -1.5)
             self.inserter:SetHeight(3)
         else
             self.inserter:SetPoint('TOPRIGHT', target, 'TOPRIGHT')
@@ -340,6 +340,10 @@ end
 function TreeView:SetItemTree(itemTree)
     self.treeStatus.itemTree = itemTree
     self:Refresh()
+end
+
+function TreeView:GetItemTree()
+    return self.treeStatus.itemTree
 end
 
 function TreeView:ToggleItem(item)

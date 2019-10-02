@@ -86,6 +86,7 @@ function CustomOrder:GetOrderInternal(item)
             return order
         end
     end
+    print(item:GetItemLink())
     return self.default
 end
 

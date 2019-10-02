@@ -112,7 +112,7 @@ function Group:Pack()
 
         local item = self.items[index]
         if not tarSlot:IsItemIn(item) then
-            local slot = ns.FindSlot(item, tarSlot)
+            local slot = ns.Pack:FindSlot(item, tarSlot)
             if not slot then
                 return false, 'pack: not found target slot ' .. item:GetItemName() .. ' goto ' .. tarSlot.bag .. ' ' ..
                            tarSlot.slot

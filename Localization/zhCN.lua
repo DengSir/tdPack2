@@ -26,7 +26,7 @@ L['Before this'] = true
 L['After this'] = true
 L['In this'] = true
 
-L['Loading item data...'] = true
+L['Already exists'] = '已经存在'
 
 -- for actions
 L.None = '无'
@@ -37,6 +37,8 @@ L.SORT_BAG_DESC = '逆序整理背包'
 L.SORT_BANK = '整理银行'
 L.SORT_BANK_ASC = '顺序整理银行'
 L.SORT_BANK_DESC = '逆序整理银行'
+L.SORT_ASC = '顺序整理全部'
+L.SORT_DESC = '逆序整理全部'
 L.OPEN_RULE_OPTIONS = '打开规则设置'
 L.OPEN_OPTIONS = '打开设置'
 

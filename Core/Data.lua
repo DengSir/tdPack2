@@ -43,6 +43,14 @@ ns.CLICK_TOKENS = {
     CONTROL_RIGHT = ns.GetClickToken('RightButton', 1),
     SHIFT_RIGHT = ns.GetClickToken('RightButton', nil, 1),
     ALT_RIGHT = ns.GetClickToken('RightButton', nil, nil, 1),
+    CONTROL_SHIFT_LEFT = ns.GetClickToken('LeftButton', 1, 1),
+    CONTROL_ALT_LEFT = ns.GetClickToken('LeftButton', 1, nil, 1),
+    SHIFT_ALT_LEFT = ns.GetClickToken('LeftButton', nil, 1, 1),
+    CONTROL_SHIFT_RIGHT = ns.GetClickToken('RightButton', 1, 1),
+    CONTROL_ALT_RIGHT = ns.GetClickToken('RightButton', 1, nil, 1),
+    SHIFT_ALT_RIGHT = ns.GetClickToken('RightButton', nil, 1, 1),
+    CONTROL_SHIFT_ALT_LEFT = ns.GetClickToken('LeftButton', 1, 1, 1),
+    CONTROL_SHIFT_ALT_RIGHT = ns.GetClickToken('RightButton', 1, 1, 1),
 }
 
 ns.CLICK_LIST = {
@@ -54,6 +62,14 @@ ns.CLICK_LIST = {
     GenerateClickData('RightButton', nil, 1), --
     GenerateClickData('LeftButton', nil, nil, 1), --
     GenerateClickData('RightButton', nil, nil, 1), --
+    GenerateClickData('LeftButton', 1, 1), --
+    GenerateClickData('RightButton', 1, 1), --
+    GenerateClickData('LeftButton', 1, nil, 1), --
+    GenerateClickData('RightButton', 1, nil, 1), --
+    GenerateClickData('LeftButton', nil, 1, 1), --
+    GenerateClickData('RightButton', nil, 1, 1), --
+    GenerateClickData('LeftButton', 1, 1, 1), --
+    GenerateClickData('RightButton', 1, 1, 1), --
 }
 
 ns.BAG_TYPE = {

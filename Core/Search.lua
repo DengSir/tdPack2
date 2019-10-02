@@ -7,12 +7,14 @@
 local ns = select(2, ...)
 
 ---- LUA
+local _G = _G
 local select, pairs = select, pairs
 
 ---- WOW
 local GetItemInfo = GetItemInfo
 local GetItemSpell = GetItemSpell
 local IsEquippableItem = IsEquippableItem
+local GetItemInfoInstant = GetItemInfoInstant
 
 ---- LIBS
 local CustomSearch = LibStub('CustomSearch-1.0')
@@ -64,15 +66,44 @@ Filters.equippable = {
     keyword1 = 'equip',
     keyword2 = EQUIPSET_EQUIP:lower(),
 
+    exclude = tInvert{'INVTYPE_BAG', 'INVTYPE_AMMO'},
+
     canSearch = function(self, operator, search)
         return not operator and (self.keyword1 == search or self.keyword2 == search:lower())
     end,
 
     match = function(self, link, ...)
-        return IsEquippableItem(link) and select(9, GetItemInfo(link)) ~= 'INVTYPE_BAG'
+        if not IsEquippableItem(link) then
+            return false
+        end
+        return not self.exclude[select(9, GetItemInfo(link))]
     end,
 }
 
--- for k, v in pairs(Filters) do
---     ItemSearch.Filters[k] = v
--- end
+Filters.equipLoc = {
+    tags = {'equip', EQUIPSET_EQUIP:lower()},
+    onlyTags = true,
+
+    canSearch = function(self, operator, search)
+        return not operator and search
+    end,
+
+    match = function(self, item, _, search)
+        local loc = select(4, GetItemInfoInstant(item))
+        if loc == '' then
+            return false
+        end
+        if loc == 'INVTYPE_RANGEDRIGHT' or loc == 'INVTYPE_THROWN' then
+            loc = 'INVTYPE_RANGED'
+        end
+        loc = _G[loc]
+        if not loc then
+            return false
+        end
+        return loc:find(search, nil, true)
+    end,
+}
+
+for k, v in pairs(Filters) do
+    ItemSearch.Filters[k] = v
+end

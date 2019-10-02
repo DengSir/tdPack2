@@ -37,7 +37,6 @@ function ItemInfoCache:Build(itemId)
 end
 
 function ItemInfoCache:GET_ITEM_INFO_RECEIVED(_, itemId, ok)
-    print(itemId, ok)
     if ok then
         self:Build(itemId)
     end

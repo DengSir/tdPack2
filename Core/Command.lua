@@ -65,13 +65,18 @@ function Addon:ParseArgs(...)
     end
 
     if not order then
-        opts.reverse = self.profile.reverse
+        opts.reverse = function()
+            return self.profile.reverse
+        end
     elseif order == ORDER.ASC then
-        opts.reverse = false
+        opts.reverse = function()
+            return false
+        end
     elseif order == ORDER.DESC then
-        opts.reverse = true
+        opts.reverse = function()
+            return true
+        end
     end
-
     return opts
 end
 
@@ -79,28 +84,24 @@ function Addon:Pack(...)
     Pack:Start(self:ParseArgs(...))
 end
 
-local ACTIONS = {
-    SORT = function()
-        Addon:Pack()
-    end,
-    SORT_BAG = function()
-        Addon:Pack(COMMAND.BAG)
-    end,
-    SORT_BAG_ASC = function()
-        Addon:Pack(COMMAND.BAG, ORDER.ASC)
-    end,
-    SORT_BAG_DESC = function()
-        Addon:Pack(COMMAND.BAG, ORDER.DESC)
-    end,
-    SORT_BANK = function()
-        Addon:Pack(COMMAND.BANK)
-    end,
-    SORT_BANK_ASC = function()
-        Addon:Pack(COMMAND.BANK, ORDER.ASC)
-    end,
-    SORT_BANK_DESC = function()
-        Addon:Pack(COMMAND.BANK, ORDER.DESC)
-    end,
+function Addon:Generate(...)
+    local opts = Addon:ParseArgs(...)
+    return function()
+        Pack:Start(opts)
+    end
+end
+
+local COMMANDS = {
+    SORT = Addon:Generate(),
+    SORT_BAG = Addon:Generate(COMMAND.BAG),
+    SORT_BAG_ASC = Addon:Generate(COMMAND.BAG, ORDER.ASC),
+    SORT_BAG_DESC = Addon:Generate(COMMAND.BAG, ORDER.DESC),
+    SORT_BANK = Addon:Generate(COMMAND.BANK),
+    SORT_BANK_ASC = Addon:Generate(COMMAND.BANK, ORDER.ASC),
+    SORT_BANK_DESC = Addon:Generate(COMMAND.BANK, ORDER.DESC),
+    SORT_ASC = Addon:Generate(ORDER.ASC),
+    SORT_DESC = Addon:Generate(ORDER.DESC),
+
     OPEN_RULE_OPTIONS = function()
         Addon:OpenRuleOption()
     end,
@@ -110,11 +111,11 @@ local ACTIONS = {
 }
 
 function Addon:RunCommand(bagType, token)
-    local action = self:GetBagClickOption(bagType, token)
-    if not action then
+    local command = self:GetBagClickOption(bagType, token)
+    if not command then
         return
     end
-    local func = ACTIONS[action]
+    local func = COMMANDS[command]
     if func then
         func()
     end

@@ -37,7 +37,7 @@ local STATUS_PACKED = 5
 local STATUS_FINISH = 6
 local STATUS_CANCEL = 7
 
-function Pack:OnEnable()
+function Pack:OnInitialize()
     self.isBankOpened = false
     self.status = STATUS_FREE
     ---@type Slot[]
@@ -111,9 +111,10 @@ function Pack:Start(opts)
         return
     end
 
+    self.reverse = opts.reverse()
     self.opts = opts
     self:SetStatus(STATUS_READY)
-    self:ScheduleRepeatingTimer('OnIdle', 0.05)
+    self:ScheduleRepeatingTimer('OnIdle', 0.03)
 end
 
 function Pack:Stop()
@@ -349,5 +350,5 @@ function Pack:IsOptionBank()
 end
 
 function Pack:IsOptionReverse()
-    return self.opts.reverse
+    return self.reverse
 end

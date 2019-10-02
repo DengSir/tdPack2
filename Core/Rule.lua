@@ -25,7 +25,6 @@ function Rule:OnInitialize()
     self.typeOrder = Item.GetItemType
     self.subTypeOrder = Item.GetItemSubType
     self.customOrder = ns.CustomOrder:New(sortingProfile)
-    self.equipLocOrder = ns.EquipLocOrder:New(ns.DEFAULT_EQUIP_LOC_ORDER)
     self.levelQualityOrder = function(item)
         local level = 9999 - item:GetItemLevel()
         local quality = 99 - item:GetItemQuality()
@@ -36,9 +35,6 @@ function Rule:OnInitialize()
             return format('%02d,%04d', quality, level)
         end
     end
-    self.spellOrder = function(item)
-        return item:HasSpell() and '0' or '1'
-    end
 
     self.staticOrder = ns.CachableOrder:New({
         GetKey = function(item)
@@ -47,10 +43,8 @@ function Rule:OnInitialize()
         GetOrder = function(item)
             return tconcat({
                 self.customOrder(item), --
-                self.equipLocOrder(item), --
                 self.typeOrder(item), --
                 self.subTypeOrder(item), --
-                self.spellOrder(item), --
                 self.levelQualityOrder(item), --
                 self.nameOrder(item), --
             }, ',')

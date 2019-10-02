@@ -6,33 +6,34 @@
 local CreateFrame, ShowUIPanel = CreateFrame, ShowUIPanel
 
 local ns = select(2, ...)
-local Addon = ns.Addon
 local L = ns.L
+local Addon = ns.Addon
 
-local RuleOption = Addon:NewClass('RuleOption', ns.Frame)
+local RuleOption = ns.UI:NewModule('RuleOption')
 
-function RuleOption:Constructor()
-    self.portrait:SetMask([[Textures\MinimapMask]])
-    self.portrait:SetTexture(ns.ICON)
-    self.TitleText:SetText('tdPack2')
+function RuleOption:OnSetup()
+    local Frame = ns.GUI:GetClass('BasicPanel'):New(UIParent)
+    Frame:SetSize(337, 423)
+    Frame:ShowPortrait()
+    Frame:SetPortrait(ns.ICON)
+    Frame:SetText('tdPack2')
 
-    self:SetAttribute('UIPanelLayout-enabled', true)
-    self:SetAttribute('UIPanelLayout-defined', true)
-    self:SetAttribute('UIPanelLayout-whileDead', true)
-    self:SetAttribute('UIPanelLayout-area', 'left')
-    self:SetAttribute('UIPanelLayout-pushable', 4)
+    Frame:SetAttribute('UIPanelLayout-enabled', true)
+    Frame:SetAttribute('UIPanelLayout-defined', true)
+    Frame:SetAttribute('UIPanelLayout-whileDead', true)
+    Frame:SetAttribute('UIPanelLayout-area', 'left')
+    Frame:SetAttribute('UIPanelLayout-pushable', 4)
 
-    self.self = self
-    ns.SortingFrame:Bind(self.SortingFrame)
+    local Inset = CreateFrame('Frame', nil, Frame, 'InsetFrameTemplate')
+    Inset:SetPoint('TOPLEFT', 4, -60)
+    Inset:SetPoint('BOTTOMRIGHT', -6, 26)
+
+    self.Inset = Inset
+    self.Frame = Frame
+
+    ns.UI.SortingFrame:Show()
 end
 
 function Addon:OpenRuleOption()
-    if not self.RuleOption then
-        self.RuleOption = RuleOption:Bind(CreateFrame('Frame', nil, UIParent, 'tdPack2RuleOptionFrameTemplate'))
-    end
-
-    self.OpenRuleOption = function(self)
-        ShowUIPanel(self.RuleOption)
-    end
-    self:OpenRuleOption()
+    RuleOption:Show()
 end

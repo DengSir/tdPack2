@@ -32,7 +32,7 @@ L['Before this'] = true
 L['After this'] = true
 L['In this'] = true
 
-L['Loading item data...'] = true
+L['Already exists'] = true
 
 
 -- for actions
@@ -44,6 +44,9 @@ L.SORT_BAG_DESC = 'Pack bag desc'
 L.SORT_BANK = 'Pack bank'
 L.SORT_BANK_ASC = 'Pack bank asc'
 L.SORT_BANK_DESC = 'Pack bank desc'
+L.SORT_ASC = 'Pack asc'
+L.SORT_DESC = 'Pack desc'
+L.OPEN_RULE_OPTIONS = 'Open rule options'
 L.OPEN_OPTIONS = 'Open options'
 
 -- rules comment

@@ -22,9 +22,21 @@ local QUEST = GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM) -- 任务
 local MISC = GetItemClassInfo(LE_ITEM_CLASS_MISCELLANEOUS) -- 其它
 local PROJECTILE = GetItemClassInfo(LE_ITEM_CLASS_PROJECTILE) -- 弹药
 local REAGENT = GetItemClassInfo(LE_ITEM_CLASS_REAGENT) -- 材料
+local KEY = GetItemClassInfo(LE_ITEM_CLASS_KEY) -- 钥匙
 local FISHINGPOLE = GetItemSubClassInfo(LE_ITEM_CLASS_WEAPON, LE_ITEM_WEAPON_FISHINGPOLE) -- 鱼竿
 
-local function Rule(rule, icon, comment, children)
+local function Rule(rule, icon, comment, c)
+    local children
+    if c then
+        children = {}
+        local exists = {}
+        for i, v in ipairs(c) do
+            if not exists[v.rule] then
+                tinsert(children, v)
+                exists[v.rule] = true
+            end
+        end
+    end
     return {rule = rule, comment = comment, icon = icon, children = children}
 end
 
@@ -37,12 +49,16 @@ local function TipLocale(key, icon, children)
 end
 
 local function Tip(tip, icon, children)
-    return Rule('tip:' .. tip, icon, nil, children)
+    return Rule('tip:' .. tip, icon, tip, children)
 end
 
 local function Spell(id, icon, children)
     local spellName = GetSpellInfo(id)
     return Rule('spell:' .. spellName, icon, spellName, children)
+end
+
+local function Equip(key, icon)
+    return Rule('equip:' .. key, icon, key)
 end
 
 ns.DEFAULT_CUSTOM_ORDER = {
@@ -53,7 +69,31 @@ ns.DEFAULT_CUSTOM_ORDER = {
     5956, -- 铁匠锤
     7005, -- 剥皮刀
     Type(FISHINGPOLE, 132932), -- 鱼竿
-    Rule(EQUIPSET_EQUIP, 132722), -- 装备
+    Rule('equip', 132722, EQUIPSET_EQUIP, {
+        Equip(INVTYPE_2HWEAPON, 135324), -- 双手
+        Equip(INVTYPE_WEAPONMAINHAND, 133045), -- 主手
+        Equip(INVTYPE_WEAPON, 135641), -- 单手
+        Equip(INVTYPE_SHIELD, 134955), -- 副手盾
+        Equip(INVTYPE_WEAPONOFFHAND, 134955), -- 副手
+        Equip(INVTYPE_HOLDABLE, 134333), -- 副手物品
+        Equip(INVTYPE_RANGED, 135498), -- 远程
+        Equip(INVTYPE_RELIC, 134915), -- 圣物
+        Equip(INVTYPE_HEAD, 133136), -- 头部
+        Equip(INVTYPE_NECK, 133294), -- 颈部
+        Equip(INVTYPE_SHOULDER, 135033), -- 肩部
+        Equip(INVTYPE_CLOAK, 133768), -- 背部
+        Equip(INVTYPE_CHEST, 132644), -- 胸部
+        Equip(INVTYPE_ROBE, 132644), -- 胸部
+        Equip(INVTYPE_WRIST, 132608), -- 手腕
+        Equip(INVTYPE_HAND, 132948), -- 手
+        Equip(INVTYPE_WAIST, 132511), -- 腰部
+        Equip(INVTYPE_LEGS, 134588), -- 腿部
+        Equip(INVTYPE_FEET, 132541), -- 脚
+        Equip(INVTYPE_FINGER, 133345), -- 手指
+        Equip(INVTYPE_TRINKET, 134010), -- 饰品
+        Equip(INVTYPE_BODY, 135022), -- 衬衣
+        Equip(INVTYPE_TABARD, 135026), -- 战袍
+    }), -- 装备
     Type(CONTAINER, 133652), -- 容器
     Type(QUIVER, 134407), -- 箭袋
     Type(PROJECTILE, 132382), -- 弹药
@@ -70,40 +110,12 @@ ns.DEFAULT_CUSTOM_ORDER = {
         Spell(438, 134851), -- 法力药水
     }), -- 消耗品
     Type(REAGENT, 133587), -- 材料
-    Type(MISC, 134400), -- 其它
-    Type(QUEST, [[Interface\ContainerFrame\UI-Icon-QuestBang]], {
-        Tip(ITEM_STARTS_QUEST), -- 接任务
+    Rule('type:!' .. QUEST .. ' & tip:!' .. QUEST, 134237, MISC, {
+        Type(MISC, 134400), -- 其它
+        Type(KEY, 134237), -- 钥匙
+    }), --
+    Tip(ITEM_STARTS_QUEST, 132836), -- 接任务
+    Type(QUEST, 133469, {
+        Rule('spell', 133942), --
     }), -- 任务
-}
-
-ns.DEFAULT_EQUIP_LOC_ORDER = {
-    'INVTYPE_2HWEAPON', -- 双手
-    'INVTYPE_WEAPON', -- 单手
-    'INVTYPE_WEAPONMAINHAND', -- 主手
-    'INVTYPE_WEAPONOFFHAND', -- 副手
-    'INVTYPE_SHIELD', -- 副手
-    'INVTYPE_HOLDABLE', -- 副手物品
-    'INVTYPE_RANGED', -- 远程
-    'INVTYPE_RELIC', -- 圣物
-    -- 'INVTYPE_RANGEDRIGHT',      --远程
-    -- 'INVTYPE_THROWN',           --投掷
-    'INVTYPE_HEAD', -- 头部
-    'INVTYPE_SHOULDER', -- 肩部
-    'INVTYPE_CHEST', -- 胸部
-    'INVTYPE_ROBE', -- 胸部
-    'INVTYPE_HAND', -- 手
-    'INVTYPE_LEGS', -- 腿部
-    'INVTYPE_WRIST', -- 手腕
-    'INVTYPE_WAIST', -- 腰部
-    'INVTYPE_FEET', -- 脚
-    'INVTYPE_CLOAK', -- 背部
-    'INVTYPE_NECK', -- 颈部
-    'INVTYPE_FINGER', -- 手指
-    'INVTYPE_TRINKET', -- 饰品
-    'INVTYPE_BODY', -- 衬衣
-    'INVTYPE_TABARD', -- 战袍
-    'INVTYPE_WEAPONMAINHAND_PET', -- 主要攻击
-    'INVTYPE_AMMO', -- 弹药
-    'INVTYPE_BAG', -- 背包
-    'INVTYPE_QUIVER', -- 箭袋
 }
