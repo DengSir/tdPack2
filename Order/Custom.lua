@@ -37,14 +37,16 @@ end
 
 function CustomOrder:GetAdvanceOrder(link, rules)
     for _, v in ipairs(rules or self.advanceRules) do
-        if Search:Matches(link, v.rule) then
+        if not v.rule or Search:Matches(link, v.rule) then
             if v.children then
                 local order = self:GetAdvanceOrder(link, v.children)
                 if order then
                     return order
                 end
             end
-            return v.order
+            if v.rule then
+                return v.order
+            end
         end
     end
 end

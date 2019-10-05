@@ -19,22 +19,31 @@ local GetItemInfoInstant = GetItemInfoInstant
 ---- LIBS
 local CustomSearch = LibStub('CustomSearch-1.0')
 local ItemSearch = LibStub('LibItemSearch-1.2')
+local Filters = {}
 
-local Search = {}
-ns.Search = Search
+local Search = ns.Addon:NewModule('Search')
 
-Search.Filters = {}
-do
+function Search:OnInitialize()
+    self.filters = {}
+
     for k, v in pairs(ItemSearch.Filters) do
-        Search.Filters[k] = v
+        self.filters[k] = v
+    end
+
+    for k, v in pairs(Filters) do
+        self.filters[k] = v
     end
 end
 
-function Search:Matches(link, search)
-    return CustomSearch:Matches(link, search, self.Filters)
+function Search:OnEnable()
+    -- for k, v in pairs(Filters) do
+    --     ItemSearch.Filters[k] = v
+    -- end
 end
 
-local Filters = Search.Filters
+function Search:Matches(link, search)
+    return CustomSearch:Matches(link, search, self.filters)
+end
 
 Filters.spell = {
     keyword = 'spell',
@@ -79,31 +88,3 @@ Filters.equippable = {
         return not self.exclude[select(9, GetItemInfo(link))]
     end,
 }
-
-Filters.equipLoc = {
-    tags = {'equip', EQUIPSET_EQUIP:lower()},
-    onlyTags = true,
-
-    canSearch = function(self, operator, search)
-        return not operator and search
-    end,
-
-    match = function(self, item, _, search)
-        local loc = select(4, GetItemInfoInstant(item))
-        if loc == '' then
-            return false
-        end
-        if loc == 'INVTYPE_RANGEDRIGHT' or loc == 'INVTYPE_THROWN' then
-            loc = 'INVTYPE_RANGED'
-        end
-        loc = _G[loc]
-        if not loc then
-            return false
-        end
-        return loc:find(search, nil, true)
-    end,
-}
-
-for k, v in pairs(Filters) do
-    ItemSearch.Filters[k] = v
-end

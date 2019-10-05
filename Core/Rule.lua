@@ -19,7 +19,7 @@ local tconcat, sort = table.concat, table.sort or sort
 local Rule = Addon:NewModule('Rule', 'AceEvent-3.0')
 
 function Rule:OnInitialize()
-    local sortingProfile = Addon.db.profile.rules.sorting
+    local sortingProfile = Addon:GetSortingRules()
 
     self.nameOrder = Item.GetItemName
     self.typeOrder = Item.GetItemType

@@ -3,12 +3,13 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/29/2019, 12:25:28 AM
 
+---@type ns
 local ns = select(2, ...)
 local L = ns.L
 local Search = ns.Search
 local Addon = ns.Addon
 
-local ICON_SIZE = 24
+local ICON_SIZE = 32
 
 local RuleEditor = ns.UI:NewModule('RuleEditor')
 
@@ -18,9 +19,69 @@ local function GetText(editbox)
 end
 
 function RuleEditor:OnSetup()
-    local Frame = ns.GUI:GetClass('BasicPanel'):New(UIParent)
-    Frame:SetPoint('CENTER')
-    Frame:SetSize(290, 300)
+    local Frame = CreateFrame('Frame', nil, ns.UI.RuleOption.Frame)
+    Frame:SetPoint('TOPLEFT', 3, -22)
+    Frame:SetPoint('BOTTOMRIGHT', -3, 3)
+    Frame:SetFrameLevel(ns.UI.RuleOption.Frame:GetFrameLevel() + 100)
+    Frame:EnableMouse(true)
+
+    do
+        local Bg = Frame:CreateTexture(nil, 'BACKGROUND')
+        Bg:SetAllPoints(true)
+        Bg:SetTexture([[Interface\FrameGeneral\UI-Background-Marble]])
+
+        local TLCorner = Frame:CreateTexture(nil, 'ARTWORK')
+        TLCorner:SetSize(64, 64)
+        TLCorner:SetPoint('TOPLEFT', Bg, 'TOPLEFT')
+        TLCorner:SetTexture([[Interface\Common\bluemenu-main]])
+        TLCorner:SetTexCoord(0.00390625, 0.25390625, 0.00097656, 0.06347656)
+
+        local TRCorner = Frame:CreateTexture(nil, 'ARTWORK')
+        TRCorner:SetSize(64, 64)
+        TRCorner:SetPoint('TOPRIGHT', Bg, 'TOPRIGHT')
+        TRCorner:SetTexture([[Interface\Common\bluemenu-main]])
+        TRCorner:SetTexCoord(0.51953125, 0.76953125, 0.00097656, 0.06347656)
+
+        local BRCorner = Frame:CreateTexture(nil, 'ARTWORK')
+        BRCorner:SetSize(64, 64)
+        BRCorner:SetPoint('BOTTOMRIGHT', Bg, 'BOTTOMRIGHT')
+        BRCorner:SetTexture([[Interface\Common\bluemenu-main]])
+        BRCorner:SetTexCoord(0.00390625, 0.25390625, 0.06542969, 0.12792969)
+
+        local BLCorner = Frame:CreateTexture(nil, 'ARTWORK')
+        BLCorner:SetSize(64, 64)
+        BLCorner:SetPoint('BOTTOMLEFT', Bg, 'BOTTOMLEFT')
+        BLCorner:SetTexture([[Interface\Common\bluemenu-main]])
+        BLCorner:SetTexCoord(0.26171875, 0.51171875, 0.00097656, 0.06347656)
+
+        local LLine = Frame:CreateTexture(nil, 'ARTWORK')
+        LLine:SetWidth(43)
+        LLine:SetPoint('TOPLEFT', TLCorner, 'BOTTOMLEFT')
+        LLine:SetPoint('BOTTOMLEFT', BLCorner, 'TOPLEFT')
+        LLine:SetTexture([[Interface\Common\bluemenu-vert]])
+        LLine:SetTexCoord(0.06250000, 0.39843750, 0.00000000, 1.00000000)
+
+        local RLine = Frame:CreateTexture(nil, 'ARTWORK')
+        RLine:SetWidth(43)
+        RLine:SetPoint('TOPRIGHT', TRCorner, 'BOTTOMRIGHT')
+        RLine:SetPoint('BOTTOMRIGHT', BRCorner, 'TOPRIGHT')
+        RLine:SetTexture([[Interface\Common\bluemenu-vert]])
+        RLine:SetTexCoord(0.41406250, 0.75000000, 0.00000000, 1.00000000)
+
+        local BLine = Frame:CreateTexture(nil, 'ARTWORK')
+        BLine:SetHeight(43)
+        BLine:SetPoint('BOTTOMLEFT', BLCorner, 'BOTTOMRIGHT')
+        BLine:SetPoint('BOTTOMRIGHT', BRCorner, 'BOTTOMLEFT')
+        BLine:SetTexture([[Interface\Common\bluemenu-goldborder-horiz]])
+        BLine:SetTexCoord(0.00000000, 1.00000000, 0.35937500, 0.69531250)
+
+        local TLine = Frame:CreateTexture(nil, 'ARTWORK')
+        TLine:SetHeight(43)
+        TLine:SetPoint('TOPLEFT', TLCorner, 'TOPRIGHT')
+        TLine:SetPoint('TOPRIGHT', TRCorner, 'TOPLEFT')
+        TLine:SetTexture([[Interface\Common\bluemenu-goldborder-horiz]])
+        TLine:SetTexCoord(0.00000000, 1.00000000, 0.00781250, 0.34375000)
+    end
 
     local RuleInput = ns.GUI:GetClass('InputBox'):New(Frame)
     RuleInput:SetPoint('TOPLEFT', 20, -60)
@@ -35,22 +96,23 @@ function RuleEditor:OnSetup()
     WhereDropDown:SetPoint('TOPLEFT', RuleInput, 'BOTTOMLEFT', 0, -30)
     WhereDropDown:SetPoint('TOPRIGHT', RuleInput, 'BOTTOMRIGHT', 0, -30)
     WhereDropDown:SetHeight(22)
+    WhereDropDown:SetMaxItem(30)
     WhereDropDown:SetMenuTable(function()
         return self:CreateWhereItemTable()
     end)
-    self:CreateLabel(WhereDropDown, L['Where'])
+    self:CreateLabel(WhereDropDown, L['Put where?'])
 
     local CommentInput = ns.GUI:GetClass('InputBox'):New(Frame)
     CommentInput:SetPoint('TOPLEFT', WhereDropDown, 'BOTTOMLEFT', 0, -30)
     CommentInput:SetPoint('TOPRIGHT', WhereDropDown, 'BOTTOMRIGHT', 0, -30)
     CommentInput:SetHeight(22)
-    self:CreateLabel(CommentInput, L['Comment (Optional)'])
+    self:CreateLabel(CommentInput, L['Name (Optional)'])
 
     local IconsFrame = CreateFrame('Frame', nil, Frame)
     IconsFrame:SetPoint('TOPLEFT', CommentInput, 'BOTTOMLEFT', 0, -30)
     IconsFrame:SetPoint('TOPRIGHT', CommentInput, 'BOTTOMRIGHT', 0, -30)
-    IconsFrame:SetHeight(ICON_SIZE)
-    self:CreateLabel(IconsFrame, L['Icon (Optional)'])
+    IconsFrame:SetPoint('BOTTOM', 0, 50)
+    self:CreateLabel(IconsFrame, L['Select an icon (Optional)'])
 
     local ExecButton = CreateFrame('Button', nil, Frame, 'UIPanelButtonTemplate')
     ExecButton:SetSize(80, 22)
@@ -58,6 +120,14 @@ function RuleEditor:OnSetup()
     ExecButton:SetText(SAVE)
     ExecButton:SetScript('OnClick', function()
         self:OnSaveClick()
+    end)
+
+    local CancelButton = CreateFrame('Button', nil, Frame, 'UIPanelButtonTemplate')
+    CancelButton:SetSize(80, 22)
+    CancelButton:SetPoint('BOTTOMLEFT', Frame, 'BOTTOM', 0, 20)
+    CancelButton:SetText(CANCEL)
+    CancelButton:SetScript('OnClick', function()
+        Frame:Hide()
     end)
 
     local function OnClick(button)
@@ -74,11 +144,6 @@ function RuleEditor:OnSetup()
             icon:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
             icon:SetCheckedTexture([[Interface\Buttons\CheckButtonHilight]])
             icon:SetScript('OnClick', OnClick)
-            if i == 1 then
-                icon:SetPoint('LEFT', IconsFrame, 'LEFT', 0, 0)
-            else
-                icon:SetPoint('LEFT', self.iconButtons[i - 1], 'RIGHT', 0, 0)
-            end
             t[i] = icon
             return icon
         end,
@@ -94,12 +159,23 @@ function RuleEditor:OnSetup()
     Frame:SetScript('OnShow', function()
         self:OnShow()
     end)
+    Frame:SetScript('OnHide', Frame.Hide)
 
-    self.profile = ns.Addon.profile.rules.sorting
+    self.root = {children = Addon:GetSortingRules()}
 end
 
 function RuleEditor:OnShow()
-    self.WhereDropDown:SetValue(self.profile)
+    if self.rule then
+        self.RuleInput:SetText(self.rule.rule)
+        self.CommentInput:SetText(self.rule.comment or '')
+        self.WhereDropDown:SetValue(self.rule)
+        self.WhereDropDown:Disable()
+    else
+        self.RuleInput:SetText('')
+        self.CommentInput:SetText('')
+        self.WhereDropDown:SetValue(self.root)
+        self.WhereDropDown:Enable()
+    end
 end
 
 function RuleEditor:CreateLabel(widget, text)
@@ -114,30 +190,29 @@ function RuleEditor:OnRuleChanged()
 end
 
 function RuleEditor:OnSaveClick()
-    local rule = self.RuleInput:GetText():trim()
-    local comment = self.CommentInput:GetText():trim()
-    local item = {
-        rule = rule ~= '' and rule or nil,
-        comment = comment ~= '' and comment or nil,
+    local item = { --
+        rule = GetText(self.RuleInput),
+        comment = GetText(self.CommentInput),
         icon = self.selectedIcon,
     }
-    local where = self.WhereDropDown:GetValue()
-
-    dump(where, item)
-
-    Addon:AddRule(item, where)
+    if self.rule then
+        Addon:EditRule(item, self.rule)
+    else
+        Addon:AddRule(item, self.WhereDropDown:GetValue())
+    end
+    self:Hide()
 end
 
 function RuleEditor:CreateWhereItemTable(profile)
     local menuTable = {}
 
     if not profile then
-        profile = ns.Addon.profile.rules.sorting
+        profile = self.root.children
 
         tinsert(menuTable, {
             checkable = true,
             text = L['Root'],
-            value = profile,
+            value = self.root,
             checked = function(item, owner)
                 return item.value == owner:GetValue()
             end,
@@ -145,8 +220,9 @@ function RuleEditor:CreateWhereItemTable(profile)
     end
 
     for i, v in ipairs(profile) do
-        if type(v) == 'table' then
+        if ns.IsAdvanceRule(v) then
             local name, icon, rule = ns.GetRuleInfo(v)
+            local hasArrow = v.children and #v.children > 0
 
             tinsert(menuTable, {
                 checkable = true,
@@ -156,10 +232,10 @@ function RuleEditor:CreateWhereItemTable(profile)
                 checked = function(item, owner)
                     return item.value == owner:GetValue()
                 end,
-                hasArrow = v.children and #v.children > 0,
-                menuTable = function()
+                hasArrow = hasArrow,
+                menuTable = hasArrow and function()
                     return self:CreateWhereItemTable(v.children)
-                end,
+                end or nil,
             })
         end
     end
@@ -168,48 +244,65 @@ function RuleEditor:CreateWhereItemTable(profile)
 end
 
 function RuleEditor:UpdateValid()
-    local rule = GetText(self.RuleInput)
-    self.ExecButton:SetEnabled(rule)
+    -- local rule = GetText(self.RuleInput)
+    -- self.ExecButton:SetEnabled(rule)
 end
 
-function RuleEditor:SetIconButton(index, icon)
+function RuleEditor:SetIconButton(index, icon, row, column)
     local button = self.iconButtons[index]
-    button:SetNormalTexture(icon)
     button.icon = icon
+    button:SetNormalTexture(icon)
+
+    button:SetPoint('TOPLEFT', (column - 1) * ICON_SIZE, -(row - 1) * ICON_SIZE)
     button:Show()
 end
 
 function RuleEditor:UpdateIcons()
-    local rule = self.RuleInput:GetText():trim()
+    local rule = GetText(self.RuleInput)
 
-    local touched = {}
-    local count = floor(self.IconsFrame:GetWidth() / ICON_SIZE)
+    local existsIcons = {}
+    local touchedItems = {}
+    local rowCount = floor(self.IconsFrame:GetHeight() / ICON_SIZE)
+    local columnCount = floor(self.IconsFrame:GetWidth() / ICON_SIZE)
+    local count = rowCount * columnCount
     local index = 1
 
-    if rule ~= '' then
-        for _, bag in ipairs(ns.GetBags()) do
-            for slot = 1, ns.GetBagNumSlots(bag) do
-                if index > count then
-                    break
-                end
+    local function DrawIcon(i, icon, row, column)
+        if existsIcons[icon] then
+            return
+        end
+        existsIcons[icon] = true
+        self:SetIconButton(i, icon, row, column)
+        index = i + 1
+    end
 
-                local itemId = ns.GetBagSlotId(bag, slot)
-                if itemId and not touched[itemId] then
-                    touched[itemId] = true
+    if self.rule and self.rule.icon then
+        DrawIcon(index, self.rule.icon, 1, 1)
+    end
 
-                    local link = GetContainerItemLink(bag, slot)
-                    if Search:Matches(link, rule) then
-                        self:SetIconButton(index, GetItemIcon(link))
-                        index = index + 1
-                    end
+    for bag in self:IterateBags() do
+        for slot = 1, ns.GetBagNumSlots(bag) do
+            if index > count then
+                break
+            end
+
+            local row = floor((index - 1) / columnCount) + 1
+            local column = floor((index - 1) % columnCount) + 1
+
+            local itemId = ns.GetBagSlotId(bag, slot)
+            if itemId and not touchedItems[itemId] then
+                touchedItems[itemId] = true
+
+                local link = GetContainerItemLink(bag, slot)
+                if not rule or Search:Matches(link, rule) then
+                    DrawIcon(index, GetItemIcon(link), row, column)
                 end
             end
         end
     end
 
     if index == 1 then
-        self:SetIconButton(index, ns.UNKNOWN_ICON)
-        index = index + 1
+        DrawIcon(index, ns.UNKNOWN_ICON, 1, 1)
     end
 
     for i = index, #self.iconButtons do
@@ -217,4 +310,20 @@ function RuleEditor:UpdateIcons()
     end
 
     self.iconButtons[1]:Click()
+end
+
+function RuleEditor:IterateBags()
+    return coroutine.wrap(function()
+        for _, bag in ipairs(ns.GetBags()) do
+            coroutine.yield(bag)
+        end
+        for _, bag in ipairs(ns.GetBanks()) do
+            coroutine.yield(bag)
+        end
+    end)
+end
+
+function RuleEditor:Open(rule)
+    self.rule = rule
+    self:Show()
 end

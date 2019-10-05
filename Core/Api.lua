@@ -199,10 +199,6 @@ function ns.GetClickToken(button, control, shift, alt)
     return key + (control and 0x10000 or 0) + (shift and 0x20000 or 0) + (alt and 0x40000 or 0)
 end
 
-function ns.IsAdvanceRule(item)
-    return type(item) == 'table'
-end
-
 function ns.GetCursorPosition()
     local x, y = GetCursorPosition()
     local scale = UIParent:GetScale()
@@ -239,8 +235,6 @@ function ns.GetRuleInfo(item)
             color = RED_FONT_COLOR_HEX
         end
         return format('|c%s%s|r', color, name), icon
-    elseif t == 'string' then
-        return item, DEFAULT_ICON
     elseif t == 'table' then
         local name, rule
         if item.comment then
@@ -250,6 +244,10 @@ function ns.GetRuleInfo(item)
             name = item.rule
             rule = item.rule
         end
-        return name, item.icon or DEFAULT_ICON, rule
+        return name, item.icon or DEFAULT_ICON, rule, item.children and #item.children > 0
     end
+end
+
+function ns.IsAdvanceRule(item)
+    return type(item) == 'table'
 end

@@ -61,10 +61,14 @@ function RuleView:CURSOR_UPDATE()
 end
 
 function RuleView:OnItemFormatting(button, item, depth)
-    local name, icon, rule = self:GetRuleInfo(item)
-    button.Text:SetPoint('LEFT', 5 + 20 * (depth - 1), 0)
+    local name, icon, rule, hasChild = ns.GetRuleInfo(item)
+    button.Status:SetPoint('LEFT', 5 + 20 * (depth - 1), 0)
+    button.Text:SetFontObject((ns.IsAdvanceRule(item) and not rule) and 'GameFontDisable' or 'GameFontNormal')
     button.Text:SetText(format('|T%s:14|t %s', icon, name))
     button.Rule:SetText(rule or '')
+    button.Status:SetShown(hasChild)
+    button.Status:SetTexture(self:IsItemExpend(item) and [[Interface\Buttons\UI-MinusButton-UP]] or
+                                 [[Interface\Buttons\UI-PlusButton-Up]])
 end
 
 function RuleView:OnItemEnter(button)
@@ -72,7 +76,7 @@ function RuleView:OnItemEnter(button)
     GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
     if type(item) == 'number' then
         GameTooltip:SetHyperlink('item:' .. item)
-    elseif type(button.item) == 'table' then
+    elseif ns.IsAdvanceRule(item) then
         if item.comment then
             GameTooltip:AddLine(item.comment)
         end
@@ -81,35 +85,6 @@ function RuleView:OnItemEnter(button)
         end
     end
     GameTooltip:Show()
-end
-
-function RuleView:GetRuleInfo(item)
-    local t = type(item)
-    if t == 'number' then
-        local name, color
-        local icon = GetItemIcon(item)
-        local info = ItemInfoCache:Get(item)
-        if info:IsReady() then
-            name = info.itemName
-            color = select(4, GetItemQualityColor(info.itemQuality))
-        else
-            name = RETRIEVING_ITEM_INFO
-            color = RED_FONT_COLOR_HEX
-        end
-        return format('|c%s%s|r', color, name), icon
-    elseif t == 'string' then
-        return item, DEFAULT_ICON
-    elseif t == 'table' then
-        local name, rule
-        if item.comment then
-            name = item.comment
-            rule = item.rule
-        else
-            name = item.rule
-            rule = item.rule
-        end
-        return name, item.icon or DEFAULT_ICON, rule
-    end
 end
 
 function RuleView:StartCursorCatching(item)

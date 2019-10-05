@@ -23,18 +23,19 @@ function Addon:OnInitialize(args)
             reverse = false,
             console = true,
             firstLoad = true,
+            ruleOptionWindow = {point = 'CENTER', width = 637, height = 637},
             actions = {
                 [ns.COMMAND.BAG] = {
                     [ns.CLICK_TOKENS.LEFT] = 'SORT',
-                    [ns.CLICK_TOKENS.RIGHT] = 'OPEN_OPTIONS',
+                    [ns.CLICK_TOKENS.RIGHT] = 'OPEN_RULE_OPTIONS',
                     [ns.CLICK_TOKENS.CONTROL_LEFT] = 'SORT_BAG',
-                    [ns.CLICK_TOKENS.CONTROL_RIGHT] = 'OPEN_RULE_OPTIONS',
+                    [ns.CLICK_TOKENS.CONTROL_RIGHT] = 'OPEN_OPTIONS',
                 },
                 [ns.COMMAND.BANK] = {
                     [ns.CLICK_TOKENS.LEFT] = 'SORT',
-                    [ns.CLICK_TOKENS.RIGHT] = 'OPEN_OPTIONS',
+                    [ns.CLICK_TOKENS.RIGHT] = 'OPEN_RULE_OPTIONS',
                     [ns.CLICK_TOKENS.CONTROL_LEFT] = 'SORT_BANK',
-                    [ns.CLICK_TOKENS.CONTROL_RIGHT] = 'OPEN_RULE_OPTIONS',
+                    [ns.CLICK_TOKENS.CONTROL_RIGHT] = 'OPEN_OPTIONS',
                 },
             },
             rules = {},
@@ -55,7 +56,6 @@ end
 
 function Addon:OnModuleCreated(module)
     local name = module:GetName()
-    print(name)
     assert(not ns[name])
     ns[name] = module
 end
@@ -83,11 +83,19 @@ function Addon:ResetSortingRules()
     self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
 end
 
+function Addon:GetSortingRules()
+    return self.profile.rules.sorting
+end
+
 function Addon:AddRule(item, where)
-    if where ~= self.profile.rules.sorting then
-        where.children = where.children or {}
-        where = where.children
-    end
-    tinsert(where, item)
+    where.children = where.children or {}
+    tinsert(where.children, item)
+    self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
+end
+
+function Addon:EditRule(item, where)
+    where.rule = item.rule
+    where.comment = item.comment
+    where.icon = item.icon
     self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
 end

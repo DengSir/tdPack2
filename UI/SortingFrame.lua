@@ -27,25 +27,20 @@ local ItemInfoCache = ns.ItemInfoCache
 local SortingFrame = ns.UI:NewModule('SortingFrame', 'AceEvent-3.0')
 
 function SortingFrame:OnSetup()
-    self.profile = Addon.profile.rules.sorting
-
     local Frame = CreateFrame('Frame', nil, ns.UI.RuleOption.Inset)
     Frame:SetAllPoints(true)
+    Frame:Hide()
+
+    local profile = Addon:GetSortingRules()
 
     local List = ns.RuleView:Bind(CreateFrame('ScrollFrame', nil, Frame, 'tdPack2RuleViewTemplate'))
     List:SetPoint('TOPLEFT', 5, -4)
     List:SetPoint('BOTTOMRIGHT', -20, 3)
-    List:SetItemTree(self.profile)
     List:SetCallback('OnCheckItemCanPutIn', function(_, from, to)
-        if type(from) == 'table' then
-            return type(to) == 'table'
-        else
-            return to == self.profile
-        end
+        return ns.IsAdvanceRule(to)
     end)
-    List:SetCallback('OnItemClick', function(_, button)
-        tremove(button.parent, button.index)
-        self.List:Refresh()
+    List:SetCallback('OnItemClick', function(List, button)
+        List:ToggleItem(button.item)
     end)
     List:SetCallback('OnItemRightClick', function(_, button)
         self:ShowRuleMenu(button, button.item)
@@ -53,18 +48,15 @@ function SortingFrame:OnSetup()
     List:SetCallback('OnSorted', function()
         self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
     end)
-
-    -- self.Add:SetScript('OnClick', function()
-    --     ns.UI.RuleEditor:Show()
-    -- end)
+    List:SetItemTree(profile)
 
     local AddButton = CreateFrame('Button', nil, Frame, 'UIPanelButtonTemplate')
     AddButton:SetPoint('BOTTOMLEFT', ns.UI.RuleOption.Frame, 'BOTTOMLEFT', 0, 0)
-    AddButton:SetSize(80, 22)
+    AddButton:SetSize(120, 22)
     MagicButton_OnLoad(AddButton)
-    AddButton:SetText(L['Add rule'])
+    AddButton:SetText(L['Add advance rule'])
     AddButton:SetScript('OnClick', function()
-        ns.UI.RuleEditor:Show()
+        ns.UI.RuleEditor:Open()
     end)
 
     self.List = List
@@ -84,7 +76,7 @@ local SEPARATOR = {isSeparator = true}
 local GUI = LibStub('tdGUI-1.0', 1)
 
 function SortingFrame:ShowRuleMenu(button, item)
-    local name, icon, rule = self.List:GetRuleInfo(item)
+    local name, icon, rule, hasChild = ns.GetRuleInfo(item)
 
     GUI:ToggleMenu(button, {
         { --
@@ -93,14 +85,20 @@ function SortingFrame:ShowRuleMenu(button, item)
         }, SEPARATOR, {
             text = DELETE,
             func = function(...)
-                tremove(button.parent, button.index)
-                self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
+                ns.UI.BlockDialog:Open({
+                    text = hasChild and L['Are you sure |cffff191919DELETE|r rule and its |cffff1919SUBRULES|r?'] or
+                        L['Are you sure |cffff191919DELETE|r rule?'],
+                    OnAccept = function()
+                        tremove(button.parent, button.index)
+                        self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
+                    end,
+                })
             end,
         }, {
             text = EDIT,
             disabled = not ns.IsAdvanceRule(button.item),
             func = function(...)
-
+                ns.UI.RuleEditor:Open(item)
             end,
         }, SEPARATOR, {text = CANCEL},
     })

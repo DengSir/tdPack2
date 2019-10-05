@@ -21,12 +21,20 @@ L['Right Click'] = '右键'
 
 L['Bag button features'] = '背包按钮功能'
 L['Bank button features'] = '银行按钮功能'
-
-L['Before this'] = true
-L['After this'] = true
-L['In this'] = true
+L['Reset sorting rules'] = '重置排序规则'
+L['Are you sure to |cffff1919RESET|r sorting rules?'] = '你确定|cffff1919重置|r排序规则？'
 
 L['Already exists'] = '已经存在'
+L['Add advance rule'] = '添加高级规则'
+L['Are you sure |cffff191919DELETE|r rule and its |cffff1919SUBRULES|r?'] =
+    '你确定|cffff1919删除|r规则和它的|cffff1919子规则|r吗？'
+L['Are you sure |cffff191919DELETE|r rule?'] = '你确定|cffff1919删除|r规则吗？'
+
+L['Root'] = '根'
+L['Rule'] = '规则'
+L['Put where?'] = '放在哪？'
+L['Name (Optional)'] = '名称（可选）'
+L['Select an icon (Optional)'] = '选择一个图标（可选）'
 
 -- for actions
 L.None = '无'
@@ -49,3 +57,5 @@ L.COMMENT_CLASS = '职业物品'
 -- for rules
 L.KEYWORD_MOUNT = '使用： 召唤或解散'
 L.KEYWORD_CLASS = '职业：'
+
+L.Tools = '工具'

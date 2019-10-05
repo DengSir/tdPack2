@@ -31,6 +31,7 @@ function ScrollFrame:Constructor()
     })
     self.scrollBar:SetMinMaxValues(0, 1)
     self.scrollBar:SetValue(0)
+    self.scrollBar.doNotHide = true
     self:SetScript('OnSizeChanged', self.OnSizeChanged)
 end
 

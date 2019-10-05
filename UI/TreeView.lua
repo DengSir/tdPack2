@@ -21,7 +21,7 @@ local WHERE_IN = 3
 local TreeStatus = ns.Addon:NewClass('TreeStatus')
 
 function TreeStatus:Constructor()
-    self.fold = setmetatable({}, {__mode = 'k'})
+    self.expend = setmetatable({}, {__mode = 'k'})
 end
 
 function TreeStatus:Iterate(start)
@@ -33,7 +33,7 @@ function TreeStatus:Iterate(start)
                 if not start or index >= start then
                     coroutine.yield(depth, item, i, tree)
                 end
-                if type(item) == 'table' and type(item.children) == 'table' and not self.fold[item] then
+                if type(item) == 'table' and type(item.children) == 'table' and self.expend[item] then
                     Iterate(item.children, depth + 1)
                 end
             end
@@ -47,7 +47,7 @@ function TreeStatus:GetCount()
         local count = 0
         for i, item in ipairs(tree) do
             count = count + 1
-            if type(item) == 'table' and type(item.children) == 'table' and not self.fold[item] then
+            if type(item) == 'table' and type(item.children) == 'table' and self.expend[item] then
                 count = count + GetCount(item.children, depth + 1)
             end
         end
@@ -208,7 +208,7 @@ function TreeView:UpdateInsert()
                 local canPutIn = self:Fire('OnCheckItemCanPutIn', self.sortingButton.item, button.item)
                 local canPutInParent = self:Fire('OnCheckItemCanPutIn', self.sortingButton.item, button.parent)
 
-                if abs(delta) < self.itemHeight / 4 and canPutIn then
+                if abs(delta) < self.itemHeight / 5 and canPutIn then
                     target = button
                     where = WHERE_IN
                 elseif delta < 0 and abs(delta) < self.itemHeight and canPutInParent then
@@ -251,7 +251,7 @@ function TreeView:UpdateInsert()
         end
 
         self.inserter:ClearAllPoints()
-        self.inserter:SetWidth(self:GetWidth() - 5 - (target.depth - 1) * 20)
+        self.inserter:SetWidth(self:GetWidth() - 5 - 16 - (target.depth - 1) * 20)
         self.inserter:Show()
 
         if where == WHERE_AFTER then
@@ -347,11 +347,11 @@ function TreeView:GetItemTree()
 end
 
 function TreeView:ToggleItem(item)
-    self.treeStatus.fold[item] = not self.treeStatus.fold[item] or nil
+    self.treeStatus.expend[item] = not self.treeStatus.expend[item] or nil
     self:Refresh()
 end
 
 function TreeView:IsItemExpend(item)
-    return not self.treeStatus.fold[item] and type(item) == 'table' and type(item.children) == 'table' and
-               #item.children > 0
+    return
+        self.treeStatus.expend[item] and type(item) == 'table' and type(item.children) == 'table' and #item.children > 0
 end
