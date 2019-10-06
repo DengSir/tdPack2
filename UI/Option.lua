@@ -90,10 +90,10 @@ function Addon:LoadOptionFrame()
         name = ADDON,
 
         get = function(item)
-            return self.profile[item[#item]]
+            return self:GetOption(item[#item])
         end,
         set = function(item, value)
-            self.profile[item[#item]] = value
+            self:SetOption(item[#item], value)
         end,
 
         args = {
@@ -104,6 +104,12 @@ function Addon:LoadOptionFrame()
                 args = {
                     reverse = {type = 'toggle', name = L['Reverse pack'], width = 'full', order = orderGen()},
                     console = {type = 'toggle', name = L['Enable chat message'], width = 'full', order = orderGen()},
+                    -- applyLibItemSearch = {
+                    --     type = 'toggle',
+                    --     name = L['Apply to LibItemSearch'],
+                    --     width = 'full',
+                    --     order = orderGen(),
+                    -- },
                     resetSorting = {
                         type = 'execute',
                         name = L['Reset sorting rules'],

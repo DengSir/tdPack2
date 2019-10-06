@@ -3,7 +3,7 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/30/2019, 11:36:34 PM
 
-local select, assert, unpack = select, assert, table.unpack or unpack
+local select, assert, unpack, wipe = select, assert, table.unpack or unpack, table.wipe or wipe
 local CopyTable, tInvert = CopyTable, tInvert
 
 ---@type ns
@@ -23,6 +23,7 @@ function Addon:OnInitialize(args)
             reverse = false,
             console = true,
             firstLoad = true,
+            applyLibItemSearch = false,
             ruleOptionWindow = {point = 'CENTER', width = 637, height = 637},
             actions = {
                 [ns.COMMAND.BAG] = {
@@ -78,13 +79,22 @@ function Addon:SetBagClickOption(bagType, token, action)
 end
 
 function Addon:ResetSortingRules()
-    local profile = wipe(self.profile.rules.sorting)
-    ns.CopyTo(ns.DEFAULT_CUSTOM_ORDER, profile)
+    local sorting = wipe(self.profile.rules.sorting)
+    ns.CopyFrom(sorting, ns.DEFAULT_CUSTOM_ORDER)
     self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
 end
 
 function Addon:GetSortingRules()
     return self.profile.rules.sorting
+end
+
+function Addon:GetOption(key)
+    return self.profile[key]
+end
+
+function Addon:SetOption(key, value)
+    self.profile[key] = value
+    self:SendMessage('TDPACK_OPTION_CHANGED_' .. key, key, value)
 end
 
 function Addon:AddRule(item, where)

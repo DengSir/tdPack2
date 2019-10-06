@@ -13,18 +13,6 @@ local GetSpellInfo = GetSpellInfo
 local GetItemClassInfo = GetItemClassInfo
 local GetItemSubClassInfo = GetItemSubClassInfo
 
-local CONTAINER = GetItemClassInfo(LE_ITEM_CLASS_CONTAINER) -- 容器
-local QUIVER = GetItemClassInfo(LE_ITEM_CLASS_QUIVER) -- 箭袋
-local RECIPE = GetItemClassInfo(LE_ITEM_CLASS_RECIPE) -- 配方
-local TRADEGOODS = GetItemClassInfo(LE_ITEM_CLASS_TRADEGOODS) -- 商品
-local CONSUMABLE = GetItemClassInfo(LE_ITEM_CLASS_CONSUMABLE) -- 消耗品
-local QUEST = GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM) -- 任务
-local MISC = GetItemClassInfo(LE_ITEM_CLASS_MISCELLANEOUS) -- 其它
-local PROJECTILE = GetItemClassInfo(LE_ITEM_CLASS_PROJECTILE) -- 弹药
-local REAGENT = GetItemClassInfo(LE_ITEM_CLASS_REAGENT) -- 材料
-local KEY = GetItemClassInfo(LE_ITEM_CLASS_KEY) -- 钥匙
-local FISHINGPOLE = GetItemSubClassInfo(LE_ITEM_CLASS_WEAPON, LE_ITEM_WEAPON_FISHINGPOLE) -- 鱼竿
-
 local function Rule(name, icon, rule, c)
     local children
     if c then
@@ -48,8 +36,22 @@ local function Group(name, icon, children)
     return Rule(name, icon, nil, children)
 end
 
-local function Type(name, icon, children)
+local function Type(type, icon, children)
+    local name = GetItemClassInfo(type)
     return Rule(name, icon, 'type:' .. name, children)
+end
+
+local function SubType(type, subType, icon, children)
+    local name = GetItemSubClassInfo(type, subType)
+    return Rule(name, icon, 'type:' .. name, children)
+end
+
+local function Weapon(subType, icon, children)
+    return SubType(LE_ITEM_CLASS_WEAPON, subType, icon, children)
+end
+
+local function Slot(name, icon, children)
+    return Rule(name, icon, 'slot:' .. name, children)
 end
 
 local function TipLocale(key, icon, children)
@@ -65,6 +67,10 @@ local function Spell(id, icon, children)
     return Rule(spellName, icon, 'spell:' .. spellName, children)
 end
 
+local CONSUMABLE = GetItemClassInfo(LE_ITEM_CLASS_CONSUMABLE) -- 消耗品
+local QUEST = GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM) -- 任务
+local MISC = GetItemClassInfo(LE_ITEM_CLASS_MISCELLANEOUS) -- 其它
+
 ns.DEFAULT_CUSTOM_ORDER = {
     HEARTHSTONE_ITEM_ID, -- 炉石
     TipLocale('MOUNT', 132261), -- 坐骑
@@ -73,38 +79,41 @@ ns.DEFAULT_CUSTOM_ORDER = {
         2901, -- 矿工锄
         5956, -- 铁匠锤
         7005, -- 剥皮刀
-        Type(FISHINGPOLE, 132932), -- 鱼竿
+        Weapon(LE_ITEM_WEAPON_FISHINGPOLE, 132932), -- 鱼竿
     }), --
     Rule(EQUIPSET_EQUIP, 132722, 'equip', {
-        Type(INVTYPE_2HWEAPON, 135324), -- 双手
-        Type(INVTYPE_WEAPONMAINHAND, 133045), -- 主手
-        Type(INVTYPE_WEAPON, 135641), -- 单手
-        Type(INVTYPE_SHIELD, 134955), -- 副手盾
-        Type(INVTYPE_WEAPONOFFHAND, 134955), -- 副手
-        Type(INVTYPE_HOLDABLE, 134333), -- 副手物品
-        Type(INVTYPE_RANGED, 135498), -- 远程
-        Type(INVTYPE_RELIC, 134915), -- 圣物
-        Type(INVTYPE_HEAD, 133136), -- 头部
-        Type(INVTYPE_NECK, 133294), -- 颈部
-        Type(INVTYPE_SHOULDER, 135033), -- 肩部
-        Type(INVTYPE_CLOAK, 133768), -- 背部
-        Type(INVTYPE_CHEST, 132644), -- 胸部
-        Type(INVTYPE_ROBE, 132644), -- 胸部
-        Type(INVTYPE_WRIST, 132608), -- 手腕
-        Type(INVTYPE_HAND, 132948), -- 手
-        Type(INVTYPE_WAIST, 132511), -- 腰部
-        Type(INVTYPE_LEGS, 134588), -- 腿部
-        Type(INVTYPE_FEET, 132541), -- 脚
-        Type(INVTYPE_FINGER, 133345), -- 手指
-        Type(INVTYPE_TRINKET, 134010), -- 饰品
-        Type(INVTYPE_BODY, 135022), -- 衬衣
-        Type(INVTYPE_TABARD, 135026), -- 战袍
+        Slot(INVTYPE_2HWEAPON, 135324), -- 双手
+        Slot(INVTYPE_WEAPONMAINHAND, 133045), -- 主手
+        Slot(INVTYPE_WEAPON, 135641), -- 单手
+        Slot(INVTYPE_SHIELD, 134955), -- 副手盾
+        Slot(INVTYPE_WEAPONOFFHAND, 134955), -- 副手
+        Slot(INVTYPE_HOLDABLE, 134333), -- 副手物品
+        Slot(INVTYPE_RANGED, 135498), -- 远程
+        Weapon(LE_ITEM_WEAPON_GUNS, 135610), -- 枪
+        Weapon(LE_ITEM_WEAPON_CROSSBOW, 135533), -- 弩
+        Weapon(LE_ITEM_WEAPON_THROWN, 135427), -- 投掷武器
+        Slot(INVTYPE_RELIC, 134915), -- 圣物
+        Slot(INVTYPE_HEAD, 133136), -- 头部
+        Slot(INVTYPE_NECK, 133294), -- 颈部
+        Slot(INVTYPE_SHOULDER, 135033), -- 肩部
+        Slot(INVTYPE_CLOAK, 133768), -- 背部
+        Slot(INVTYPE_CHEST, 132644), -- 胸部
+        Slot(INVTYPE_ROBE, 132644), -- 胸部
+        Slot(INVTYPE_WRIST, 132608), -- 手腕
+        Slot(INVTYPE_HAND, 132948), -- 手
+        Slot(INVTYPE_WAIST, 132511), -- 腰部
+        Slot(INVTYPE_LEGS, 134588), -- 腿部
+        Slot(INVTYPE_FEET, 132541), -- 脚
+        Slot(INVTYPE_FINGER, 133345), -- 手指
+        Slot(INVTYPE_TRINKET, 134010), -- 饰品
+        Slot(INVTYPE_BODY, 135022), -- 衬衣
+        Slot(INVTYPE_TABARD, 135026), -- 战袍
     }), -- 装备
-    Type(CONTAINER, 133652), -- 容器
-    Type(QUIVER, 134407), -- 箭袋
-    Type(PROJECTILE, 132382), -- 弹药
-    Type(RECIPE, 134939), -- 配方
-    Type(TRADEGOODS, 132905, {
+    Type(LE_ITEM_CLASS_CONTAINER, 133652), -- 容器
+    Type(LE_ITEM_CLASS_QUIVER, 134407), -- 箭袋
+    Type(LE_ITEM_CLASS_PROJECTILE, 132382), -- 弹药
+    Type(LE_ITEM_CLASS_RECIPE, 134939), -- 配方
+    Type(LE_ITEM_CLASS_TRADEGOODS, 132905, {
         TipLocale('CLASS', 132273), -- 职业
     }), -- 商品
     Rule(CONSUMABLE, 134829, 'type:' .. CONSUMABLE .. ' & tip:!' .. QUEST, {
@@ -115,10 +124,10 @@ ns.DEFAULT_CUSTOM_ORDER = {
         Spell(439, 134830), -- 治疗药水
         Spell(438, 134851), -- 法力药水
     }), -- 消耗品
-    Type(REAGENT, 133587), -- 材料
+    Type(LE_ITEM_CLASS_REAGENT, 133587), -- 材料
     Rule(MISC, 134237, 'type:!' .. QUEST .. ' & tip:!' .. QUEST, {
-        Type(MISC, 134400), -- 其它
-        Type(KEY, 134237), -- 钥匙
+        Type(LE_ITEM_CLASS_MISCELLANEOUS, 134400), -- 其它
+        Type(LE_ITEM_CLASS_KEY, 134237), -- 钥匙
     }), --
     Rule(QUEST, 133469, 'type:' .. QUEST .. ' | tip:' .. QUEST, {
         Tip(ITEM_STARTS_QUEST, 132836), -- 接任务

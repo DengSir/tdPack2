@@ -21,7 +21,7 @@ local CustomSearch = LibStub('CustomSearch-1.0')
 local ItemSearch = LibStub('LibItemSearch-1.2')
 local Filters = {}
 
-local Search = ns.Addon:NewModule('Search')
+local Search = ns.Addon:NewModule('Search', 'AceEvent-3.0')
 
 function Search:OnInitialize()
     self.filters = {}
@@ -36,16 +36,20 @@ function Search:OnInitialize()
 end
 
 function Search:OnEnable()
-    -- for k, v in pairs(Filters) do
-    --     ItemSearch.Filters[k] = v
-    -- end
+    self:RegisterMessage('TDPACK_OPTION_CHANGED_applyLibItemSearch', 'UpdateLib')
+end
+
+function Search:UpdateLib(_, _, flag)
+    for k, v in pairs(Filters) do
+        ItemSearch.Filters[k] = flag and v or nil
+    end
 end
 
 function Search:Matches(link, search)
     return CustomSearch:Matches(link, search, self.filters)
 end
 
-Filters.spell = {
+Filters.tdpackSpell = {
     keyword = 'spell',
 
     canSearch = function(self, operator, search)
@@ -57,7 +61,7 @@ Filters.spell = {
     end,
 }
 
-Filters.spellName = {
+Filters.tdpackSpellName = {
     tags = {'p', 'spell'},
     onlyTags = true,
 
@@ -71,7 +75,7 @@ Filters.spellName = {
     end,
 }
 
-Filters.equippable = {
+Filters.tdPackEquippable = {
     keyword1 = 'equip',
     keyword2 = EQUIPSET_EQUIP:lower(),
 

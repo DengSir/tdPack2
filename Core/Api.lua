@@ -205,11 +205,11 @@ function ns.GetCursorPosition()
     return x / scale, y / scale
 end
 
-local function CopyTo(src, dest)
+local function CopyFrom(dest, src)
     dest = dest or {}
     for k, v in pairs(src) do
         if type(v) == 'table' then
-            dest[k] = CopyTo(v, {})
+            dest[k] = CopyFrom({}, v)
         else
             dest[k] = v
         end
@@ -217,9 +217,8 @@ local function CopyTo(src, dest)
     return dest
 end
 
-ns.CopyTo = CopyTo
+ns.CopyFrom = CopyFrom
 
-local DEFAULT_ICON = 134400
 local RED_FONT_COLOR_HEX = RED_FONT_COLOR:GenerateHexColor()
 function ns.GetRuleInfo(item)
     local t = type(item)
@@ -244,7 +243,7 @@ function ns.GetRuleInfo(item)
             name = item.rule
             rule = item.rule
         end
-        return name, item.icon or DEFAULT_ICON, rule, item.children and #item.children > 0
+        return name, item.icon or ns.UNKNOWN_ICON, rule, item.children and #item.children > 0
     end
 end
 
