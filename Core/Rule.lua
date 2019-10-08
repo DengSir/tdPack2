@@ -19,12 +19,10 @@ local tconcat, sort = table.concat, table.sort or sort
 local Rule = Addon:NewModule('Rule', 'AceEvent-3.0')
 
 function Rule:OnInitialize()
-    local sortingProfile = Addon:GetSortingRules()
-
     self.nameOrder = Item.GetItemName
     self.typeOrder = Item.GetItemType
     self.subTypeOrder = Item.GetItemSubType
-    self.customOrder = ns.CustomOrder:New(sortingProfile)
+    self.customOrder = ns.CustomOrder:New()
     self.levelQualityOrder = function(item)
         local level = 9999 - item:GetItemLevel()
         local quality = 99 - item:GetItemQuality()
@@ -51,7 +49,7 @@ function Rule:OnInitialize()
         end,
     })
 
-    self.junkOrder = ns.JunkOrder:New(sortingProfile)
+    self.junkOrder = ns.JunkOrder:New()
     self.countOrder = function(item)
         if ns.Pack:IsOptionReverse() then
             return format('%04d', 9999 - item:GetItemCount())
@@ -74,12 +72,13 @@ function Rule:OnInitialize()
         end,
     })
 
-    self:RegisterMessage('TDPACK_SORTING_RULES_UPDATE')
+    self:RegisterMessage('TDPACK_SORTING_RULES_UPDATE', 'Rebuild')
+    self:RegisterMessage('TDPACK_PROFILE_CHANGED', 'Rebuild')
 end
 
-function Rule:TDPACK_SORTING_RULES_UPDATE()
-    self.junkOrder:RequestRebuild()
-    self.customOrder:RequestRebuild()
+function Rule:Rebuild()
+    self.junkOrder:RequestRebuild(Addon:GetSortingRules())
+    self.customOrder:RequestRebuild(Addon:GetSortingRules())
     self.staticOrder:RequestRebuild()
 end
 

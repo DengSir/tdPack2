@@ -27,14 +27,16 @@ local ItemInfoCache = ns.ItemInfoCache
 
 local SortingFrame = UI:NewModule('SortingFrame', 'AceEvent-3.0')
 
+function SortingFrame:OnInitialize()
+    UI.RuleOption:AddTab(L['Sorting rules'], self)
+end
+
 function SortingFrame:OnSetup()
     local Frame = CreateFrame('Frame', nil, UI.RuleOption.Inset)
     Frame:SetAllPoints(true)
     Frame:Hide()
 
-    local profile = Addon:GetSortingRules()
-
-    local List = UI.RuleView:Bind(CreateFrame('ScrollFrame', nil, Frame, 'tdPack2RuleViewTemplate'))
+    local List = UI.RuleView:Bind(CreateFrame('ScrollFrame', nil, Frame, 'tdPack2ScrollFrameTemplate'))
     List:SetPoint('TOPLEFT', 5, -4)
     List:SetPoint('BOTTOMRIGHT', -20, 3)
     List:SetCallback('OnCheckItemCanPutIn', function(_, from, to)
@@ -49,7 +51,7 @@ function SortingFrame:OnSetup()
     List:SetCallback('OnSorted', function()
         self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
     end)
-    List:SetItemTree(profile)
+    List:SetItemTree(Addon:GetSortingRules())
 
     local AddButton = CreateFrame('Button', nil, Frame, 'UIPanelButtonTemplate')
     AddButton:SetPoint('BOTTOMLEFT', UI.RuleOption.Frame, 'BOTTOMLEFT', 0, 0)
@@ -66,10 +68,11 @@ end
 
 function SortingFrame:OnEnable()
     self:RegisterMessage('TDPACK_SORTING_RULES_UPDATE', 'Refresh')
-    self:RegisterMessage('TDPACK_SORTING_RULES_RESET', 'Refresh')
+    self:RegisterMessage('TDPACK_PROFILE_CHANGED', 'Refresh')
 end
 
 function SortingFrame:Refresh()
+    self.List:SetItemTree(Addon:GetSortingRules())
     self.List:Refresh()
 end
 

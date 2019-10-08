@@ -8,7 +8,7 @@ local ADDON, ns = ...
 local Addon = ns.Addon
 local L = ns.L
 
-function Addon:LoadOptionFrame()
+function Addon:InitOptionFrame()
     local index = 0
     local function orderGen()
         index = index + 1
@@ -85,6 +85,8 @@ function Addon:LoadOptionFrame()
         return g
     end
 
+    local charProfileKey = format('%s - %s', UnitName('player'), GetRealmName())
+
     local options = {
         type = 'group',
         name = ADDON,
@@ -97,6 +99,18 @@ function Addon:LoadOptionFrame()
         end,
 
         args = {
+            profile = {
+                type = 'toggle',
+                name = L['Character Specific Settings'],
+                width = 'double',
+                order = orderGen(),
+                set = function(_, checked)
+                    self.db:SetProfile(checked and charProfileKey or 'Default')
+                end,
+                get = function()
+                    return self.db:GetCurrentProfile() == charProfileKey
+                end,
+            },
             general = {
                 type = 'group',
                 name = GENERAL,

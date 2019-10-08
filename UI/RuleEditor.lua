@@ -167,7 +167,7 @@ end
 
 function RuleEditor:OnShow()
     if self.rule then
-        self.RuleInput:SetText(self.rule.rule)
+        self.RuleInput:SetText(self.rule.rule or '')
         self.CommentInput:SetText(self.rule.comment or '')
         self.WhereDropDown:SetValue(self.rule)
         self.WhereDropDown:Disable()

@@ -17,7 +17,7 @@ ns.IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 ns.UNKNOWN_ICON = 134400
 ns.GUI = LibStub('tdGUI-1.0')
 
-function Addon:OnInitialize(args)
+function Addon:OnInitialize()
     local defaults = {
         profile = {
             reverse = false,
@@ -44,15 +44,25 @@ function Addon:OnInitialize(args)
     }
 
     self.db = LibStub('AceDB-3.0'):New('TDDB_PACK2', defaults, true)
-    self.profile = self.db.profile
 
-    if self.profile.firstLoad then
-        self.profile.rules.sorting = CopyTable(ns.DEFAULT_CUSTOM_ORDER)
-        self.profile.firstLoad = false
+    self.db:RegisterCallback('OnProfileChanged', function()
+        self:OnProfileChanged()
+    end)
+end
+
+function Addon:OnEnable()
+    self:InitOptionFrame()
+    self:InitCommands()
+    self:OnProfileChanged()
+end
+
+function Addon:OnProfileChanged()
+    if self.db.profile.firstLoad then
+        self.db.profile.firstLoad = false
+        self.db.profile.rules.sorting = CopyTable(ns.DEFAULT_CUSTOM_ORDER)
     end
 
-    self:LoadOptionFrame()
-    self:InitCommands()
+    self:SendMessage('TDPACK_PROFILE_CHANGED')
 end
 
 function Addon:OnModuleCreated(module)
@@ -66,34 +76,30 @@ function Addon:OnClassCreated(class, name)
     ns[name] = class
 end
 
-function Addon:IsConsoleEnabled()
-    return self.profile.console
-end
-
 function Addon:GetBagClickOption(bagType, token)
-    return self.profile.actions[bagType][token] or nil
+    return self.db.profile.actions[bagType][token] or nil
 end
 
 function Addon:SetBagClickOption(bagType, token, action)
-    self.profile.actions[bagType][token] = action
+    self.db.profile.actions[bagType][token] = action
 end
 
 function Addon:ResetSortingRules()
-    local sorting = wipe(self.profile.rules.sorting)
+    local sorting = wipe(self.db.profile.rules.sorting)
     ns.CopyFrom(sorting, ns.DEFAULT_CUSTOM_ORDER)
     self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
 end
 
 function Addon:GetSortingRules()
-    return self.profile.rules.sorting
+    return self.db.profile.rules.sorting
 end
 
 function Addon:GetOption(key)
-    return self.profile[key]
+    return self.db.profile[key]
 end
 
 function Addon:SetOption(key, value)
-    self.profile[key] = value
+    self.db.profile[key] = value
     self:SendMessage('TDPACK_OPTION_CHANGED_' .. key, key, value)
 end
 

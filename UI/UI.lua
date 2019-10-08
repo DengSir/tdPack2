@@ -9,6 +9,18 @@ local UI = ns.Addon:NewModule('UI', 'LibClass-2.0')
 
 function UI:OnModuleCreated(module)
     self[module:GetName()] = module
+
+    module.AfterSetup = setmetatable({}, {
+        __newindex = function(t, k, v)
+            module[k] = function(...)
+                if module.OnSetup then
+                    return
+                end
+                module[k] = v
+                return v(module, ...)
+            end
+        end,
+    })
 end
 
 function UI:OnClassCreated(class, name)
@@ -53,6 +65,18 @@ function Prototype:Hide()
     if self.Frame then
         HideUIPanel(self.Frame)
     end
+end
+
+function Prototype:SetShown(flag)
+    if flag then
+        self:Show()
+    else
+        self:Hide()
+    end
+end
+
+function Prototype:IsShown()
+    return self.Frame and self.Frame:IsShown()
 end
 
 UI:SetDefaultModulePrototype(Prototype)

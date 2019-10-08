@@ -3,13 +3,33 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/22/2019, 10:42:28 PM
 
-local CreateFrame, ShowUIPanel = CreateFrame, ShowUIPanel
+---- LUA
+local tinsert = table.insert
+local ipairs = ipairs
+local setmetatable = setmetatable
 
+---- WOW
+local CreateFrame, ShowUIPanel = CreateFrame, ShowUIPanel
+local PanelTemplates_SetNumTabs = PanelTemplates_SetNumTabs
+local PanelTemplates_UpdateTabs = PanelTemplates_UpdateTabs
+local PanelTemplates_GetSelectedTab = PanelTemplates_GetSelectedTab
+
+---- NS
 local ns = select(2, ...)
 local L = ns.L
 local UI = ns.UI
 
-local RuleOption = UI:NewModule('RuleOption')
+local RuleOption = UI:NewModule('RuleOption', 'AceEvent-3.0')
+
+function RuleOption:OnInitialize()
+    self.tabModules = {}
+    self.tabs = setmetatable({}, {
+        __index = function(t, i)
+            t[i] = self:CreateTab(i)
+            return t[i]
+        end,
+    })
+end
 
 function RuleOption:OnSetup()
     local Frame = ns.GUI:GetClass('BasicPanel'):New(UIParent)
@@ -19,19 +39,17 @@ function RuleOption:OnSetup()
     Frame:SetMovable(true)
     Frame:SetResizable(true)
     Frame:SetMinResize(337, 423)
-    Frame:RegisterConfig(ns.Addon.profile.ruleOptionWindow)
-    Frame:RestoreSize()
-    Frame:RestorePosition()
+    Frame.Tabs = self.tabs
+    Frame.selectedTab = 1
 
     local Inset = CreateFrame('Frame', nil, Frame, 'InsetFrameTemplate')
     Inset:SetPoint('TOPLEFT', 4, -60)
     Inset:SetPoint('BOTTOMRIGHT', -6, 26)
 
-    local BlockDialog = ns.GUI:GetClass('BlockDialog'):New(Frame) do
-        BlockDialog:SetPoint('TOPLEFT', 3, -22)
-        BlockDialog:SetPoint('BOTTOMRIGHT', -3, 3)
-        BlockDialog:SetFrameLevel(Frame:GetFrameLevel() + 100)
-    end
+    local BlockDialog = ns.GUI:GetClass('BlockDialog'):New(Frame)
+    BlockDialog:SetPoint('TOPLEFT', 3, -22)
+    BlockDialog:SetPoint('BOTTOMRIGHT', -3, 3)
+    BlockDialog:SetFrameLevel(Frame:GetFrameLevel() + 100)
 
     local name = 'tdPackRuleOption'
     _G[name] = Frame
@@ -40,7 +58,55 @@ function RuleOption:OnSetup()
     self.Inset = Inset
     self.Frame = Frame
     self.BlockDialog = BlockDialog
+    self:Refresh()
 
     UI.BlockDialog = BlockDialog
-    UI.SortingFrame:Show()
+end
+
+function RuleOption:OnEnable()
+    self:RegisterMessage('TDPACK_PROFILE_CHANGED', 'Refresh')
+    self:UpdateTabs()
+    self:UpdateTabFrames()
+end
+
+function RuleOption:Refresh()
+    self.Frame:RegisterConfig(ns.Addon:GetOption('ruleOptionWindow'))
+    self.Frame:RestoreSize()
+    self.Frame:RestorePosition()
+end
+
+function RuleOption:AddTab(text, module)
+    self.tabModules[#self.tabModules + 1] = {module = module, text = text}
+    self:UpdateTabs()
+    self:UpdateTabFrames()
+end
+
+function RuleOption:CreateTab(index)
+    local button = CreateFrame('Button', nil, self.Frame, 'tdPack2TabButtonTemplate')
+
+    button:Hide()
+    button:SetText(self.tabModules[index].text)
+    button:SetID(index)
+    if index == 1 then
+        button:SetPoint('TOPLEFT', self.Frame, 'BOTTOMLEFT', 0, 2)
+    else
+        button:SetPoint('LEFT', self.Frame.Tabs[index - 1], 'RIGHT', -16, 0)
+    end
+    button:HookScript('OnClick', function()
+        self:UpdateTabFrames()
+    end)
+    button:Show()
+    return button
+end
+
+function RuleOption.AfterSetup:UpdateTabs()
+    PanelTemplates_SetNumTabs(self.Frame, #self.tabModules)
+    PanelTemplates_UpdateTabs(self.Frame)
+end
+
+function RuleOption.AfterSetup:UpdateTabFrames()
+    local current = PanelTemplates_GetSelectedTab(self.Frame)
+    for i, v in ipairs(self.tabModules) do
+        v.module:SetShown(i == current)
+    end
 end

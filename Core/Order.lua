@@ -10,8 +10,7 @@ local ns = select(2, ...)
 local Order = ns.Addon:NewClass('Order')
 
 function Order:Constructor(profile)
-    self.profile = profile
-    self:RequestRebuild()
+    self:RequestRebuild(profile)
 end
 
 function Order:GetOrder(item)
@@ -19,20 +18,19 @@ function Order:GetOrder(item)
 end
 
 function Order._Meta:__call(item)
+    if self.isDirty then
+        self:Build()
+        self.isDirty = nil
+    end
     return self:GetOrder(item)
 end
 
-function Order:RequestRebuild()
-    if not self.isDirty then
-        self.isDirty = true
+function Order:RequestRebuild(profile)
+    profile = profile or self.profile
 
-        local getOrder = self.GetOrder
-        self.GetOrder = function(self, ...)
-            self:Build()
-            self.isDirty = nil
-            self.GetOrder = getOrder
-            return self:GetOrder(...)
-        end
+    if not self.isDirty or self.profile ~= profile then
+        self.profile = profile
+        self.isDirty = true
     end
 end
 

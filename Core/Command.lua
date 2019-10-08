@@ -17,11 +17,42 @@ local COMMAND = ns.COMMAND
 local ORDER = ns.ORDER
 
 ---- LOCAL
-local COMMANDS = tInvert{COMMAND.ALL, COMMAND.BAG, COMMAND.BANK}
-local ORDERS = tInvert{ORDER.ASC, ORDER.DESC}
+local COMMAND_KEYS = tInvert{COMMAND.ALL, COMMAND.BAG, COMMAND.BANK}
+local ORDER_KEYS = tInvert{ORDER.ASC, ORDER.DESC}
 
 function Addon:InitCommands()
     self:RegisterChatCommand('tdp', 'OnChatSlash')
+
+    self.orders = {
+        [ORDER.ASC] = function()
+            return false
+        end,
+        [ORDER.DESC] = function()
+            return true
+        end,
+        AUTO = function()
+            return self:GetOption('reverse')
+        end,
+    }
+
+    self.commands = {
+        SORT = self:Generate(),
+        SORT_BAG = self:Generate(COMMAND.BAG),
+        SORT_BAG_ASC = self:Generate(COMMAND.BAG, ORDER.ASC),
+        SORT_BAG_DESC = self:Generate(COMMAND.BAG, ORDER.DESC),
+        SORT_BANK = self:Generate(COMMAND.BANK),
+        SORT_BANK_ASC = self:Generate(COMMAND.BANK, ORDER.ASC),
+        SORT_BANK_DESC = self:Generate(COMMAND.BANK, ORDER.DESC),
+        SORT_ASC = self:Generate(ORDER.ASC),
+        SORT_DESC = self:Generate(ORDER.DESC),
+
+        OPEN_RULE_OPTIONS = function()
+            ns.UI.RuleOption:Show()
+        end,
+        OPEN_OPTIONS = function()
+            self:OpenOption()
+        end,
+    }
 end
 
 function Addon:OnChatSlash(text)
@@ -30,10 +61,10 @@ function Addon:OnChatSlash(text)
     local command, order
     repeat
         cmd, offset = self:GetArgs(text, nil, offset)
-        if COMMANDS[cmd] then
+        if COMMAND_KEYS[cmd] then
             command = cmd
         end
-        if ORDERS[cmd] then
+        if ORDER_KEYS[cmd] then
             order = cmd
         end
     until not cmd
@@ -47,10 +78,10 @@ function Addon:ParseArgs(...)
 
     for i = 1, select('#', ...) do
         local cmd = select(i, ...)
-        if COMMANDS[cmd] then
+        if COMMAND_KEYS[cmd] then
             command = cmd
         end
-        if ORDERS[cmd] then
+        if ORDER_KEYS[cmd] then
             order = cmd
         end
     end
@@ -65,17 +96,9 @@ function Addon:ParseArgs(...)
     end
 
     if not order then
-        opts.reverse = function()
-            return self.profile.reverse
-        end
-    elseif order == ORDER.ASC then
-        opts.reverse = function()
-            return false
-        end
-    elseif order == ORDER.DESC then
-        opts.reverse = function()
-            return true
-        end
+        opts.reverse = self.orders.AUTO
+    else
+        opts.reverse = self.orders[order]
     end
     return opts
 end
@@ -91,31 +114,12 @@ function Addon:Generate(...)
     end
 end
 
-local COMMANDS = {
-    SORT = Addon:Generate(),
-    SORT_BAG = Addon:Generate(COMMAND.BAG),
-    SORT_BAG_ASC = Addon:Generate(COMMAND.BAG, ORDER.ASC),
-    SORT_BAG_DESC = Addon:Generate(COMMAND.BAG, ORDER.DESC),
-    SORT_BANK = Addon:Generate(COMMAND.BANK),
-    SORT_BANK_ASC = Addon:Generate(COMMAND.BANK, ORDER.ASC),
-    SORT_BANK_DESC = Addon:Generate(COMMAND.BANK, ORDER.DESC),
-    SORT_ASC = Addon:Generate(ORDER.ASC),
-    SORT_DESC = Addon:Generate(ORDER.DESC),
-
-    OPEN_RULE_OPTIONS = function()
-        ns.UI.RuleOption:Show()
-    end,
-    OPEN_OPTIONS = function()
-        Addon:OpenOption()
-    end,
-}
-
 function Addon:RunCommand(bagType, token)
     local command = self:GetBagClickOption(bagType, token)
     if not command then
         return
     end
-    local func = COMMANDS[command]
+    local func = self.commands[command]
     if func then
         func()
     end

@@ -126,7 +126,7 @@ function Pack:Stop()
 end
 
 function Pack:Message(text)
-    if not Addon:IsConsoleEnabled() then
+    if not Addon:GetOption('console') then
         return
     end
     Addon:Print(text)

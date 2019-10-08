@@ -15,7 +15,7 @@ local format, tostring = string.format, tostring
 ---@class CustomOrder: Order
 local CustomOrder = ns.Addon:NewClass('CustomOrder', ns.Order)
 
-function CustomOrder:Constructor(profile)
+function CustomOrder:Constructor()
     self.methods = {
         function(item)
             return self.simpleOrders[item:GetItemId()]
