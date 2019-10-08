@@ -6,12 +6,13 @@
 ---@type ns
 local ns = select(2, ...)
 local L = ns.L
-local Search = ns.Search
+local UI = ns.UI
 local Addon = ns.Addon
+local Search = ns.Search
 
 local ICON_SIZE = 32
 
-local RuleEditor = ns.UI:NewModule('RuleEditor')
+local RuleEditor = UI:NewModule('RuleEditor')
 
 local function GetText(editbox)
     local text = editbox:GetText():trim()
@@ -19,10 +20,10 @@ local function GetText(editbox)
 end
 
 function RuleEditor:OnSetup()
-    local Frame = CreateFrame('Frame', nil, ns.UI.RuleOption.Frame)
+    local Frame = CreateFrame('Frame', nil, UI.RuleOption.Frame)
     Frame:SetPoint('TOPLEFT', 3, -22)
     Frame:SetPoint('BOTTOMRIGHT', -3, 3)
-    Frame:SetFrameLevel(ns.UI.RuleOption.Frame:GetFrameLevel() + 100)
+    Frame:SetFrameLevel(UI.RuleOption.Frame:GetFrameLevel() + 100)
     Frame:EnableMouse(true)
 
     do

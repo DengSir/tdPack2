@@ -5,10 +5,14 @@
 
 local ns = select(2, ...)
 
-local UI = ns.Addon:NewModule('UI')
+local UI = ns.Addon:NewModule('UI', 'LibClass-2.0')
 
 function UI:OnModuleCreated(module)
     self[module:GetName()] = module
+end
+
+function UI:OnClassCreated(class, name)
+    self[name] = class
 end
 
 local function OnShow(shower)

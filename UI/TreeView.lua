@@ -4,11 +4,13 @@
 -- @Date   : 10/20/2018, 4:28:53 PM
 
 local ns = select(2, ...)
+local UI = ns.UI
 
 local setmetatable, ipairs, type, select = setmetatable, ipairs, type, select
 local tinsert, tremove = table.insert, table.remove
 local ceil, min, abs = math.ceil, math.min, math.abs
 local coroutine = coroutine
+local tIndexOf = tIndexOf
 
 local CreateFrame, HybridScrollFrame_Update = CreateFrame, HybridScrollFrame_Update
 
@@ -18,26 +20,27 @@ local WHERE_AFTER = 1
 local WHERE_BEFORE = 2
 local WHERE_IN = 3
 
-local TreeStatus = ns.Addon:NewClass('TreeStatus')
+local TreeStatus = UI:NewClass('TreeStatus')
 
 function TreeStatus:Constructor()
     self.expend = setmetatable({}, {__mode = 'k'})
 end
 
 function TreeStatus:Iterate(start)
-    return coroutine.wrap(function()
-        local index = 0
-        local function Iterate(tree, depth)
-            for i, item in ipairs(tree) do
-                index = index + 1
-                if not start or index >= start then
-                    coroutine.yield(depth, item, i, tree)
-                end
-                if type(item) == 'table' and type(item.children) == 'table' and self.expend[item] then
-                    Iterate(item.children, depth + 1)
-                end
+    local index = 0
+    local function Iterate(tree, depth)
+        for i, item in ipairs(tree) do
+            index = index + 1
+            if not start or index >= start then
+                coroutine.yield(depth, item, i, tree)
+            end
+            if type(item) == 'table' and type(item.children) == 'table' and self.expend[item] then
+                Iterate(item.children, depth + 1)
             end
         end
+    end
+
+    return coroutine.wrap(function()
         return Iterate(self.itemTree, 1)
     end)
 end
@@ -57,8 +60,7 @@ function TreeStatus:GetCount()
 end
 
 ---@class TreeView: ScrollFrame
-local TreeView = ns.Addon:NewClass('TreeView', ns.ScrollFrame)
-ns.TreeView = TreeView
+local TreeView = UI:NewClass('TreeView', UI.ScrollFrame)
 
 LibStub('AceTimer-3.0'):Embed(TreeView)
 

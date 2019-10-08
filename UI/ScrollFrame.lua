@@ -3,16 +3,18 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 10/20/2018, 7:46:03 PM
 
+local ns = select(2, ...)
+local UI = ns.UI
+
+---- LUA
 local setmetatable, assert, type = setmetatable, assert, type
 local tinsert, tremove, tIndexOf = table.insert, table.remove, tIndexOf
 
+---- WOW
 local CreateFrame = CreateFrame
 
-local ns = select(2, ...)
-
 ---@class ScrollFrame
-local ScrollFrame = ns.Addon:NewClass('ScrollFrame', 'ScrollFrame')
-ns.ScrollFrame = ScrollFrame
+local ScrollFrame = UI:NewClass('ScrollFrame', 'ScrollFrame')
 
 ScrollFrame.GetOffset = HybridScrollFrame_GetOffset
 ScrollFrame.SetOffset = HybridScrollFrame_SetOffset

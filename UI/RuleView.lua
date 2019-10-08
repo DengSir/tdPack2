@@ -6,6 +6,7 @@
 ---@type ns
 local ns = select(2, ...)
 local L = ns.L
+local UI = ns.UI
 local ItemInfoCache = ns.ItemInfoCache
 
 ---- LUA
@@ -28,7 +29,7 @@ local UIParent = UIParent
 local RED_FONT_COLOR_HEX = RED_FONT_COLOR:GenerateHexColor()
 local DEFAULT_ICON = 134400
 
-local RuleView = ns.Addon:NewClass('RuleView', ns.TreeView)
+local RuleView = UI:NewClass('RuleView', UI.TreeView)
 
 LibStub('AceEvent-3.0'):Embed(RuleView)
 

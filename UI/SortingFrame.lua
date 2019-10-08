@@ -21,19 +21,20 @@ local WHERE_IN = 3
 ---@type ns
 local ns = select(2, ...)
 local L = ns.L
+local UI = ns.UI
 local Addon = ns.Addon
 local ItemInfoCache = ns.ItemInfoCache
 
-local SortingFrame = ns.UI:NewModule('SortingFrame', 'AceEvent-3.0')
+local SortingFrame = UI:NewModule('SortingFrame', 'AceEvent-3.0')
 
 function SortingFrame:OnSetup()
-    local Frame = CreateFrame('Frame', nil, ns.UI.RuleOption.Inset)
+    local Frame = CreateFrame('Frame', nil, UI.RuleOption.Inset)
     Frame:SetAllPoints(true)
     Frame:Hide()
 
     local profile = Addon:GetSortingRules()
 
-    local List = ns.RuleView:Bind(CreateFrame('ScrollFrame', nil, Frame, 'tdPack2RuleViewTemplate'))
+    local List = UI.RuleView:Bind(CreateFrame('ScrollFrame', nil, Frame, 'tdPack2RuleViewTemplate'))
     List:SetPoint('TOPLEFT', 5, -4)
     List:SetPoint('BOTTOMRIGHT', -20, 3)
     List:SetCallback('OnCheckItemCanPutIn', function(_, from, to)
@@ -51,12 +52,12 @@ function SortingFrame:OnSetup()
     List:SetItemTree(profile)
 
     local AddButton = CreateFrame('Button', nil, Frame, 'UIPanelButtonTemplate')
-    AddButton:SetPoint('BOTTOMLEFT', ns.UI.RuleOption.Frame, 'BOTTOMLEFT', 0, 0)
+    AddButton:SetPoint('BOTTOMLEFT', UI.RuleOption.Frame, 'BOTTOMLEFT', 0, 0)
     AddButton:SetSize(120, 22)
     MagicButton_OnLoad(AddButton)
     AddButton:SetText(L['Add advance rule'])
     AddButton:SetScript('OnClick', function()
-        ns.UI.RuleEditor:Open()
+        UI.RuleEditor:Open()
     end)
 
     self.List = List
@@ -72,20 +73,17 @@ function SortingFrame:Refresh()
     self.List:Refresh()
 end
 
-local SEPARATOR = {isSeparator = true}
-local GUI = LibStub('tdGUI-1.0', 1)
-
 function SortingFrame:ShowRuleMenu(button, item)
     local name, icon, rule, hasChild = ns.GetRuleInfo(item)
 
-    GUI:ToggleMenu(button, {
+    ns.GUI:ToggleMenu(button, {
         { --
             text = format('|T%s:14|t %s', icon, name),
             isTitle = true,
-        }, SEPARATOR, {
+        }, {
             text = DELETE,
             func = function(...)
-                ns.UI.BlockDialog:Open({
+                UI.BlockDialog:Open({
                     text = hasChild and L['Are you sure |cffff191919DELETE|r rule and its |cffff1919SUBRULES|r?'] or
                         L['Are you sure |cffff191919DELETE|r rule?'],
                     OnAccept = function()
@@ -98,12 +96,8 @@ function SortingFrame:ShowRuleMenu(button, item)
             text = EDIT,
             disabled = not ns.IsAdvanceRule(button.item),
             func = function(...)
-                ns.UI.RuleEditor:Open(item)
+                UI.RuleEditor:Open(item)
             end,
-        }, SEPARATOR, {text = CANCEL},
+        }, {text = CANCEL},
     })
-end
-
-function SortingFrame:ShowAddDialog(button, where)
-
 end

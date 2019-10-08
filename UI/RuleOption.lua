@@ -7,9 +7,9 @@ local CreateFrame, ShowUIPanel = CreateFrame, ShowUIPanel
 
 local ns = select(2, ...)
 local L = ns.L
-local Addon = ns.Addon
+local UI = ns.UI
 
-local RuleOption = ns.UI:NewModule('RuleOption')
+local RuleOption = UI:NewModule('RuleOption')
 
 function RuleOption:OnSetup()
     local Frame = ns.GUI:GetClass('BasicPanel'):New(UIParent)
@@ -19,7 +19,7 @@ function RuleOption:OnSetup()
     Frame:SetMovable(true)
     Frame:SetResizable(true)
     Frame:SetMinResize(337, 423)
-    Frame:RegisterConfig(Addon.profile.ruleOptionWindow)
+    Frame:RegisterConfig(ns.Addon.profile.ruleOptionWindow)
     Frame:RestoreSize()
     Frame:RestorePosition()
 
@@ -41,10 +41,6 @@ function RuleOption:OnSetup()
     self.Frame = Frame
     self.BlockDialog = BlockDialog
 
-    ns.UI.BlockDialog = BlockDialog
-    ns.UI.SortingFrame:Show()
-end
-
-function Addon:OpenRuleOption()
-    RuleOption:Show()
+    UI.BlockDialog = BlockDialog
+    UI.SortingFrame:Show()
 end

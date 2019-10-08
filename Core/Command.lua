@@ -103,7 +103,7 @@ local COMMANDS = {
     SORT_DESC = Addon:Generate(ORDER.DESC),
 
     OPEN_RULE_OPTIONS = function()
-        Addon:OpenRuleOption()
+        ns.UI.RuleOption:Show()
     end,
     OPEN_OPTIONS = function()
         Addon:OpenOption()

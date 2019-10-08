@@ -8,9 +8,9 @@ local ns = select(2, ...)
 
 ---- NS
 local L = ns.L
-local Addon = ns.Addon
 local Bag = ns.Bag
 local Slot = ns.Slot
+local Addon = ns.Addon
 local BAG_TYPE = ns.BAG_TYPE
 
 ---- LUA
