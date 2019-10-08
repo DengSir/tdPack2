@@ -21,19 +21,33 @@ L['Pack finish.'] = true
 
 L['Reverse pack'] = true
 L['Enable chat message'] = true
+L['Character Specific Settings'] = true
 
 L['Left Click'] = true
 L['Right Click'] = true
 
 L['Bag button features'] = true
 L['Bank button features'] = true
-
-L['Before this'] = true
-L['After this'] = true
-L['In this'] = true
+L['Reset sorting rules'] = true
+L['Are you sure to |cffff1919RESET|r sorting rules?'] = true
 
 L['Already exists'] = true
+L['Add advance rule'] = true
+L['Are you sure |cffff191919DELETE|r rule and its |cffff1919SUBRULES|r?'] = true
+L['Are you sure |cffff191919DELETE|r rule?'] = true
 
+L['Root'] = true
+L['Rule'] = true
+L['Put where?'] = true
+L['Name (Optional)'] = true
+L['Select an icon (Optional)'] = true
+L['Sorting rules'] = true
+
+L['Help'] = true
+L['Drag to modify the sorting order'] = true
+L['Put in an item to add simple rule'] = true
+L['Advancee rules use LibItemSearch-1.2'] = true
+L['Enjoy!'] = true
 
 -- for actions
 L.None = true
@@ -56,4 +70,7 @@ L.COMMENT_CLASS = 'Class items'
 -- for rules
 L.KEYWORD_MOUNT = 'Summons and dismisses'
 L.KEYWORD_CLASS = 'Classes'
+
+L.Tools = true
+
 --@end-debug@

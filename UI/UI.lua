@@ -53,6 +53,7 @@ function Prototype:Show()
     if self.OnSetup then
         self:OnSetup()
         self.OnSetup = nil
+        self.AfterSetup = nil
         CreateShower(self)
     end
 

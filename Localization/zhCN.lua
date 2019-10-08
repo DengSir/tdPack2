@@ -15,6 +15,7 @@ L['Pack finish.'] = '整理完成'
 
 L['Reverse pack'] = '反向整理'
 L['Enable chat message'] = '启用聊天窗口消息'
+L['Character Specific Settings'] = '角色独立设置'
 
 L['Left Click'] = '左键'
 L['Right Click'] = '右键'
@@ -35,6 +36,13 @@ L['Rule'] = '规则'
 L['Put where?'] = '放在哪？'
 L['Name (Optional)'] = '名称（可选）'
 L['Select an icon (Optional)'] = '选择一个图标（可选）'
+L['Sorting rules'] = '排序规则'
+
+L['Help'] = '帮助'
+L['Drag to modify the sorting order'] = '拖动以改变规则顺序'
+L['Put in an item to add simple rule'] = '放下一个物品以添加简单规则'
+L['Advancee rules use LibItemSearch-1.2'] = '高级规则使用LibItemSearch-1.2'
+L['Enjoy!'] = '祝你愉快！'
 
 -- for actions
 L.None = '无'

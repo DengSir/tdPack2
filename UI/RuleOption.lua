@@ -46,6 +46,22 @@ function RuleOption:OnSetup()
     Inset:SetPoint('TOPLEFT', 4, -60)
     Inset:SetPoint('BOTTOMRIGHT', -6, 26)
 
+    local Help = CreateFrame('Button', nil, Frame)
+    Help:SetPoint('BOTTOMRIGHT', Inset, 'TOPRIGHT', 0, 0)
+    Help:SetSize(32, 32)
+    Help:SetNormalTexture([[Interface\Common\Help-i]])
+    Help:SetHighlightTexture([[Interface\Common\portrait-ring-withbg-highlight]], 'ADD')
+    Help:SetScript('OnEnter', function(button)
+        GameTooltip:SetOwner(button, 'ANCHOR_BOTTOMLEFT')
+        GameTooltip:SetText(L['Help'])
+        GameTooltip:AddLine(L['Drag to modify the sorting order'], 1, 1, 1)
+        GameTooltip:AddLine(L['Put in an item to add simple rule'], 1, 1, 1)
+        GameTooltip:AddLine(L['Advancee rules use LibItemSearch-1.2'], 1, 1, 1)
+        GameTooltip:AddLine(L['Enjoy!'], 1, 1, 1)
+        GameTooltip:Show()
+    end)
+    Help:SetScript('OnLeave', GameTooltip_Hide)
+
     local BlockDialog = ns.GUI:GetClass('BlockDialog'):New(Frame)
     BlockDialog:SetPoint('TOPLEFT', 3, -22)
     BlockDialog:SetPoint('BOTTOMRIGHT', -3, 3)
@@ -83,12 +99,11 @@ end
 
 function RuleOption:CreateTab(index)
     local button = CreateFrame('Button', nil, self.Frame, 'tdPack2TabButtonTemplate')
-
     button:Hide()
     button:SetText(self.tabModules[index].text)
     button:SetID(index)
     if index == 1 then
-        button:SetPoint('TOPLEFT', self.Frame, 'BOTTOMLEFT', 0, 2)
+        button:SetPoint('TOPLEFT', self.Frame, 'BOTTOMLEFT', 0, 0)
     else
         button:SetPoint('LEFT', self.Frame.Tabs[index - 1], 'RIGHT', -16, 0)
     end

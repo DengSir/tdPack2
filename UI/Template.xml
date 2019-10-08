@@ -47,7 +47,7 @@
                 <Texture parentKey="LeftDisabled" file="Interface\PaperDollInfoFrame\UI-Character-ActiveTab">
                     <Size x="20" y="32"/>
                     <Anchors>
-                        <Anchor point="TOPLEFT" x="0" y="0"/>
+                        <Anchor point="TOPLEFT" x="0" y="4"/>
                     </Anchors>
                     <TexCoords left="0" right="0.15625" top="0" bottom="1.0"/>
                 </Texture>
@@ -68,7 +68,7 @@
                 <Texture parentKey="Left" file="Interface\PaperDollInfoFrame\UI-Character-InActiveTab">
                     <Size x="20" y="32"/>
                     <Anchors>
-                        <Anchor point="TOPLEFT" x="0" y="0"/>
+                        <Anchor point="TOPLEFT" x="0" y="2"/>
                     </Anchors>
                     <TexCoords left="0" right="0.15625" top="0" bottom="1.0"/>
                 </Texture>
@@ -90,7 +90,8 @@
         </Layers>
         <Scripts>
             <OnLoad>
-                self.selectedTextY = 4;
+                self.selectedTextY = 6;
+                self.deselectedTextY = 6;
                 self:SetFrameLevel(self:GetFrameLevel() + 4);
                 self:RegisterEvent("DISPLAY_SIZE_CHANGED");
             </OnLoad>
