@@ -118,12 +118,6 @@ function Addon:InitOptionFrame()
                 args = {
                     reverse = {type = 'toggle', name = L['Reverse pack'], width = 'full', order = orderGen()},
                     console = {type = 'toggle', name = L['Enable chat message'], width = 'full', order = orderGen()},
-                    -- applyLibItemSearch = {
-                    --     type = 'toggle',
-                    --     name = L['Apply to LibItemSearch'],
-                    --     width = 'full',
-                    --     order = orderGen(),
-                    -- },
                     resetSorting = {
                         type = 'execute',
                         name = L['Reset sorting rules'],
@@ -139,6 +133,19 @@ function Addon:InitOptionFrame()
             },
             [ns.BAG_TYPE.BAG] = generateButton(ns.BAG_TYPE.BAG, L['Bag button features']),
             [ns.BAG_TYPE.BANK] = generateButton(ns.BAG_TYPE.BANK, L['Bank button features']),
+            help = {
+                type = 'group',
+                name = L['Help'],
+                order = orderGen(),
+                args = {
+                    applyLibItemSearch = {
+                        type = 'toggle',
+                        name = L['Apply to LibItemSearch'],
+                        width = 'full',
+                        order = orderGen(),
+                    },
+                },
+            },
         },
     }
 

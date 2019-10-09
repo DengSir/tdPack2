@@ -73,19 +73,3 @@ end
 function Item:IsEquippable()
     return self.info.itemEquippable
 end
-
-function Item:NeedSaveToBank()
-    if tdPack:IsLoadToBag() then
-        return ns.Rule:NeedSaveToBank(self) and not ns.Rule:NeedLoadToBag(self)
-    else
-        return ns.Rule:NeedSaveToBank(self)
-    end
-end
-
-function Item:NeedLoadToBag()
-    if tdPack:IsSaveToBank() then
-        return ns.Rule:NeedLoadToBag(self) and not ns.Rule:NeedSaveToBank(self)
-    else
-        return ns.Rule:NeedLoadToBag(self)
-    end
-end

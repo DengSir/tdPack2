@@ -66,7 +66,7 @@ Filters.tdpackSpellName = {
     onlyTags = true,
 
     canSearch = function(self, operator, search)
-        return not operator and search
+        return search
     end,
 
     match = function(self, item, _, search)
@@ -82,7 +82,7 @@ Filters.tdPackEquippable = {
     exclude = tInvert{'INVTYPE_BAG', 'INVTYPE_AMMO'},
 
     canSearch = function(self, operator, search)
-        return not operator and (self.keyword1 == search or self.keyword2 == search:lower())
+        return self.keyword1 == search or self.keyword2 == search:lower()
     end,
 
     match = function(self, link, ...)

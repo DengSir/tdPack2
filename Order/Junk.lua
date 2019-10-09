@@ -53,8 +53,8 @@ function JunkOrder:IsJunk(item)
     end
 end
 
-local IsConjuredItem = ns.memorizenilable(function(itemId)
-    return Search:Matches('item:' .. itemId, CONJURED_ITEM_MATCHS)
+local IsConjuredItem = ns.memorize(function(itemId)
+    return Search:Matches('item:' .. itemId, CONJURED_ITEM_MATCHS) or false
 end)
 
 function JunkOrder:IsConjuredItem(item)

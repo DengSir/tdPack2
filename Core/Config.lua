@@ -3,6 +3,9 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/31/2019, 7:22:32 PM
 
+local ipairs = ipairs
+local tinsert = table.insert
+
 ---@type ns
 local ns = select(2, ...)
 ---@type L
@@ -70,8 +73,9 @@ end
 local CONSUMABLE = GetItemClassInfo(LE_ITEM_CLASS_CONSUMABLE) -- 消耗品
 local QUEST = GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM) -- 任务
 local MISC = GetItemClassInfo(LE_ITEM_CLASS_MISCELLANEOUS) -- 其它
+local TRADEGOODS = GetItemClassInfo(LE_ITEM_CLASS_TRADEGOODS) -- 商品
 
-ns.DEFAULT_CUSTOM_ORDER = {
+ns.DEFAULT_SORTING_RULES = {
     HEARTHSTONE_ITEM_ID, -- 炉石
     TipLocale('MOUNT', 132261), -- 坐骑
     Group(L['Tools'], 134065, {
@@ -133,4 +137,9 @@ ns.DEFAULT_CUSTOM_ORDER = {
         Tip(ITEM_STARTS_QUEST, 132836), -- 接任务
         Rule(nil, 133942, 'spell'), --
     }), -- 任务
+}
+
+ns.DEFAULT_SAVING_RULES = { --
+    16885, -- 重垃圾箱
+    Rule(TRADEGOODS, 132905, 'type:' .. TRADEGOODS .. ' & name:!' .. '潜行者工具'),
 }

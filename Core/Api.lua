@@ -51,18 +51,6 @@ function ns.memorize(func, nilable)
     end
 end
 
-function ns.memorizenilable(func)
-    local cache = {}
-    return function(arg1, ...)
-        local value = cache[arg1]
-        if value == nil then
-            value = func(arg1, ...) or cache
-            cache[arg1] = value
-        end
-        return value ~= cache and value or nil
-    end
-end
-
 local BAGS = {BACKPACK_CONTAINER}
 local BANKS = {BANK_CONTAINER}
 do
@@ -166,16 +154,6 @@ end
 
 function ns.IsBagSlotLocked(bag, slot)
     return (select(3, GetContainerItemInfo(bag, slot)))
-end
-
-function ns.ToOrderCache(list)
-    local len = #tostring(#list)
-    local f = '%0' .. len .. 'd'
-    local cache = {}
-    for i, v in ipairs(list) do
-        cache[v] = format(f, i)
-    end
-    return cache, strrep('9', len)
 end
 
 if ns.IsRetail then

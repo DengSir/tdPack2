@@ -10,12 +10,13 @@ local ns = select(2, ...)
 local L = ns.L
 local Bag = ns.Bag
 local Slot = ns.Slot
+local Item = ns.Item
 local Addon = ns.Addon
 local BAG_TYPE = ns.BAG_TYPE
 
 ---- LUA
 local ripairs = ns.ripairs
-local select, ipairs = select, ipairs
+local select, ipairs, pairs = select, ipairs, pairs
 local tinsert, tremove, wipe = table.insert, table.remove, wipe
 local format = string.format
 local coroutine = coroutine
@@ -28,18 +29,22 @@ local UnitIsDead = UnitIsDead
 ----@class Pack
 local Pack = ns.Addon:NewModule('Pack', 'AceEvent-3.0', 'AceTimer-3.0')
 
-local STATUS_FREE = 0
-local STATUS_READY = 1
-local STATUS_STACKING = 2
-local STATUS_STACKED = 3
-local STATUS_PACKING = 4
-local STATUS_PACKED = 5
-local STATUS_FINISH = 6
-local STATUS_CANCEL = 7
+local STATUS = {
+    FREE = 0, --
+    READY = 1, --
+    STACKING = 2, --
+    STACKED = 3, --
+    SAVING = 4, --
+    SAVED = 5, --
+    PACKING = 6, --
+    PACKED = 7, --
+    FINISH = 8, --
+    CANCEL = 9, --
+}
 
 function Pack:OnInitialize()
     self.isBankOpened = false
-    self.status = STATUS_FREE
+    self.status = STATUS.FREE
     ---@type Slot[]
     self.slots = {}
     ---@type Bag[]
@@ -55,16 +60,16 @@ function Pack:BANKFRAME_OPENED()
 end
 
 function Pack:BANKFRAME_CLOSED()
-    if self.isBankOpened and self.status ~= STATUS_FREE then
-        self:SetStatus(STATUS_CANCEL)
+    if self.isBankOpened and self.status ~= STATUS.FREE then
+        self:SetStatus(STATUS.CANCEL)
         self:Warning(L['Leave bank, pack cancel.'])
     end
     self.isBankOpened = nil
 end
 
 function Pack:PLAYER_REGEN_DISABLED()
-    if self.status ~= STATUS_FREE then
-        self:SetStatus(STATUS_CANCEL)
+    if self.status ~= STATUS.FREE then
+        self:SetStatus(STATUS.CANCEL)
         self:Warning(L['Player enter combat, pack cancel.'])
     end
 end
@@ -87,11 +92,11 @@ function Pack:FindSlot(item, tarSlot)
 end
 
 function Pack:Start(opts)
-    if opts.bank and not opts.bag and not self.isBankOpened then
+    if (opts.bank or opts.save) and not opts.bag and not self.isBankOpened then
         return
     end
 
-    if self.status ~= STATUS_FREE then
+    if self.status ~= STATUS.FREE then
         self:Warning(L['Packing now'])
         return
     end
@@ -113,7 +118,7 @@ function Pack:Start(opts)
 
     self.reverse = opts.reverse()
     self.opts = opts
-    self:SetStatus(STATUS_READY)
+    self:SetStatus(STATUS.READY)
     self:ScheduleRepeatingTimer('OnIdle', 0.03)
 end
 
@@ -122,7 +127,7 @@ function Pack:Stop()
 
     wipe(self.bags)
     wipe(self.slots)
-    self:SetStatus(STATUS_FREE)
+    self:SetStatus(STATUS.FREE)
 end
 
 function Pack:Message(text)
@@ -230,20 +235,7 @@ function Pack:PackReady()
         bank = Bag:New(BAG_TYPE.BANK)
         tinsert(self.bags, bank)
 
-        -- if tdPack:IsLoadToBag() and tdPack:IsSaveToBank() then
-        --     local loadTo = bank:GetSwapItems()
-        --     local saveTo = bag:GetSwapItems()
-
-        --     bag:ChooseItems(loadTo)
-        --     bank:ChooseItems(saveTo)
-
-        --     bag:RestoreItems()
-        --     bank:RestoreItems()
-        -- elseif tdPack:IsLoadToBag() then
-        --     local loadTo = bank:GetSwapItems()
-        --     bag:ChooseItems(loadTo)
-        --     bank:RestoreItems()
-        -- elseif tdPack:IsSaveToBank() then
+        -- if self:IsOptionSaving() then
         --     local saveTo = bag:GetSwapItems()
         --     bank:ChooseItems(saveTo)
         --     bag:RestoreItems()
@@ -271,6 +263,63 @@ function Pack:PackFinish()
     wipe(self.bags)
 end
 
+function Pack:SaveReady()
+    local items = {}
+    local itemSlots = {}
+    local movedSlots = {}
+
+    for _, bag in ipairs(ns.GetBanks()) do
+        for slot = 1, ns.GetBagNumSlots(bag) do
+            if ns.IsBagSlotEmpty(bag, slot) then
+                tinsert(self.slots, Slot:New(nil, bag, slot))
+            end
+        end
+    end
+
+    for _, bag in ipairs(ns.GetBags()) do
+        for slot = 1, ns.GetBagNumSlots(bag) do
+            if not ns.IsBagSlotEmpty(bag, slot) then
+                local item = Item:New(nil, bag, slot)
+                if ns.Rule:IsItemNeedJump(item) then
+                    tinsert(items, item)
+                    itemSlots[item] = Slot:New(nil, bag, slot)
+                end
+            end
+        end
+    end
+
+    ns.Rule:SortItems(items, ns.SORT_TYPE.SAVING)
+
+    for i, item in ipairs(items) do
+        local tarSlot = self.slots[i]
+        if not tarSlot then
+            break
+        end
+
+        local slot = itemSlots[item]
+        slot:MoveTo(tarSlot)
+
+        movedSlots[slot] = true
+    end
+
+    for slot in pairs(movedSlots) do
+        tinsert(self.slots, slot)
+    end
+end
+
+function Pack:Save()
+    for _, slot in ipairs(self.slots) do
+        if slot:IsLocked() then
+            return false
+        end
+    end
+    return true
+end
+
+function Pack:SaveFinish()
+    wipe(self.slots)
+end
+
 function Pack:SetStatus(status)
     self.status = status
 end
@@ -281,7 +330,7 @@ function Pack:StatusReady()
     end
 
     self:StackReady()
-    self:SetStatus(STATUS_STACKING)
+    self:SetStatus(STATUS.STACKING)
 end
 
 function Pack:StatusStacking()
@@ -289,7 +338,7 @@ function Pack:StatusStacking()
         return
     end
 
-    self:SetStatus(STATUS_STACKED)
+    self:SetStatus(STATUS.STACKED)
     self:StackFinish()
 end
 
@@ -298,8 +347,29 @@ function Pack:StatusStacked()
         return
     end
 
+    if self:IsOptionSaving() then
+        self:SaveReady()
+        self:SetStatus(STATUS.SAVING)
+    else
+        self:StatusSaved()
+    end
+end
+
+function Pack:StatusSaving()
+    if not self:Save() then
+        print('save not finish')
+        return
+    end
+
+    print('saved')
+
+    self:SetStatus(STATUS.SAVED)
+    self:SaveFinish()
+end
+
+function Pack:StatusSaved()
     self:PackReady()
-    self:SetStatus(STATUS_PACKING)
+    self:SetStatus(STATUS.PACKING)
 end
 
 function Pack:StatusPacking()
@@ -307,12 +377,12 @@ function Pack:StatusPacking()
         return
     end
 
-    self:SetStatus(STATUS_PACKED)
+    self:SetStatus(STATUS.PACKED)
     self:PackFinish()
 end
 
 function Pack:StatusPacked()
-    self:SetStatus(STATUS_FINISH)
+    self:SetStatus(STATUS.FINISH)
 end
 
 function Pack:StatusFinish()
@@ -325,13 +395,15 @@ function Pack:StatusCancel()
 end
 
 Pack.statusProc = {
-    [STATUS_READY] = Pack.StatusReady,
-    [STATUS_STACKING] = Pack.StatusStacking,
-    [STATUS_STACKED] = Pack.StatusStacked,
-    [STATUS_PACKING] = Pack.StatusPacking,
-    [STATUS_PACKED] = Pack.StatusPacked,
-    [STATUS_FINISH] = Pack.StatusFinish,
-    [STATUS_CANCEL] = Pack.StatusCancel,
+    [STATUS.READY] = Pack.StatusReady,
+    [STATUS.STACKING] = Pack.StatusStacking,
+    [STATUS.STACKED] = Pack.StatusStacked,
+    [STATUS.PACKING] = Pack.StatusPacking,
+    [STATUS.PACKED] = Pack.StatusPacked,
+    [STATUS.SAVING] = Pack.StatusSaving,
+    [STATUS.SAVED] = Pack.StatusSaved,
+    [STATUS.FINISH] = Pack.StatusFinish,
+    [STATUS.CANCEL] = Pack.StatusCancel,
 }
 
 function Pack:OnIdle()
@@ -351,4 +423,8 @@ end
 
 function Pack:IsOptionReverse()
     return self.reverse
+end
+
+function Pack:IsOptionSaving()
+    return self.opts.save and self.isBankOpened
 end

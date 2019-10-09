@@ -114,18 +114,20 @@ end
 function Bag:GetSwapItems()
     wipe(self.swapItems)
 
-    local methodName = self.bagClass == 'bag' and 'NeedSaveToBank' or 'NeedLoadToBag'
-
     for _, group in self:IterateGroups() do
         local items = group:GetItems()
         for index, item in ripairs(items) do
-            if item[methodName](item) then
+            if ns.Rule:IsItemNeedJump(item) then
                 tremove(items, index)
                 tinsert(self.swapItems, item)
             end
         end
     end
-    Rule:SortItems(self.swapItems)
+    ns.Rule:SortItems(self.swapItems, ns.SORT_TYPE.SAVING)
+
+    for i, v in ipairs(self.swapItems) do
+        print(v:GetItemLink())
+    end
 
     return self.swapItems
 end

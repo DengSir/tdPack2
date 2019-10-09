@@ -162,7 +162,7 @@ function RuleEditor:OnSetup()
     end)
     Frame:SetScript('OnHide', Frame.Hide)
 
-    self.root = {children = Addon:GetSortingRules()}
+    self.root = {children = Addon:GetRules(ns.SORT_TYPE.SORTING)}
 end
 
 function RuleEditor:OnShow()

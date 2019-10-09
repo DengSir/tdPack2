@@ -4,6 +4,7 @@
 -- @Date   : 8/30/2019, 11:36:34 PM
 
 local select, assert, unpack, wipe = select, assert, table.unpack or unpack, table.wipe or wipe
+local pairs = pairs
 local CopyTable, tInvert = CopyTable, tInvert
 
 ---@type ns
@@ -22,7 +23,6 @@ function Addon:OnInitialize()
         profile = {
             reverse = false,
             console = true,
-            firstLoad = true,
             applyLibItemSearch = false,
             ruleOptionWindow = {point = 'CENTER', width = 637, height = 637},
             actions = {
@@ -43,6 +43,8 @@ function Addon:OnInitialize()
         },
     }
 
+    self.defaultRules = {sorting = ns.DEFAULT_SORTING_RULES, saving = ns.DEFAULT_SAVING_RULES}
+
     self.db = LibStub('AceDB-3.0'):New('TDDB_PACK2', defaults, true)
 
     self.db:RegisterCallback('OnProfileChanged', function()
@@ -57,12 +59,18 @@ function Addon:OnEnable()
 end
 
 function Addon:OnProfileChanged()
-    if self.db.profile.firstLoad then
-        self.db.profile.firstLoad = false
-        self.db.profile.rules.sorting = CopyTable(ns.DEFAULT_CUSTOM_ORDER)
-    end
-
+    self.db.profile.firstLoad = nil
+    self:SetupRules()
     self:SendMessage('TDPACK_PROFILE_CHANGED')
+end
+
+function Addon:SetupRules()
+    local profile = self.db.profile.rules
+    for key, rules in pairs(self.defaultRules) do
+        if not profile[key] then
+            profile[key] = CopyTable(rules)
+        end
+    end
 end
 
 function Addon:OnModuleCreated(module)
@@ -86,12 +94,18 @@ end
 
 function Addon:ResetSortingRules()
     local sorting = wipe(self.db.profile.rules.sorting)
-    ns.CopyFrom(sorting, ns.DEFAULT_CUSTOM_ORDER)
+    ns.CopyFrom(sorting, ns.DEFAULT_SORTING_RULES)
     self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
 end
 
-function Addon:GetSortingRules()
-    return self.db.profile.rules.sorting
+function Addon:GetRules(sortType)
+    if sortType == ns.SORT_TYPE.SORTING then
+        return self.db.profile.rules.sorting
+    elseif sortType == ns.SORT_TYPE.SAVING then
+        return self.db.profile.rules.saving
+    else
+        assert(false)
+    end
 end
 
 function Addon:GetOption(key)

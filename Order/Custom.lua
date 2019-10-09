@@ -15,7 +15,7 @@ local format, tostring = string.format, tostring
 ---@class CustomOrder: Order
 local CustomOrder = ns.Addon:NewClass('CustomOrder', ns.Order)
 
-function CustomOrder:Constructor()
+function CustomOrder:Constructor(noDefault)
     self.methods = {
         function(item)
             return self.simpleOrders[item:GetItemId()]
@@ -31,6 +31,7 @@ function CustomOrder:Constructor()
         -- end,
     }
 
+    self.noDefault = noDefault
     self.simpleOrders = {}
     self.advanceRules = {}
 end
@@ -88,10 +89,10 @@ function CustomOrder:GetOrderInternal(item)
             return order
         end
     end
-    print(item:GetItemLink())
-    return self.default
+    return not self.noDefault and self.default or nil
 end
 
 function CustomOrder:GetOrder(item)
-    return format(self.formatter, self:GetOrderInternal(item))
+    local order = self:GetOrderInternal(item)
+    return order and format(self.formatter, order) or nil
 end

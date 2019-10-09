@@ -7,5 +7,6 @@
     <Script file="RuleView.lua"/>
     <Script file="RuleOption.lua"/>
     <Script file="SortingFrame.lua"/>
+    <Script file="SavingFrame.lua"/>
     <Script file="RuleEditor.lua"/>
 </Ui>

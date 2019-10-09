@@ -83,7 +83,16 @@ ns.COMMAND = {
     BANK = 'bank', --
 }
 
+ns.EXTRA_COMMAND = {
+    SAVE = 'save'
+}
+
 ns.ORDER = {
     ASC = 'asc', --
     DESC = 'desc', --
+}
+
+ns.SORT_TYPE = {
+    SORTING = 1, --
+    SAVING = 2, --
 }

@@ -15,6 +15,9 @@ local pairs, setmetatable = pairs, setmetatable
 local format = string.format
 local tconcat, sort = table.concat, table.sort or sort
 
+---- ENUM
+local SORT_TYPE = ns.SORT_TYPE
+
 ---@class Rule
 local Rule = Addon:NewModule('Rule', 'AceEvent-3.0')
 
@@ -72,24 +75,34 @@ function Rule:OnInitialize()
         end,
     })
 
+    self.savingOrder = ns.CustomOrder:New(true)
+
+    self.compares = {
+        [ns.SORT_TYPE.SORTING] = function(lhs, rhs)
+            return self.itemOrder(lhs) < self.itemOrder(rhs)
+        end,
+        [ns.SORT_TYPE.SAVING] = function(lhs, rhs)
+            return self.savingOrder(lhs) < self.savingOrder(rhs)
+        end,
+    }
+
     self:RegisterMessage('TDPACK_SORTING_RULES_UPDATE', 'Rebuild')
     self:RegisterMessage('TDPACK_PROFILE_CHANGED', 'Rebuild')
 end
 
 function Rule:Rebuild()
-    self.junkOrder:RequestRebuild(Addon:GetSortingRules())
-    self.customOrder:RequestRebuild(Addon:GetSortingRules())
+    self.junkOrder:RequestRebuild(Addon:GetRules(SORT_TYPE.SORTING))
+    self.customOrder:RequestRebuild(Addon:GetRules(SORT_TYPE.SORTING))
+    self.savingOrder:RequestRebuild(Addon:GetRules(SORT_TYPE.SAVING))
     self.staticOrder:RequestRebuild()
 end
 
-local function comp(lhs, rhs)
-    return Rule:GetOrder(lhs) < Rule:GetOrder(rhs)
+function Rule:SortItems(items, sortType)
+    sortType = sortType or SORT_TYPE.SORTING
+
+    sort(items, self.compares[sortType] or self.compares[SORT_TYPE.SORTING])
 end
 
-function Rule:SortItems(items)
-    sort(items, comp)
-end
-
-function Rule:GetOrder(item)
-    return self.itemOrder(item)
+function Rule:IsItemNeedJump(item)
+    return self.savingOrder(item)
 end
