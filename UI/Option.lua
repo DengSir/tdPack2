@@ -160,7 +160,11 @@ function Addon:InitOptionFrame()
                             console = toggle(L['Enable chat message']),
                             resetSorting = execute(L['Reset sorting rules'],
                                                    L['Are you sure to |cffff1919RESET|r sorting rules?'], function()
-                                Addon:ResetSortingRules()
+                                Addon:ResetRules(ns.SORT_TYPE.SORTING)
+                            end),
+                            resetSaving = execute(L['Reset saving rules'],
+                                                  L['Are you sure to |cffff1919RESET|r saving rules?'], function()
+                                Addon:ResetRules(ns.SORT_TYPE.SAVING)
                             end),
                         },
                     },

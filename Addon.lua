@@ -93,10 +93,14 @@ function Addon:SetBagClickOption(bagType, token, action)
     self.db.profile.actions[bagType][token] = action
 end
 
-function Addon:ResetSortingRules()
-    local sorting = wipe(self.db.profile.rules.sorting)
-    ns.CopyFrom(sorting, ns.DEFAULT_SORTING_RULES)
-    self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
+function Addon:ResetRules(sortType)
+    if sortType == ns.SORT_TYPE.SORTING then
+        ns.CopyFrom(wipe(self.db.profile.rules.sorting), ns.DEFAULT_SORTING_RULES)
+        self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
+    elseif sortType == ns.SORT_TYPE.SAVING then
+        ns.CopyFrom(wipe(self.db.profile.rules.sorting), ns.DEFAULT_SORTING_RULES)
+        self:SendMessage('TDPACK_SAVING_RULES_UPDATE')
+    end
 end
 
 function Addon:GetRules(sortType)
@@ -116,17 +120,4 @@ end
 function Addon:SetOption(key, value)
     self.db.profile[key] = value
     self:SendMessage('TDPACK_OPTION_CHANGED_' .. key, key, value)
-end
-
-function Addon:AddRule(item, where)
-    where.children = where.children or {}
-    tinsert(where.children, item)
-    self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
-end
-
-function Addon:EditRule(item, where)
-    where.rule = item.rule
-    where.comment = item.comment
-    where.icon = item.icon
-    self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
 end

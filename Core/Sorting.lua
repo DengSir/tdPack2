@@ -46,15 +46,6 @@ function Sorting:Process()
     return complete
 end
 
-function Sorting:FindSlot(item, tarSlot)
-    for _, bag in ipairs(self.bags) do
-        local slot = bag:FindSlot(item, tarSlot)
-        if slot then
-            return slot
-        end
-    end
-end
-
 function Sorting:IsLocked()
     for _, bag in ipairs(self.bags) do
         if bag:IsLocked() then

@@ -24,6 +24,8 @@ L['Bag button features'] = '背包按钮功能'
 L['Bank button features'] = '银行按钮功能'
 L['Reset sorting rules'] = '重置排序规则'
 L['Are you sure to |cffff1919RESET|r sorting rules?'] = '你确定|cffff1919重置|r排序规则？'
+L['Reset saving rules'] = '重置保存规则'
+L['Are you sure to |cffff1919RESET|r saving rules?'] = '你确定|cffff1919重置|r保存规则？'
 
 L['Already exists'] = '已经存在'
 L['Add advance rule'] = '添加高级规则'

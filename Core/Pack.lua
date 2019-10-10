@@ -92,10 +92,6 @@ function Pack:IsLocked()
     return (self.bag and self.bag:IsLocked()) or (self.bank and self.bank:IsLocked())
 end
 
-function Pack:FindSlot(item, tarSlot)
-    return self.Sorting:FindSlot(item, tarSlot)
-end
-
 function Pack:Start(opts)
     local save = opts.save()
     if (opts.bank or save) and not opts.bag and not self.isBankOpened then
