@@ -26,8 +26,14 @@ local GetCursorInfo = GetCursorInfo
 local InCombatLockdown = InCombatLockdown
 local UnitIsDead = UnitIsDead
 
-----@class Pack
-local Pack = ns.Addon:NewModule('Pack', 'AceEvent-3.0', 'AceTimer-3.0')
+---@class Pack
+---@field private bag Bag
+---@field private bank Bank
+---@field private Stacking Stacking
+---@field private Saving Saving
+---@field private Sorting Sorting
+local Pack = Addon:NewModule('Pack', 'AceEvent-3.0', 'AceTimer-3.0')
+Pack:SetDefaultModuleState(false)
 
 local STATUS = {
     FREE = 0, --
@@ -45,14 +51,14 @@ local STATUS = {
 function Pack:OnInitialize()
     self.isBankOpened = false
     self.status = STATUS.FREE
-    ---@type Slot[]
-    self.slots = {}
-    ---@type Bag[]
-    self.bags = {}
 
     self:RegisterEvent('BANKFRAME_OPENED')
     self:RegisterEvent('BANKFRAME_CLOSED')
     self:RegisterEvent('PLAYER_REGEN_DISABLED')
+end
+
+function Pack:OnModuleCreated(module)
+    self[module:GetName()] = module
 end
 
 function Pack:BANKFRAME_OPENED()
@@ -74,25 +80,25 @@ function Pack:PLAYER_REGEN_DISABLED()
     end
 end
 
+function Pack:GetBag()
+    return self.bag
+end
+
+function Pack:GetBank()
+    return self.bank
+end
+
 function Pack:IsLocked()
-    for _, bag in ipairs(self.bags) do
-        if bag:IsLocked() then
-            return true
-        end
-    end
+    return (self.bag and self.bag:IsLocked()) or (self.bank and self.bank:IsLocked())
 end
 
 function Pack:FindSlot(item, tarSlot)
-    for _, bag in ipairs(self.bags) do
-        local slot = bag:FindSlot(item, tarSlot)
-        if slot then
-            return slot
-        end
-    end
+    return self.Sorting:FindSlot(item, tarSlot)
 end
 
 function Pack:Start(opts)
-    if (opts.bank or opts.save) and not opts.bag and not self.isBankOpened then
+    local save = opts.save()
+    if (opts.bank or save) and not opts.bag and not self.isBankOpened then
         return
     end
 
@@ -116,6 +122,7 @@ function Pack:Start(opts)
         return
     end
 
+    self.save = save
     self.reverse = opts.reverse()
     self.opts = opts
     self:SetStatus(STATUS.READY)
@@ -124,9 +131,9 @@ end
 
 function Pack:Stop()
     self:CancelAllTimers()
-
-    wipe(self.bags)
-    wipe(self.slots)
+    self.Stacking:Disable()
+    self.Saving:Disable()
+    self.Sorting:Disable()
     self:SetStatus(STATUS.FREE)
 end
 
@@ -141,185 +148,6 @@ function Pack:Warning(text)
     return self:Message(format('|cffff0000%s|r', text))
 end
 
-function Pack:IterateBags()
-    return coroutine.wrap(function()
-        if self:IsOptionBag() then
-            for _, bag in ipairs(ns.GetBags()) do
-                coroutine.yield(bag)
-            end
-        end
-
-        if self:IsOptionBank() then
-            if self.isBankOpened then
-                for _, bag in ipairs(ns.GetBanks()) do
-                    coroutine.yield(bag)
-                end
-            end
-        end
-    end)
-end
-
-function Pack:StackReady()
-    for bag in self:IterateBags() do
-        for slot = 1, ns.GetBagNumSlots(bag) do
-            tinsert(self.slots, Slot:New(nil, bag, slot))
-        end
-    end
-end
-
-function Pack:Stack()
-    local stackingSlots = {}
-    local complete = true
-
-    local function isCanStack(slot)
-        if slot:IsEmpty() then
-            return false
-        end
-        if not slot:IsFull() then
-            return true
-        end
-
-        if not self:IsOptionBank() or not self:IsOptionBag() then
-            return false
-        end
-
-        local stacking = stackingSlots[slot:GetItemId()]
-        if not stacking then
-            return false
-        end
-
-        if stacking:IsBank() and slot:IsBag() then
-            return true
-        end
-
-        return false
-    end
-
-    for i, slot in ripairs(self.slots) do
-        if slot:IsLocked() then
-            complete = false
-        else
-            if isCanStack(slot) then
-                local itemId = slot:GetItemId()
-                if stackingSlots[itemId] then
-                    slot:MoveTo(stackingSlots[itemId])
-
-                    stackingSlots[itemId] = nil
-                    complete = false
-                else
-                    stackingSlots[itemId] = slot
-                end
-            else
-                tremove(self.slots, i)
-            end
-        end
-    end
-    return complete
-end
-
-function Pack:StackFinish()
-    wipe(self.slots)
-end
-
-function Pack:PackReady()
-    wipe(self.bags)
-
-    local bag, bank
-
-    if self:IsOptionBag() then
-        bag = Bag:New(BAG_TYPE.BAG)
-        tinsert(self.bags, bag)
-    end
-
-    if self:IsOptionBank() then
-        bank = Bag:New(BAG_TYPE.BANK)
-        tinsert(self.bags, bank)
-
-        -- if self:IsOptionSaving() then
-        --     local saveTo = bag:GetSwapItems()
-        --     bank:ChooseItems(saveTo)
-        --     bag:RestoreItems()
-        -- end
-
-        bank:Sort()
-    end
-
-    if bag then
-        bag:Sort()
-    end
-end
-
-function Pack:Pack()
-    local complete = true
-    for _, bag in ipairs(self.bags) do
-        if not bag:Pack() then
-            complete = false
-        end
-    end
-    return complete
-end
-
-function Pack:PackFinish()
-    wipe(self.bags)
-end
-
-function Pack:SaveReady()
-    local items = {}
-    local itemSlots = {}
-    local movedSlots = {}
-
-    for _, bag in ipairs(ns.GetBanks()) do
-        for slot = 1, ns.GetBagNumSlots(bag) do
-            if ns.IsBagSlotEmpty(bag, slot) then
-                tinsert(self.slots, Slot:New(nil, bag, slot))
-            end
-        end
-    end
-
-    for _, bag in ipairs(ns.GetBags()) do
-        for slot = 1, ns.GetBagNumSlots(bag) do
-            if not ns.IsBagSlotEmpty(bag, slot) then
-                local item = Item:New(nil, bag, slot)
-                if ns.Rule:IsItemNeedJump(item) then
-                    tinsert(items, item)
-                    itemSlots[item] = Slot:New(nil, bag, slot)
-                end
-            end
-        end
-    end
-
-    ns.Rule:SortItems(items, ns.SORT_TYPE.SAVING)
-
-    for i, item in ipairs(items) do
-        local tarSlot = self.slots[i]
-        if not tarSlot then
-            break
-        end
-
-        local slot = itemSlots[item]
-        slot:MoveTo(tarSlot)
-
-        movedSlots[slot] = true
-    end
-
-    for slot in pairs(movedSlots) do
-        tinsert(self.slots, slot)
-    end
-end
-
-function Pack:Save()
-    for _, slot in ipairs(self.slots) do
-        if slot:IsLocked() then
-            return false
-        end
-    end
-    return true
-end
-
-function Pack:SaveFinish()
-    wipe(self.slots)
-end
-
 function Pack:SetStatus(status)
     self.status = status
 end
@@ -329,26 +157,30 @@ function Pack:StatusReady()
         return
     end
 
-    self:StackReady()
+    self.bag = Bag:New(BAG_TYPE.BAG)
+    self.bank = Bag:New(BAG_TYPE.BANK)
+
+    self.Stacking:Enable()
     self:SetStatus(STATUS.STACKING)
 end
 
 function Pack:StatusStacking()
-    if not self:Stack() then
+    if not self.Stacking:Process() then
         return
     end
 
+    self.Stacking:Disable()
     self:SetStatus(STATUS.STACKED)
-    self:StackFinish()
 end
 
 function Pack:StatusStacked()
     if self:IsLocked() then
+        print('stacked locked')
         return
     end
 
     if self:IsOptionSaving() then
-        self:SaveReady()
+        self.Saving:Enable()
         self:SetStatus(STATUS.SAVING)
     else
         self:StatusSaved()
@@ -356,29 +188,31 @@ function Pack:StatusStacked()
 end
 
 function Pack:StatusSaving()
-    if not self:Save() then
-        print('save not finish')
+    if not self.Saving:Process() then
         return
     end
 
-    print('saved')
-
+    self.Saving:Disable()
     self:SetStatus(STATUS.SAVED)
-    self:SaveFinish()
 end
 
 function Pack:StatusSaved()
-    self:PackReady()
+    if self:IsLocked() then
+        print('saved locked')
+        return
+    end
+
+    self.Sorting:Enable()
     self:SetStatus(STATUS.PACKING)
 end
 
 function Pack:StatusPacking()
-    if not self:Pack() then
+    if not self.Sorting:Process() then
         return
     end
 
+    self.Sorting:Disable()
     self:SetStatus(STATUS.PACKED)
-    self:PackFinish()
 end
 
 function Pack:StatusPacked()
@@ -407,7 +241,7 @@ Pack.statusProc = {
 }
 
 function Pack:OnIdle()
-    local proc = self.statusProc[self.status]
+    local proc = assert(self.statusProc[self.status])
     if proc then
         proc(self)
     end
@@ -426,5 +260,5 @@ function Pack:IsOptionReverse()
 end
 
 function Pack:IsOptionSaving()
-    return self.opts.save and self.isBankOpened
+    return self.save and self.isBankOpened
 end

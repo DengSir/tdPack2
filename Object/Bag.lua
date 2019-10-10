@@ -12,17 +12,15 @@ local select, pairs, ipairs = select, pairs, ipairs
 local tinsert, tremove, wipe = table.insert, table.remove, wipe or table.wipe
 
 ---- NS
-local BAG_TYPE = ns.BAG_TYPE
 local Group = ns.Group
-local Rule = ns.Rule
 
 ---@class Bag
+---@field private groups Group[]
 local Bag = ns.Addon:NewClass('Bag')
 
 function Bag:Constructor(bagClass)
-    self.bags = bagClass == BAG_TYPE.BAG and ns.GetBags() or ns.GetBanks()
+    self.bags = bagClass == ns.BAG_TYPE.BAG and ns.GetBags() or ns.GetBanks()
     self.groups = {}
-    self.swapItems = {}
     self:InitGroups()
 end
 
@@ -94,14 +92,11 @@ function Bag:ChooseItems(items)
     self:GetNormalGroup():ChooseItems(items)
 end
 
-function Bag:RestoreItems()
-    for _, item in ripairs(self.swapItems) do
-        tinsert(item:GetParent():GetItems(), item)
-    end
-    wipe(self.swapItems)
-end
-
 function Bag:Sort()
+    for _, group in self:IterateGroups() do
+        group:InitItems()
+    end
+
     for _, group in self:IterateTradeGroups() do
         group:ChooseItems(self:GetNormalGroup():GetItems())
     end
@@ -109,25 +104,4 @@ function Bag:Sort()
         group:SortItems()
         group:FilterSlots()
     end
-end
-
-function Bag:GetSwapItems()
-    wipe(self.swapItems)
-
-    for _, group in self:IterateGroups() do
-        local items = group:GetItems()
-        for index, item in ripairs(items) do
-            if ns.Rule:IsItemNeedJump(item) then
-                tremove(items, index)
-                tinsert(self.swapItems, item)
-            end
-        end
-    end
-    ns.Rule:SortItems(self.swapItems, ns.SORT_TYPE.SAVING)
-
-    for i, v in ipairs(self.swapItems) do
-        print(v:GetItemLink())
-    end
-
-    return self.swapItems
 end

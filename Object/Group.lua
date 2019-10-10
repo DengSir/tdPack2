@@ -24,11 +24,11 @@ local Group = ns.Addon:NewClass('Group', ns.Base)
 
 function Group:Constructor(parent, family)
     self.family = family
+    ---@type Slot[]
     self.slots = {}
     self.items = {}
 
     self:InitSlots()
-    self:InitItems()
 end
 
 function Group:GetFamily()
@@ -70,8 +70,10 @@ end
 ---- items
 
 function Group:InitItems()
+    wipe(self.items)
+
     for _, slot in ipairs(self.slots) do
-        if not ns.IsBagSlotEmpty(slot:GetBag(), slot:GetSlot()) then
+        if not slot:IsEmpty() then
             tinsert(self.items, Item:New(self, slot:GetBag(), slot:GetSlot()))
         end
     end
@@ -201,4 +203,13 @@ function Group:ChooseItems(items)
             tinsert(self.items, item)
         end
     end
+end
+
+function Group:IsLocked()
+    for _, slot in ipairs(self.slots) do
+        if slot:IsLocked() then
+            return true
+        end
+    end
+    return false
 end

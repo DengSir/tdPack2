@@ -3,7 +3,16 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/30/2019, 11:46:11 PM
 
----@type ns
+---@class ns
+---@field Item Item
+---@field Bag Bag
+---@field Slot Slot
+---@field Group Group
+---@field Pack Pack
+---@field Rule Rule
+---@field Order Order
+---@field CachableOrder CachableOrder
+---@field CustomOrder CustomOrder
 local ns = select(2, ...)
 
 ---- LUA
@@ -33,6 +42,9 @@ local function riter(t, i)
     end
 end
 
+---@generic T
+---@param t T[]
+---@return fun(): number, T
 function ns.ripairs(t)
     assert(type(t) == 'table')
 

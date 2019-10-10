@@ -11,6 +11,8 @@ local InCombatLockdown = InCombatLockdown
 local PickupContainerItem = PickupContainerItem
 
 ---@class Slot: Base
+---@field private bag number
+---@field private slot number
 local Slot = ns.Addon:NewClass('Slot', ns.Base)
 
 function Slot:Constructor(parent, bag, slot)
@@ -18,37 +20,30 @@ function Slot:Constructor(parent, bag, slot)
     self.slot = slot
 end
 
----@return number
 function Slot:GetBag()
     return self.bag
 end
 
----@return number
 function Slot:GetSlot()
     return self.slot
 end
 
----@return number|string
 function Slot:GetItemId()
     return ns.GetBagSlotId(self.bag, self.slot)
 end
 
----@return number
 function Slot:GetFamily()
     return ns.GetBagSlotFamily(self.bag, self.slot)
 end
 
----@return boolean
 function Slot:IsEmpty()
     return ns.IsBagSlotEmpty(self.bag, self.slot)
 end
 
----@return boolean
 function Slot:IsFull()
     return ns.IsBagSlotFull(self.bag, self.slot)
 end
 
----@return boolean
 function Slot:IsLocked()
     return ns.IsBagSlotLocked(self.bag, self.slot)
 end

@@ -46,7 +46,7 @@ L['Enjoy!'] = '祝你愉快！'
 
 -- for actions
 L.None = '无'
-L.SORT = '整理全部'
+L.SORT = '默认整理'
 L.SORT_BAG = '整理背包'
 L.SORT_BAG_ASC = '顺序整理背包'
 L.SORT_BAG_DESC = '逆序整理背包'
@@ -57,6 +57,7 @@ L.SORT_ASC = '顺序整理全部'
 L.SORT_DESC = '逆序整理全部'
 L.OPEN_RULE_OPTIONS = '打开规则设置'
 L.OPEN_OPTIONS = '打开设置'
+L.SAVE = '保存到银行'
 
 -- rules comment
 L.COMMENT_MOUNT = '坐骑'

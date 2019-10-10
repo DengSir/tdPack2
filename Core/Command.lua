@@ -22,20 +22,29 @@ local COMMAND_KEYS = tInvert{COMMAND.ALL, COMMAND.BAG, COMMAND.BANK}
 local ORDER_KEYS = tInvert{ORDER.ASC, ORDER.DESC}
 local EXTRA_COMMANDS_KEYS = tInvert{EXTRA_COMMAND.SAVE}
 
-dump(EXTRA_COMMANDS_KEYS)
-
 function Addon:InitCommands()
     self:RegisterChatCommand('tdp', 'OnChatSlash')
 
-    self.orders = {
-        [ORDER.ASC] = function()
-            return false
-        end,
-        [ORDER.DESC] = function()
-            return true
-        end,
+    local function optTrue()
+        return true
+    end
+
+    local function optFalse()
+        return false
+    end
+
+    self.optOrders = {
+        [ORDER.ASC] = optTrue,
+        [ORDER.DESC] = optFalse,
         AUTO = function()
             return self:GetOption('reverse')
+        end,
+    }
+
+    self.optSavings = {
+        [EXTRA_COMMAND.SAVE] = optTrue,
+        AUTO = function()
+            return self:GetOption('saving')
         end,
     }
 
@@ -49,6 +58,7 @@ function Addon:InitCommands()
         SORT_BANK_DESC = self:Generate(COMMAND.BANK, ORDER.DESC),
         SORT_ASC = self:Generate(ORDER.ASC),
         SORT_DESC = self:Generate(ORDER.DESC),
+        SAVE = self:Generate(EXTRA_COMMAND.SAVE),
 
         OPEN_RULE_OPTIONS = function()
             ns.UI.RuleOption:Show()
@@ -105,16 +115,16 @@ function Addon:ParseArgs(...)
     end
 
     if not order then
-        opts.reverse = self.orders.AUTO
+        opts.reverse = self.optOrders.AUTO
     else
-        opts.reverse = self.orders[order]
+        opts.reverse = self.optOrders[order]
     end
 
-    if extra then
-        opts.save = true
+    if not extra then
+        opts.save = self.optSavings.AUTO
+    else
+        opts.save = self.optSavings[extra]
     end
-
-    dump(opts)
 
     return opts
 end
