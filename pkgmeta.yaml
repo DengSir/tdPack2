@@ -2,7 +2,7 @@ enable-nolib-creation: no
 externals:
     Libs/tdGUI:
         url: https://github.com/DengSir/tdGUI.git
-        tag: 80000.04
+        tag: 80000.05
     Libs/tdGUI/Libs/LibClass-2.0:
         url: https://github.com/DengSir/LibClass-2.0.git
     Libs/LibItemSearch-1.2:
