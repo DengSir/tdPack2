@@ -128,6 +128,7 @@ function TreeView:StartSorting(button)
     button:StartMoving()
     button:LockHighlight()
     button:Show()
+    GameTooltip:Hide()
 
     self.sortingButton = button
     self:ScheduleRepeatingTimer('OnTimer', 0.1)
@@ -177,10 +178,11 @@ function TreeView:CommitSorting()
     elseif button.parent and button.index then
         tinsert(button.parent, button.index, button.item)
     else
+        self:StopSorting()
         return
     end
-    self:Fire('OnSorted')
     self:StopSorting()
+    self:Fire('OnListChanged')
 end
 
 function TreeView:OnTimer()

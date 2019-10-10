@@ -94,6 +94,7 @@ function Addon:InitOptionFrame()
                     {name = L.SORT_BANK, value = 'SORT_BANK'}, --
                     {name = L.SORT_BANK_ASC, value = 'SORT_BANK_ASC'}, --
                     {name = L.SORT_BANK_DESC, value = 'SORT_BANK_DESC'}, --
+                    {name = L.SAVE, value = 'SAVE'}, --
                     {name = L.OPEN_RULE_OPTIONS, value = 'OPEN_RULE_OPTIONS'}, --
                     {name = L.OPEN_OPTIONS, value = 'OPEN_OPTIONS'}, --
                 },
@@ -169,7 +170,7 @@ function Addon:InitOptionFrame()
                         order = orderGen(),
                         inline = true,
                         args = { --
-                            applyLibItemSearch = toggle(L['Apply to LibItemSearch']),
+                            applyLibItemSearch = toggle(L['Add extension filter to LibItemSearch-1.2']),
                         },
                     },
                 },

@@ -42,6 +42,10 @@ L['Put where?'] = true
 L['Name (Optional)'] = true
 L['Select an icon (Optional)'] = true
 L['Sorting rules'] = true
+L['Saving rules'] = true
+L['Save to bank when default packing'] = true
+L['Global'] = true
+L['Add extension filter to LibItemSearch-1.2'] = true
 
 L['Help'] = true
 L['Drag to modify the sorting order'] = true
@@ -51,7 +55,7 @@ L['Enjoy!'] = true
 
 -- for actions
 L.None = true
-L.SORT = 'Pack all'
+L.SORT = 'Default pack'
 L.SORT_BAG = 'Pack bag'
 L.SORT_BAG_ASC = 'Pack bag asc'
 L.SORT_BAG_DESC = 'Pack bag desc'
@@ -62,6 +66,7 @@ L.SORT_ASC = 'Pack asc'
 L.SORT_DESC = 'Pack desc'
 L.OPEN_RULE_OPTIONS = 'Open rule options'
 L.OPEN_OPTIONS = 'Open options'
+L.SAVE = 'Save to bank'
 
 -- rules comment
 L.COMMENT_MOUNT = 'Mount'

@@ -3,6 +3,17 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/29/2019, 12:25:28 AM
 
+---- LUA
+local tinsert, tremove = table.insert, table.remove
+local pairs, ipairs, setmetatable = pairs, ipairs, setmetatable
+local coroutine = coroutine
+local floor = math.floor
+
+---- WOW
+local CreateFrame = CreateFrame
+local GetContainerItemLink = GetContainerItemLink
+local GetItemIcon = GetItemIcon
+
 ---@type ns
 local ns = select(2, ...)
 local L = ns.L
@@ -161,8 +172,6 @@ function RuleEditor:OnSetup()
         self:OnShow()
     end)
     Frame:SetScript('OnHide', Frame.Hide)
-
-    self.root = {children = Addon:GetRules(ns.SORT_TYPE.SORTING)}
 end
 
 function RuleEditor:OnShow()
@@ -196,12 +205,23 @@ function RuleEditor:OnSaveClick()
         comment = GetText(self.CommentInput),
         icon = self.selectedIcon,
     }
+
     if self.rule then
-        Addon:EditRule(item, self.rule)
+        local where = self.rule
+        ns.CopyFrom(wipe(where), item)
+        dump(where)
     else
-        Addon:AddRule(item, self.WhereDropDown:GetValue())
+        local where = self.WhereDropDown:GetValue()
+        where.children = where.children or {}
+        tinsert(where.children, item)
     end
     self:Hide()
+
+    dump(self.root)
+
+    if self.callback then
+        self.callback()
+    end
 end
 
 function RuleEditor:CreateWhereItemTable(profile)
@@ -227,7 +247,6 @@ function RuleEditor:CreateWhereItemTable(profile)
 
             tinsert(menuTable, {
                 checkable = true,
-                -- text = format('|T%s:12|t %s', icon, name),
                 text = name,
                 value = v,
                 checked = function(item, owner)
@@ -324,7 +343,9 @@ function RuleEditor:IterateBags()
     end)
 end
 
-function RuleEditor:Open(rule)
+function RuleEditor:Open(rule, root, callback)
     self.rule = rule
+    self.callback = callback
+    self.root = {children = root}
     self:Show()
 end

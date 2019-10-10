@@ -39,16 +39,7 @@ function SortingFrame:OnSetup()
     local List = UI.RuleView:Bind(CreateFrame('ScrollFrame', nil, Frame, 'tdPack2ScrollFrameTemplate'))
     List:SetPoint('TOPLEFT', 5, -4)
     List:SetPoint('BOTTOMRIGHT', -20, 3)
-    List:SetCallback('OnCheckItemCanPutIn', function(_, from, to)
-        return ns.IsAdvanceRule(to)
-    end)
-    List:SetCallback('OnItemClick', function(List, button)
-        List:ToggleItem(button.item)
-    end)
-    List:SetCallback('OnItemRightClick', function(_, button)
-        self:ShowRuleMenu(button, button.item)
-    end)
-    List:SetCallback('OnSorted', function()
+    List:SetCallback('OnListChanged', function()
         self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
     end)
 
@@ -58,7 +49,7 @@ function SortingFrame:OnSetup()
     MagicButton_OnLoad(AddButton)
     AddButton:SetText(L['Add advance rule'])
     AddButton:SetScript('OnClick', function()
-        UI.RuleEditor:Open()
+        List:OpenEditor()
     end)
 
     self.List = List
@@ -74,33 +65,4 @@ end
 function SortingFrame:Refresh()
     self.List:SetItemTree(Addon:GetRules(ns.SORT_TYPE.SORTING))
     self.List:Refresh()
-end
-
-function SortingFrame:ShowRuleMenu(button, item)
-    local name, icon, rule, hasChild = ns.GetRuleInfo(item)
-
-    ns.GUI:ToggleMenu(button, {
-        { --
-            text = format('|T%s:14|t %s', icon, name),
-            isTitle = true,
-        }, {
-            text = DELETE,
-            func = function(...)
-                UI.BlockDialog:Open({
-                    text = hasChild and L['Are you sure |cffff191919DELETE|r rule and its |cffff1919SUBRULES|r?'] or
-                        L['Are you sure |cffff191919DELETE|r rule?'],
-                    OnAccept = function()
-                        tremove(button.parent, button.index)
-                        self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
-                    end,
-                })
-            end,
-        }, {
-            text = EDIT,
-            disabled = not ns.IsAdvanceRule(button.item),
-            func = function(...)
-                UI.RuleEditor:Open(item)
-            end,
-        }, {text = CANCEL},
-    })
 end

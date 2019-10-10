@@ -37,9 +37,12 @@ end
 
 function Search:OnEnable()
     self:RegisterMessage('TDPACK_OPTION_CHANGED_applyLibItemSearch', 'UpdateLib')
+    self:UpdateLib()
 end
 
-function Search:UpdateLib(_, _, flag)
+function Search:UpdateLib()
+    local flag = ns.Addon:GetOption('applyLibItemSearch')
+
     for k, v in pairs(Filters) do
         ItemSearch.Filters[k] = flag and v or nil
     end
