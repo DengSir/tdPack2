@@ -209,15 +209,12 @@ function RuleEditor:OnSaveClick()
     if self.rule then
         local where = self.rule
         ns.CopyFrom(wipe(where), item)
-        dump(where)
     else
         local where = self.WhereDropDown:GetValue()
         where.children = where.children or {}
         tinsert(where.children, item)
     end
     self:Hide()
-
-    dump(self.root)
 
     if self.callback then
         self.callback()
