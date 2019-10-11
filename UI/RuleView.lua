@@ -27,7 +27,6 @@ local GameTooltip = GameTooltip
 local UIParent = UIParent
 
 ---- LOCAL
-local RED_FONT_COLOR_HEX = RED_FONT_COLOR:GenerateHexColor()
 local DELETE, EDIT, CANCEL = DELETE, EDIT, CANCEL
 
 local RuleView = UI:NewClass('RuleView', UI.TreeView)
