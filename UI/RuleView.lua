@@ -12,8 +12,7 @@ local ItemInfoCache = ns.ItemInfoCache
 ---- LUA
 local format = string.format
 local tremove = table.remove
-local select, type = select, type
-local tContains = tContains
+local select, type, ipairs = select, type, ipairs
 
 ---- WOW
 local ClearCursor = ClearCursor
@@ -84,7 +83,6 @@ function RuleView:OnItemClick(button)
 end
 
 function RuleView:OnItemRightClick(button)
-    print(button, button.item)
     self:ShowRuleMenu(button, button.item)
 end
 
@@ -108,9 +106,21 @@ function RuleView:OnItemLeave()
     GameTooltip:Hide()
 end
 
+local function Contains(tree, item)
+    for i, v in ipairs(tree) do
+        if v == item then
+            return true
+        elseif ns.IsAdvanceRule(v) then
+            if v.children and Contains(v.children, item) then
+                return true
+            end
+        end
+    end
+end
+
 function RuleView:StartCursorCatching(item)
     local catcher = self.cursorCatcher or self:CreateCursorCatcher()
-    local exists = tContains(self:GetItemTree(), item)
+    local exists = Contains(self:GetItemTree(), item)
     catcher.item = item
     catcher.exists = exists
     catcher.bg:SetShown(exists)

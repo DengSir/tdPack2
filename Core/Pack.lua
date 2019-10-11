@@ -171,7 +171,6 @@ end
 
 function Pack:StatusStacked()
     if self:IsLocked() then
-        print('stacked locked')
         return
     end
 
@@ -194,7 +193,6 @@ end
 
 function Pack:StatusSaved()
     if self:IsLocked() then
-        print('saved locked')
         return
     end
 
