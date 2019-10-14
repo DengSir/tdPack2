@@ -15,7 +15,6 @@ local Addon = ns.Addon
 local BAG_TYPE = ns.BAG_TYPE
 
 ---- LUA
-local ripairs = ns.ripairs
 local select, ipairs, pairs = select, ipairs, pairs
 local tinsert, tremove, wipe = table.insert, table.remove, wipe
 local format = string.format
@@ -26,39 +25,52 @@ local GetCursorInfo = GetCursorInfo
 local InCombatLockdown = InCombatLockdown
 local UnitIsDead = UnitIsDead
 
+local STATUS = {
+    FREE = 0, --
+    READY = 1, --
+    STACKING = 2, --
+    SAVING = 3, --
+    SORTING = 4, --
+    FINISH = 5, --
+    CANCEL = 6, --
+}
+
 ---@class Pack
 ---@field private bag Bag
 ---@field private bank Bank
 ---@field private Stacking Stacking
 ---@field private Saving Saving
 ---@field private Sorting Sorting
+---@field private tasks table<STATUS, Task>
 local Pack = Addon:NewModule('Pack', 'AceEvent-3.0', 'AceTimer-3.0')
 Pack:SetDefaultModuleState(false)
-
-local STATUS = {
-    FREE = 0, --
-    READY = 1, --
-    STACKING = 2, --
-    STACKED = 3, --
-    SAVING = 4, --
-    SAVED = 5, --
-    PACKING = 6, --
-    PACKED = 7, --
-    FINISH = 8, --
-    CANCEL = 9, --
-}
 
 function Pack:OnInitialize()
     self.isBankOpened = false
     self.status = STATUS.FREE
+    self.tasks = { --
+        [STATUS.STACKING] = ns.Stacking:New(),
+        [STATUS.SAVING] = ns.Saving:New(),
+        [STATUS.SORTING] = ns.Sorting:New(),
+
+        [STATUS.READY] = function()
+            self:NextStep()
+        end,
+        [STATUS.FINISH] = function()
+            self:Stop()
+            self:Message(L['Pack finish.'])
+        end,
+        [STATUS.CANCEL] = function()
+            self:Stop()
+            for _, task in pairs(self.tasks) do
+                task:Finish()
+            end
+        end,
+    }
 
     self:RegisterEvent('BANKFRAME_OPENED')
     self:RegisterEvent('BANKFRAME_CLOSED')
     self:RegisterEvent('PLAYER_REGEN_DISABLED')
-end
-
-function Pack:OnModuleCreated(module)
-    self[module:GetName()] = module
 end
 
 function Pack:BANKFRAME_OPENED()
@@ -121,16 +133,25 @@ function Pack:Start(opts)
     self.save = save
     self.reverse = opts.reverse()
     self.opts = opts
+
+    self.bag = Bag:New(BAG_TYPE.BAG)
+    self.bank = Bag:New(BAG_TYPE.BANK)
+
+    if self:IsLocked() then
+        self:Stop()
+        self:Warning(L['Some slot is locked'])
+        return
+    end
+
     self:SetStatus(STATUS.READY)
     self:ScheduleRepeatingTimer('OnIdle', 0.03)
 end
 
 function Pack:Stop()
     self:CancelAllTimers()
-    self.Stacking:Disable()
-    self.Saving:Disable()
-    self.Sorting:Disable()
     self:SetStatus(STATUS.FREE)
+    self.bag = nil
+    self.bank = nil
 end
 
 function Pack:Message(text)
@@ -148,96 +169,16 @@ function Pack:SetStatus(status)
     self.status = status
 end
 
-function Pack:StatusReady()
-    if self:IsLocked() then
-        return
-    end
-
-    self.bag = Bag:New(BAG_TYPE.BAG)
-    self.bank = Bag:New(BAG_TYPE.BANK)
-
-    self.Stacking:Enable()
-    self:SetStatus(STATUS.STACKING)
+function Pack:NextStep()
+    self.status = self.status + 1
 end
-
-function Pack:StatusStacking()
-    if not self.Stacking:Process() then
-        return
-    end
-
-    self.Stacking:Disable()
-    self:SetStatus(STATUS.STACKED)
-end
-
-function Pack:StatusStacked()
-    if self:IsLocked() then
-        return
-    end
-
-    if self:IsOptionSaving() then
-        self.Saving:Enable()
-        self:SetStatus(STATUS.SAVING)
-    else
-        self:StatusSaved()
-    end
-end
-
-function Pack:StatusSaving()
-    if not self.Saving:Process() then
-        return
-    end
-
-    self.Saving:Disable()
-    self:SetStatus(STATUS.SAVED)
-end
-
-function Pack:StatusSaved()
-    if self:IsLocked() then
-        return
-    end
-
-    self.Sorting:Enable()
-    self:SetStatus(STATUS.PACKING)
-end
-
-function Pack:StatusPacking()
-    if not self.Sorting:Process() then
-        return
-    end
-
-    self.Sorting:Disable()
-    self:SetStatus(STATUS.PACKED)
-end
-
-function Pack:StatusPacked()
-    self:SetStatus(STATUS.FINISH)
-end
-
-function Pack:StatusFinish()
-    self:Stop()
-    self:Message(L['Pack finish.'])
-end
-
-function Pack:StatusCancel()
-    self:Stop()
-end
-
-Pack.statusProc = {
-    [STATUS.READY] = Pack.StatusReady,
-    [STATUS.STACKING] = Pack.StatusStacking,
-    [STATUS.STACKED] = Pack.StatusStacked,
-    [STATUS.PACKING] = Pack.StatusPacking,
-    [STATUS.PACKED] = Pack.StatusPacked,
-    [STATUS.SAVING] = Pack.StatusSaving,
-    [STATUS.SAVED] = Pack.StatusSaved,
-    [STATUS.FINISH] = Pack.StatusFinish,
-    [STATUS.CANCEL] = Pack.StatusCancel,
-}
 
 function Pack:OnIdle()
-    local proc = assert(self.statusProc[self.status])
-    if proc then
-        proc(self)
+    local task = self.tasks[self.status]
+    if task then
+        if task() then
+            self:NextStep()
+        end
     end
 end
 

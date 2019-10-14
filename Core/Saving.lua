@@ -16,13 +16,13 @@ local Item = ns.Item
 
 ---@class Saving
 ---@field private slots Slot[]
-local Saving = Pack:NewModule('Saving')
+local Saving = ns.Addon:NewClass('Saving', ns.Task)
 
-function Saving:OnInitialize()
+function Saving:Constructor()
     self.slots = {}
 end
 
-function Saving:OnEnable()
+function Saving:Prepare()
     local bag = Pack:GetBag()
     local bank = Pack:GetBank()
 
@@ -90,7 +90,7 @@ function Saving:OnEnable()
     CheckGroup(bank:GetNormalGroup())
 end
 
-function Saving:OnDisable()
+function Saving:Finish()
     wipe(self.slots)
 end
 

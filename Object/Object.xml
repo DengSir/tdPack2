@@ -6,4 +6,5 @@
     <Script file="Group.lua"/>
     <Script file="Bag.lua"/>
     <Script file="Order.lua"/>
+    <Script file="Task.lua"/>
 </Ui>

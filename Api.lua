@@ -11,6 +11,7 @@
 ---@field Pack Pack
 ---@field Rule Rule
 ---@field Order Order
+---@field Task Task
 ---@field CachableOrder CachableOrder
 ---@field CustomOrder CustomOrder
 local ns = select(2, ...)
@@ -31,6 +32,7 @@ local GetItemFamily = GetItemFamily
 local GetItemIcon = GetItemIcon
 local GetItemInfoInstant = GetItemInfoInstant
 local GetItemQualityColor = GetItemQualityColor
+local PickupContainerItem = PickupContainerItem
 
 ---- UI
 local UIParent = UIParent
@@ -166,6 +168,10 @@ end
 
 function ns.IsBagSlotLocked(bag, slot)
     return (select(3, GetContainerItemInfo(bag, slot)))
+end
+
+function ns.PickupBagSlot(bag, slot)
+    return PickupContainerItem(bag, slot)
 end
 
 if ns.IsRetail then

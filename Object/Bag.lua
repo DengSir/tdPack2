@@ -7,7 +7,6 @@
 local ns = select(2, ...)
 
 ---- LUA
-local ripairs = ns.ripairs
 local select, pairs, ipairs = select, pairs, ipairs
 local tinsert, tremove, wipe = table.insert, table.remove, wipe or table.wipe
 
