@@ -83,6 +83,15 @@ ns.DEFAULT_SORTING_RULES = {
         2901, -- 矿工锄
         5956, -- 铁匠锤
         7005, -- 剥皮刀
+        9149, -- 点金石
+        16207, -- 符文奥金棒
+        11145, -- 符文真银棒
+        11130, -- 符文金棒
+        6339, -- 符文银棒
+        6218, -- 符文铜棒
+        6219, -- 扳手
+        10498, -- 侏儒微调器
+        19727, -- 血镰刀
         Weapon(LE_ITEM_WEAPON_FISHINGPOLE, 132932), -- 鱼竿
     }), --
     Rule(EQUIPSET_EQUIP, 132722, 'equip', {
@@ -141,5 +150,5 @@ ns.DEFAULT_SORTING_RULES = {
 
 ns.DEFAULT_SAVING_RULES = { --
     16885, -- 重垃圾箱
-    Rule(TRADEGOODS, 132905, 'type:' .. TRADEGOODS .. ' & name:!' .. '潜行者工具'),
+    Rule(TRADEGOODS, 132905, 'type:' .. TRADEGOODS .. ' & !spell & !bop'),
 }

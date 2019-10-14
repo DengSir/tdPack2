@@ -98,7 +98,7 @@ function Addon:ResetRules(sortType)
         ns.CopyFrom(wipe(self.db.profile.rules.sorting), ns.DEFAULT_SORTING_RULES)
         self:SendMessage('TDPACK_SORTING_RULES_UPDATE')
     elseif sortType == ns.SORT_TYPE.SAVING then
-        ns.CopyFrom(wipe(self.db.profile.rules.sorting), ns.DEFAULT_SORTING_RULES)
+        ns.CopyFrom(wipe(self.db.profile.rules.saving), ns.DEFAULT_SAVING_RULES)
         self:SendMessage('TDPACK_SAVING_RULES_UPDATE')
     end
 end
