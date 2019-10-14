@@ -11,15 +11,15 @@ local ns = select(2, ...)
 
 local Pack = ns.Pack
 
----@class Sorting
+---@class Sorting: Task
 ---@field private bags Bag[]
-local Sorting = Pack:NewModule('Sorting')
+local Sorting = ns.Addon:NewClass('Sorting', ns.Task)
 
-function Sorting:OnInitialize()
+function Sorting:Constructor()
     self.bags = {}
 end
 
-function Sorting:OnEnable()
+function Sorting:Prepare()
     if Pack:IsOptionBag() then
         local bag = Pack:GetBag()
         tinsert(self.bags, bag)
@@ -32,7 +32,7 @@ function Sorting:OnEnable()
     end
 end
 
-function Sorting:OnDisable()
+function Sorting:Finish()
     wipe(self.bags)
 end
 
@@ -44,12 +44,4 @@ function Sorting:Process()
         end
     end
     return complete
-end
-
-function Sorting:IsLocked()
-    for _, bag in ipairs(self.bags) do
-        if bag:IsLocked() then
-            return true
-        end
-    end
 end

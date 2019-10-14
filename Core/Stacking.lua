@@ -16,20 +16,16 @@ local Pack = ns.Pack
 ---@class Stacking
 ---@field private slots Slot[]
 ---@field private stackingSlots table<number, Slot>
-local Stacking = ns.Pack:NewModule('Stacking')
+local Stacking = ns.Addon:NewClass('Stacking', ns.Task)
 
-function Stacking:OnInitialize()
+function Stacking:Constructor()
     self.slots = {}
     self.stackingSlots = {}
 end
 
-function Stacking:OnEnable()
-    if Pack:IsOptionBag() then
-        self:InitBag(Pack:GetBag())
-    end
-    if Pack:IsOptionBank() then
-        self:InitBag(Pack:GetBank())
-    end
+function Stacking:Prepare()
+    self:InitBag(Pack:GetBag())
+    self:InitBag(Pack:GetBank())
 end
 
 function Stacking:InitBag(bag)
@@ -40,7 +36,7 @@ function Stacking:InitBag(bag)
     end
 end
 
-function Stacking:OnDisable()
+function Stacking:Finish()
     wipe(self.slots)
     wipe(self.stackingSlots)
 end

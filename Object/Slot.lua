@@ -75,8 +75,8 @@ function Slot:MoveTo(slot)
         return false, 'some slot is locked'
     end
 
-    PickupContainerItem(self.bag, self.slot)
-    PickupContainerItem(slot.bag, slot.slot)
+    ns.PickupBagSlot(self.bag, self.slot)
+    ns.PickupBagSlot(slot.bag, slot.slot)
 
     return true
 end
