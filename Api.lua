@@ -37,6 +37,37 @@ local PickupContainerItem = PickupContainerItem
 ---- UI
 local UIParent = UIParent
 
+---- ENUM
+ns.BAG_TYPE = {
+    BAG = 'bag', --
+    BANK = 'bank', --
+}
+
+ns.BAG_TYPES = {
+    ns.BAG_TYPE.BAG, --
+    ns.BAG_TYPE.BANK, --
+}
+
+ns.COMMAND = {
+    ALL = 'all', --
+    BAG = 'bag', --
+    BANK = 'bank', --
+}
+
+ns.EXTRA_COMMAND = {
+    SAVE = 'save', --
+}
+
+ns.ORDER = {
+    ASC = 'asc', --
+    DESC = 'desc', --
+}
+
+ns.SORT_TYPE = {
+    SORTING = 1, --
+    SAVING = 2, --
+}
+
 local function riter(t, i)
     i = i - 1
     if i > 0 then
@@ -53,7 +84,7 @@ function ns.ripairs(t)
     return riter, t, #t + 1
 end
 
-function ns.memorize(func, nilable)
+function ns.memorize(func)
     local cache = {}
     return function(arg1, ...)
         local value = cache[arg1]
@@ -65,35 +96,38 @@ function ns.memorize(func, nilable)
     end
 end
 
-local BAGS = {BACKPACK_CONTAINER}
-local BANKS = {BANK_CONTAINER}
+local BAGS = { --
+    [ns.BAG_TYPE.BAG] = {BACKPACK_CONTAINER},
+    [ns.BAG_TYPE.BANK] = {BANK_CONTAINER},
+}
+local BAG_SETS = {}
+
 do
     for i = 1, NUM_BAG_SLOTS do
-        tinsert(BAGS, i)
+        tinsert(BAGS[ns.BAG_TYPE.BAG], i)
     end
 
     for i = 1, NUM_BANKBAGSLOTS do
-        tinsert(BANKS, i + NUM_BAG_SLOTS)
+        tinsert(BAGS[ns.BAG_TYPE.BANK], i + NUM_BAG_SLOTS)
+    end
+
+    for bagType, v in pairs(BAGS) do
+        for _, bagId in pairs(v) do
+            BAG_SETS[bagId] = bagType
+        end
     end
 end
 
-local BAGS_SET = tInvert(BAGS)
-local BANKS_SET = tInvert(BANKS)
-
 function ns.IsBag(id)
-    return BAGS_SET[id]
+    return BAG_SETS[id] == ns.BAG_TYPE.BAG
 end
 
 function ns.IsBank(id)
-    return BANKS_SET[id]
+    return BAG_SETS[id] == ns.BAG_TYPE.BANK
 end
 
-function ns.GetBags()
-    return BAGS
-end
-
-function ns.GetBanks()
-    return BANKS
+function ns.GetBags(bagType)
+    return BAGS[bagType]
 end
 
 function ns.GetItemFamily(itemId)
@@ -201,11 +235,11 @@ function ns.GetCursorPosition()
     return x / scale, y / scale
 end
 
-local function CopyFrom(dest, src)
+function ns.CopyFrom(dest, src)
     dest = dest or {}
     for k, v in pairs(src) do
         if type(v) == 'table' then
-            dest[k] = CopyFrom({}, v)
+            dest[k] = ns.CopyFrom({}, v)
         else
             dest[k] = v
         end
@@ -213,9 +247,6 @@ local function CopyFrom(dest, src)
     return dest
 end
 
-ns.CopyFrom = CopyFrom
-
-local RED_FONT_COLOR_HEX = RED_FONT_COLOR:GenerateHexColor()
 function ns.GetRuleInfo(item)
     local t = type(item)
     if t == 'number' then
@@ -227,7 +258,7 @@ function ns.GetRuleInfo(item)
             color = select(4, GetItemQualityColor(info.itemQuality))
         else
             name = RETRIEVING_ITEM_INFO
-            color = RED_FONT_COLOR_HEX
+            color = RED_FONT_COLOR:GenerateHexColor()
         end
         return format('|c%s%s|r', color, name), icon
     elseif t == 'table' then

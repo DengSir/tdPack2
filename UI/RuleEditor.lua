@@ -331,11 +331,10 @@ end
 
 function RuleEditor:IterateBags()
     return coroutine.wrap(function()
-        for _, bag in ipairs(ns.GetBags()) do
-            coroutine.yield(bag)
-        end
-        for _, bag in ipairs(ns.GetBanks()) do
-            coroutine.yield(bag)
+        for _, bagType in ipairs(ns.BAG_TYPES) do
+            for _, bag in ipairs(ns.GetBags(bagType)) do
+                coroutine.yield(bag)
+            end
         end
     end)
 end

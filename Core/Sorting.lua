@@ -20,15 +20,12 @@ function Sorting:Constructor()
 end
 
 function Sorting:Prepare()
-    if Pack:IsOptionBag() then
-        local bag = Pack:GetBag()
-        tinsert(self.bags, bag)
-        bag:Sort()
-    end
-    if Pack:IsOptionBank() then
-        local bank = Pack:GetBank()
-        tinsert(self.bags, bank)
-        bank:Sort()
+    for _, bagType in ipairs(ns.BAG_TYPES) do
+        if Pack:IsOptionBag(bagType) then
+            local bag = Pack:GetBag(bagType)
+            tinsert(self.bags, bag)
+            bag:Sort()
+        end
     end
 end
 

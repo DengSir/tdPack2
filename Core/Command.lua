@@ -13,6 +13,7 @@ local ns = select(2, ...)
 ---- NS
 local Addon = ns.Addon
 local Pack = ns.Pack
+local BAG_TYPE = ns.BAG_TYPE
 local COMMAND = ns.COMMAND
 local EXTRA_COMMAND = ns.EXTRA_COMMAND
 local ORDER = ns.ORDER
@@ -106,12 +107,12 @@ function Addon:ParseArgs(...)
     end
 
     if command == COMMAND.ALL then
-        opts.bank = true
-        opts.bag = true
+        opts[BAG_TYPE.BANK] = true
+        opts[BAG_TYPE.BAG] = true
     elseif command == COMMAND.BAG then
-        opts.bag = true
+        opts[BAG_TYPE.BAG] = true
     elseif command == COMMAND.BANK then
-        opts.bank = true
+        opts[BAG_TYPE.BANK] = true
     end
 
     if not order then

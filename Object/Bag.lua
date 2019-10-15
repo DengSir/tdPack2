@@ -17,18 +17,18 @@ local Group = ns.Group
 ---@field private groups Group[]
 local Bag = ns.Addon:NewClass('Bag')
 
-function Bag:Constructor(bagClass)
-    self.bags = bagClass == ns.BAG_TYPE.BAG and ns.GetBags() or ns.GetBanks()
+function Bag:Constructor(bagType)
+    self.bags = ns.GetBags(bagType)
     self.groups = {}
     self:InitGroups()
 end
 
 function Bag:InitGroups()
-    local initedGroups = {}
+    local initedFamilies = {}
     for _, bag in ipairs(self.bags) do
         local bagFamily = ns.GetBagFamily(bag)
-        if bagFamily and not initedGroups[bagFamily] then
-            initedGroups[bagFamily] = true
+        if bagFamily and not initedFamilies[bagFamily] then
+            initedFamilies[bagFamily] = true
 
             local group = Group:New(self, bagFamily)
             if bagFamily == 0 then
