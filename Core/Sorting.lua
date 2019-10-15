@@ -27,6 +27,7 @@ function Sorting:Prepare()
             bag:Sort()
         end
     end
+    return #self.bags == 0
 end
 
 function Sorting:Finish()

@@ -25,6 +25,10 @@ function Saving:Constructor()
 end
 
 function Saving:Prepare()
+    if not Pack:IsOptionSaving() then
+        return true
+    end
+
     local bag = Pack:GetBag(BAG_TYPE.BAG)
     local bank = Pack:GetBag(BAG_TYPE.BANK)
 
@@ -103,4 +107,8 @@ function Saving:Process()
         end
     end
     return true
+end
+
+function Saving:IsRunable()
+    return Pack:IsOptionSaving()
 end

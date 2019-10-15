@@ -10,7 +10,8 @@ L['Player enter combat, pack cancel.'] = '进入战斗，整理中止。'
 L['Packing now'] = '正在整理'
 L['Player is dead'] = '角色已死亡'
 L['Player in combat'] = '正在战斗'
-L['Please drop the item, money or skills.'] = true
+L['Please drop the item, money or skills.'] = '请放下鼠标上的东西'
+L['Some slot is locked'] = '一些物品已锁定'
 L['Pack finish.'] = '整理完成'
 
 L['Reverse pack'] = '反向整理'

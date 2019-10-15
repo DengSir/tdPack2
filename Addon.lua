@@ -31,6 +31,7 @@ function Addon:OnInitialize()
                     [ns.CLICK_TOKENS.RIGHT] = 'OPEN_RULE_OPTIONS',
                     [ns.CLICK_TOKENS.CONTROL_LEFT] = 'SORT_BAG',
                     [ns.CLICK_TOKENS.CONTROL_RIGHT] = 'OPEN_OPTIONS',
+                    [ns.CLICK_TOKENS.SHIFT_LEFT] = 'SAVE',
                 },
                 [ns.COMMAND.BANK] = {
                     [ns.CLICK_TOKENS.LEFT] = 'SORT',
@@ -44,7 +45,10 @@ function Addon:OnInitialize()
         },
     }
 
-    self.defaultRules = {sorting = ns.DEFAULT_SORTING_RULES, saving = ns.DEFAULT_SAVING_RULES}
+    self.defaultRules = {
+        sorting = ns.DEFAULT_SORTING_RULES, --
+        saving = ns.DEFAULT_SAVING_RULES, --
+    }
 
     self.db = LibStub('AceDB-3.0'):New('TDDB_PACK2', defaults, true)
 
