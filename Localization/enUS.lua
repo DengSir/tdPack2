@@ -17,6 +17,7 @@ L['Packing now'] = true
 L['Player is dead'] = true
 L['Player in combat'] = true
 L['Please drop the item, money or skills.'] = true
+L['Some slot is locked'] = true
 L['Pack finish.'] = true
 
 L['Reverse pack'] = true
@@ -35,6 +36,8 @@ L['Already exists'] = true
 L['Add advance rule'] = true
 L['Are you sure |cffff191919DELETE|r rule and its |cffff1919SUBRULES|r?'] = true
 L['Are you sure |cffff191919DELETE|r rule?'] = true
+L['Reset saving rules'] = true
+L['Are you sure to |cffff1919RESET|r saving rules?'] = true
 
 L['Root'] = true
 L['Rule'] = true

@@ -9,37 +9,22 @@ local ns = select(2, ...)
 ---@class Task
 local Task = ns.Addon:NewClass('Task')
 
-function Task:Constructor()
-    self.running = false
-end
-
 function Task._Meta:__call()
     if not self.running then
         if ns.Pack:IsLocked() then
             return false
         end
 
-        self:Prepare()
+        if self:Prepare() then
+            return true
+        end
         self.running = true
+    else
+        if self:Process() then
+            self:Finish()
+            self.running = nil
+            return true
+        end
     end
-
-    if self:Process() then
-        self:Finish()
-        self.running = nil
-        return true
-    end
-
     return false
-end
-
-function Task:Prepare()
-    error('Not implementation')
-end
-
-function Task:Process()
-    error('Not implementation')
-end
-
-function Task:Finish()
-    error('Not implementation')
 end

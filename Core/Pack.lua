@@ -53,19 +53,9 @@ function Pack:OnInitialize()
         [STATUS.SAVING] = ns.Saving:New(),
         [STATUS.SORTING] = ns.Sorting:New(),
 
-        [STATUS.READY] = function()
-            self:NextStep()
-        end,
-        [STATUS.FINISH] = function()
-            self:Stop()
-            self:Message(L['Pack finish.'])
-        end,
-        [STATUS.CANCEL] = function()
-            self:Stop()
-            for _, task in pairs(self.tasks) do
-                task:Finish()
-            end
-        end,
+        [STATUS.READY] = self.NextStep,
+        [STATUS.FINISH] = self.Finish,
+        [STATUS.CANCEL] = self.Cancel,
     }
 
     self:RegisterEvent('BANKFRAME_OPENED')
@@ -156,6 +146,19 @@ function Pack:Stop()
     wipe(self.bags)
 end
 
+function Pack:Finish()
+    self:Stop()
+    self:Message(L['Pack finish.'])
+end
+
+function Pack:Cancel()
+    self:Stop()
+
+    for _, task in pairs(self.tasks) do
+        task:Finish()
+    end
+end
+
 function Pack:Message(text)
     if not Addon:GetOption('console') then
         return
@@ -178,7 +181,7 @@ end
 function Pack:OnIdle()
     local task = self.tasks[self.status]
     if task then
-        if task() then
+        if task(self) then
             self:NextStep()
         end
     end
