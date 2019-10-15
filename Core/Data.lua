@@ -71,28 +71,3 @@ ns.CLICK_LIST = {
     GenerateClickData('LeftButton', 1, 1, 1), --
     GenerateClickData('RightButton', 1, 1, 1), --
 }
-
-ns.BAG_TYPE = {
-    BAG = 'bag', --
-    BANK = 'bank', --
-}
-
-ns.COMMAND = {
-    ALL = 'all', --
-    BAG = 'bag', --
-    BANK = 'bank', --
-}
-
-ns.EXTRA_COMMAND = {
-    SAVE = 'save'
-}
-
-ns.ORDER = {
-    ASC = 'asc', --
-    DESC = 'desc', --
-}
-
-ns.SORT_TYPE = {
-    SORTING = 1, --
-    SAVING = 2, --
-}

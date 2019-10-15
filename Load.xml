@@ -8,5 +8,4 @@
     <Include file="Order\Order.xml"/>
     <Include file="UI\UI.xml"/>
     <Include file="Button\Button.xml"/>
-    <Script file="Debug.lua"/>
 </Ui>

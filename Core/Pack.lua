@@ -36,8 +36,7 @@ local STATUS = {
 }
 
 ---@class Pack
----@field private bag Bag
----@field private bank Bank
+---@field private bags table<BAG_TYPE, Bag>
 ---@field private Stacking Stacking
 ---@field private Saving Saving
 ---@field private Sorting Sorting
@@ -48,6 +47,7 @@ Pack:SetDefaultModuleState(false)
 function Pack:OnInitialize()
     self.isBankOpened = false
     self.status = STATUS.FREE
+    self.bags = {}
     self.tasks = { --
         [STATUS.STACKING] = ns.Stacking:New(),
         [STATUS.SAVING] = ns.Saving:New(),
@@ -92,16 +92,16 @@ function Pack:PLAYER_REGEN_DISABLED()
     end
 end
 
-function Pack:GetBag()
-    return self.bag
-end
-
-function Pack:GetBank()
-    return self.bank
+function Pack:GetBag(bagType)
+    return self.bags[bagType]
 end
 
 function Pack:IsLocked()
-    return (self.bag and self.bag:IsLocked()) or (self.bank and self.bank:IsLocked())
+    for _, bag in pairs(self.bags) do
+        if bag:IsLocked() then
+            return true
+        end
+    end
 end
 
 function Pack:Start(opts)
@@ -134,8 +134,11 @@ function Pack:Start(opts)
     self.reverse = opts.reverse()
     self.opts = opts
 
-    self.bag = Bag:New(BAG_TYPE.BAG)
-    self.bank = Bag:New(BAG_TYPE.BANK)
+    self.bags[BAG_TYPE.BAG] = Bag:New(BAG_TYPE.BAG)
+
+    if self.isBankOpened then
+        self.bags[BAG_TYPE.BANK] = Bag:New(BAG_TYPE.BANK)
+    end
 
     if self:IsLocked() then
         self:Stop()
@@ -150,8 +153,7 @@ end
 function Pack:Stop()
     self:CancelAllTimers()
     self:SetStatus(STATUS.FREE)
-    self.bag = nil
-    self.bank = nil
+    wipe(self.bags)
 end
 
 function Pack:Message(text)
@@ -182,12 +184,11 @@ function Pack:OnIdle()
     end
 end
 
-function Pack:IsOptionBag()
-    return self.opts.bag
-end
-
-function Pack:IsOptionBank()
-    return self.opts.bank and self.isBankOpened
+function Pack:IsOptionBag(bagType)
+    if bagType == BAG_TYPE.BANK and not self.isBankOpened then
+        return false
+    end
+    return self.opts[bagType]
 end
 
 function Pack:IsOptionReverse()

@@ -10,6 +10,8 @@ local ipairs = ipairs
 ---@type ns
 local ns = select(2, ...)
 
+local BAG_TYPE = ns.BAG_TYPE
+
 local Pack = ns.Pack
 local Rule = ns.Rule
 local Item = ns.Item
@@ -23,8 +25,8 @@ function Saving:Constructor()
 end
 
 function Saving:Prepare()
-    local bag = Pack:GetBag()
-    local bank = Pack:GetBank()
+    local bag = Pack:GetBag(BAG_TYPE.BAG)
+    local bank = Pack:GetBag(BAG_TYPE.BANK)
 
     if not bank or not bag then
         return
