@@ -118,6 +118,9 @@ function RuleEditor:OnSetup()
     CommentInput:SetPoint('TOPLEFT', WhereDropDown, 'BOTTOMLEFT', 0, -30)
     CommentInput:SetPoint('TOPRIGHT', WhereDropDown, 'BOTTOMRIGHT', 0, -30)
     CommentInput:SetHeight(22)
+    CommentInput:HookScript('OnTextChanged', function()
+        self:UpdateValid()
+    end)
     self:CreateLabel(CommentInput, L['Name (Optional)'])
 
     local IconsFrame = CreateFrame('Frame', nil, Frame)
@@ -261,8 +264,9 @@ function RuleEditor:CreateWhereItemTable(profile)
 end
 
 function RuleEditor:UpdateValid()
-    -- local rule = GetText(self.RuleInput)
-    -- self.ExecButton:SetEnabled(rule)
+    local rule = GetText(self.RuleInput)
+    local name = GetText(self.CommentInput)
+    self.ExecButton:SetEnabled(rule or name)
 end
 
 function RuleEditor:SetIconButton(index, icon, row, column)
