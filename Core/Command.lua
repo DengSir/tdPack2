@@ -35,8 +35,8 @@ function Addon:InitCommands()
     end
 
     self.optOrders = {
-        [ORDER.ASC] = optTrue,
-        [ORDER.DESC] = optFalse,
+        [ORDER.ASC] = optFalse,
+        [ORDER.DESC] = optTrue,
         AUTO = function()
             return self:GetOption('reverse')
         end,
