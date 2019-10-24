@@ -155,7 +155,10 @@ function Pack:Cancel()
     self:Stop()
 
     for _, task in pairs(self.tasks) do
-        task:Finish()
+        if ns.Task:IsInstance(task) then
+            task:Finish()
+            task.running = nil
+        end
     end
 end
 
