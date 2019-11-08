@@ -11,6 +11,6 @@ deploy:
   script: wct publish --token $CURSE_TOKEN
   skip_cleanup: true
   on:
-    repo: DengSir/tdBag2
+    repo: DengSir/tdPack2
     branch: master
     tags: true
