@@ -1,16 +1,13 @@
 
 local L = LibStub('AceLocale-3.0'):NewLocale(..., 'enUS', true)
-if not L then return end
+if not L then
+    return
+end
 
---@debug@
---[[
---@end-debug@
-@localization(locale=""enUS", format="lua_additive_table", table-name="L", same-key-is-true=true)@
---@debug@
---]]
---@end-debug@
+-- @localization(locale=""enUS", format="lua_additive_table", table-name="L", same-key-is-true=true)@
 
---@debug@
+-- @debug@
+-- @import@
 L['Leave bank, pack cancel.'] = true
 L['Player enter combat, pack cancel.'] = true
 L['Packing now'] = true
@@ -81,4 +78,5 @@ L.KEYWORD_CLASS = 'Classes'
 
 L.Tools = true
 
---@end-debug@
+-- @end-import@
+-- @end-debug@

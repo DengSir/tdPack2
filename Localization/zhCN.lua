@@ -5,6 +5,7 @@ if not L then
     return
 end
 
+-- @import@
 L['Leave bank, pack cancel.'] = '离开银行，整理中止。'
 L['Player enter combat, pack cancel.'] = '进入战斗，整理中止。'
 L['Packing now'] = '正在整理'
@@ -75,3 +76,5 @@ L.KEYWORD_MOUNT = '使用： 召唤或解散'
 L.KEYWORD_CLASS = '职业：'
 
 L.Tools = '工具'
+
+-- @end-import@
