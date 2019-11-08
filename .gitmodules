@@ -10,3 +10,6 @@
 [submodule "Libs/tdGUI"]
 	path = Libs/tdGUI
 	url = https://github.com/DengSir/tdGUI.git
+[submodule ".emmylua"]
+	path = .emmylua
+	url = https://github.com/DengSir/IntelliJ-IDEA-Lua-IDE-WoW-API.git
