@@ -26,8 +26,15 @@ function Stacking:Constructor()
 end
 
 function Stacking:Prepare()
-    self:InitBag(Pack:GetBag(BAG_TYPE.BAG))
-    self:InitBag(Pack:GetBag(BAG_TYPE.BANK))
+    -- When the bank is opened and the bag and the bank have the same items,
+    -- prevent the item in the bag from accidentally stacking to the bank.
+    local save = Pack.opts.save and Pack.opts.save()
+    if Pack.opts.bag or save then
+        self:InitBag(Pack:GetBag(BAG_TYPE.BAG))
+    end
+    if Pack.opts.bank or save then
+        self:InitBag(Pack:GetBag(BAG_TYPE.BANK))
+    end
 end
 
 function Stacking:InitBag(bag)
