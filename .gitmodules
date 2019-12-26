@@ -10,3 +10,6 @@
 [submodule "Libs/tdGUI"]
 	path = Libs/tdGUI
 	url = https://github.com/DengSir/tdGUI.git
+[submodule "Libs/LibJunk-1.0"]
+	path = Libs/LibJunk-1.0
+	url = https://github.com/DengSir/LibJunk-1.0.git
