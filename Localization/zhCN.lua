@@ -43,6 +43,7 @@ L['Select an icon (Optional)'] = '选择一个图标（可选）'
 L['Sorting rules'] = '排序规则'
 L['Saving rules'] = '保存规则'
 L['Save to bank when default packing'] = '默认整理同时保存到银行'
+L['Keep bank items stack full'] = '保持银行物品堆满'
 L['Global'] = '全局'
 L['Add extension filter to LibItemSearch-1.2'] = '将扩展的过滤器添加到LibItemSearch-1.2'
 

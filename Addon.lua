@@ -23,6 +23,7 @@ function Addon:OnInitialize()
         profile = {
             reverse = false,
             console = true,
+            stackBankFull = true,
             applyLibItemSearch = false,
             ruleOptionWindow = {point = 'CENTER', width = 637, height = 637},
             actions = {

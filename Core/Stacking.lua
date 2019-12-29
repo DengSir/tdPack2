@@ -84,6 +84,10 @@ function Stacking:IsCanStack(slot)
         return true
     end
 
+    if not ns.Addon:GetOption('stackBankFull') then
+        return false
+    end
+
     if not Pack:IsOptionBag(BAG_TYPE.BAG) or not Pack:IsOptionBag(BAG_TYPE.BANK) then
         return false
     end

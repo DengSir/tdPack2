@@ -149,6 +149,7 @@ function Addon:InitOptionFrame()
                         args = { --
                             reverse = toggle(L['Reverse pack']),
                             saving = toggle(L['Save to bank when default packing']),
+                            stackBankFull = toggle(L['Keep bank items stack full'])
                         },
                     },
                     global = {

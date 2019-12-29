@@ -44,6 +44,7 @@ L['Select an icon (Optional)'] = true
 L['Sorting rules'] = true
 L['Saving rules'] = true
 L['Save to bank when default packing'] = true
+L['Keep bank items stack full'] = true
 L['Global'] = true
 L['Add extension filter to LibItemSearch-1.2'] = true
 
