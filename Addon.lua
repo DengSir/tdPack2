@@ -23,6 +23,7 @@ function Addon:OnInitialize()
         profile = {
             reverse = false,
             console = true,
+            stackTogether = true,
             stackBankFull = true,
             applyLibItemSearch = false,
             ruleOptionWindow = {point = 'CENTER', width = 637, height = 637},
@@ -53,18 +54,21 @@ function Addon:OnInitialize()
 
     self.db = LibStub('AceDB-3.0'):New('TDDB_PACK2', defaults, true)
 
-    self.db:RegisterCallback('OnProfileChanged', function()
-        self:OnProfileChanged()
-    end)
+    local function SetupProfile()
+        self:SetupProfile()
+    end
+
+    self.db:RegisterCallback('OnProfileChanged', SetupProfile)
+    self.db:RegisterCallback('OnProfileReset', SetupProfile)
 end
 
 function Addon:OnEnable()
     self:InitOptionFrame()
     self:InitCommands()
-    self:OnProfileChanged()
+    self:SetupProfile()
 end
 
-function Addon:OnProfileChanged()
+function Addon:SetupProfile()
     self.db.profile.firstLoad = nil
     self:SetupRules()
     self:SendMessage('TDPACK_PROFILE_CHANGED')
