@@ -20,6 +20,8 @@ L['Pack finish.'] = true
 L['Reverse pack'] = true
 L['Enable chat message'] = true
 L['Character Specific Settings'] = true
+L['Restore default Settings'] = true
+L['Are you sure you want to restore the current Settings?'] = true
 
 L['Left Click'] = true
 L['Right Click'] = true
@@ -45,6 +47,7 @@ L['Sorting rules'] = true
 L['Saving rules'] = true
 L['Save to bank when default packing'] = true
 L['Keep bank items stack full'] = true
+L['Bank and bag stacking together'] = true
 L['Global'] = true
 L['Add extension filter to LibItemSearch-1.2'] = true
 
