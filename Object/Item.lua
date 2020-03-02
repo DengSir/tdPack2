@@ -64,6 +64,10 @@ function Item:GetItemEquipLoc()
     return self.info.itemEquipLoc
 end
 
+function Item:GetItemTag()
+    return self.info.itemTag
+end
+
 function Item:IsEquippable()
     return self.info.itemEquippable
 end
