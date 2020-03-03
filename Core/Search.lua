@@ -6,10 +6,13 @@
 ---@type ns
 local ns = select(2, ...)
 
+local L = ns.L
+
 ---- LUA
 local _G = _G
 local select, pairs, ipairs = select, pairs, ipairs
 local tonumber = tonumber
+local pcall = pcall
 
 ---- WOW
 local GetItemInfo = GetItemInfo
@@ -127,6 +130,7 @@ Filters.tdPackTags = {
                 ids[id] = true
             end
             items[k:lower()] = ids
+            items[L['ITEM_TAG: ' .. k]] = ids
         end
         return items
     end)(),

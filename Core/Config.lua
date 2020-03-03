@@ -65,6 +65,11 @@ local function Tip(tip, icon, children)
     return Rule(tip, icon, 'tip:' .. tip, children)
 end
 
+local function Tag(key, icon, children)
+    local l = L['ITEM_TAG: ' .. key]
+    return Rule(l, icon, 'tag:' .. l, children)
+end
+
 local function Spell(id, icon, children)
     local spellName = GetSpellInfo(id)
     return Rule(spellName, icon, 'spell:' .. spellName, children)
@@ -77,7 +82,9 @@ local TRADEGOODS = GetItemClassInfo(LE_ITEM_CLASS_TRADEGOODS) -- 商品
 
 ns.DEFAULT_SORTING_RULES = {
     HEARTHSTONE_ITEM_ID, -- 炉石
-    TipLocale('MOUNT', 132261), -- 坐骑
+    -- TipLocale('MOUNT', 132261), -- 坐骑
+    Tag('Mount', 132261), -- 坐骑
+    Tag('Pet', 132598), -- 宠物
     Group(L['Tools'], 134065, {
         5060, -- 潜行者工具
         2901, -- 矿工锄
@@ -128,6 +135,13 @@ ns.DEFAULT_SORTING_RULES = {
     Type(LE_ITEM_CLASS_RECIPE, 134939), -- 配方
     Type(LE_ITEM_CLASS_TRADEGOODS, 132905, {
         TipLocale('CLASS', 132273), -- 职业
+        Tag('Cloth', 132903), -- 布
+        Tag('Leather', 134256), -- 皮
+        Tag('Metal & Stone', 133217), -- 金属和矿石
+        Tag('Cooking', 134027), -- 烹饪
+        Tag('Herb', 134215), -- 草药
+        Tag('Elemental', 135819), -- 元素
+        Tag('Enchanting', 132864), -- 附魔
     }), -- 商品
     Rule(CONSUMABLE, 134829, 'type:' .. CONSUMABLE .. ' & tip:!' .. QUEST, {
         TipLocale('CLASS', 132273), -- 职业

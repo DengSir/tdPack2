@@ -72,13 +72,21 @@ L.OPEN_OPTIONS = '打开设置'
 L.SAVE = '保存到银行'
 
 -- rules comment
-L.COMMENT_MOUNT = '坐骑'
 L.COMMENT_CLASS = '职业物品'
 
 -- for rules
-L.KEYWORD_MOUNT = '使用： 召唤或解散'
 L.KEYWORD_CLASS = '职业：'
 
 L.Tools = '工具'
 
+L['ITEM_TAG: Cloth'] = '布'
+L['ITEM_TAG: Leather'] = '皮'
+L['ITEM_TAG: Metal & Stone'] = '金属和矿石'
+L['ITEM_TAG: Cooking'] = '烹饪'
+L['ITEM_TAG: Herb'] = '草药'
+L['ITEM_TAG: Elemental'] = '元素'
+L['ITEM_TAG: Enchanting'] = '附魔'
+L['ITEM_TAG: Jewelry'] = '宝石'
+L['ITEM_TAG: Mount'] = '坐骑'
+L['ITEM_TAG: Pet'] = '宠物'
 -- @end-import@

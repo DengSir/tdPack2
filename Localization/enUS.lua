@@ -1,5 +1,9 @@
-
+-- @debug@
 local L = LibStub('AceLocale-3.0'):NewLocale(..., 'enUS', true)
+-- @end-debug@
+--[[@non-debug@
+local L = LibStub('AceLocale-3.0'):NewLocale(..., 'enUS', true, true)
+--@end-non-debug@]]
 if not L then
     return
 end
@@ -73,14 +77,23 @@ L.OPEN_OPTIONS = 'Open options'
 L.SAVE = 'Save to bank'
 
 -- rules comment
-L.COMMENT_MOUNT = 'Mount'
 L.COMMENT_CLASS = 'Class items'
 
 -- for rules
-L.KEYWORD_MOUNT = 'Summons and dismisses'
 L.KEYWORD_CLASS = 'Classes'
 
 L.Tools = true
+
+L['ITEM_TAG: Cloth'] = 'Cloth'
+L['ITEM_TAG: Leather'] = 'Leather'
+L['ITEM_TAG: Metal & Stone'] = 'Metal & Stone'
+L['ITEM_TAG: Cooking'] = 'Cooking'
+L['ITEM_TAG: Herb'] = 'Herb'
+L['ITEM_TAG: Elemental'] = 'Elemental'
+L['ITEM_TAG: Enchanting'] = 'Enchanting'
+L['ITEM_TAG: Jewelry'] = 'Jewelry'
+L['ITEM_TAG: Mount'] = 'Mount'
+L['ITEM_TAG: Pet'] = 'Pet'
 
 -- @end-import@
 -- @end-debug@
