@@ -2,7 +2,6 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/21/2019, 2:00:49 AM
-
 ---@type ns
 local ns = select(2, ...)
 
@@ -75,6 +74,7 @@ ns.CLICK_LIST = {
     GenerateClickData('RightButton', 1, 1, 1), --
 }
 
+-- @classic@
 ns.ITEM_TAGS = {
     ---- TradeGoods
     Cloth = {
@@ -138,3 +138,4 @@ do
         end
     end
 end
+-- @end-classic@

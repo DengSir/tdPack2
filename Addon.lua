@@ -14,7 +14,6 @@ local Addon = LibStub('AceAddon-3.0'):NewAddon(ADDON, 'LibClass-2.0', 'AceEvent-
 ns.Addon = Addon
 ns.L = LibStub('AceLocale-3.0'):GetLocale(ADDON)
 ns.ICON = [[Interface\AddOns\tdPack2\Resource\INV_Pet_Broom]]
-ns.IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 ns.UNKNOWN_ICON = 134400
 ns.GUI = LibStub('tdGUI-1.0')
 

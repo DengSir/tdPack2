@@ -2,7 +2,6 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/26/2019, 2:09:42 AM
-
 ---@type ns
 local ns = select(2, ...)
 
@@ -86,7 +85,7 @@ Filters.tdPackEquippable = {
     keyword1 = 'equip',
     keyword2 = EQUIPSET_EQUIP:lower(),
 
-    exclude = tInvert{'INVTYPE_BAG', 'INVTYPE_AMMO'},
+    exclude = tInvert {'INVTYPE_BAG', 'INVTYPE_AMMO'},
 
     canSearch = function(self, operator, search)
         return self.keyword1 == search or self.keyword2 == search:lower()
@@ -100,6 +99,7 @@ Filters.tdPackEquippable = {
     end,
 }
 
+-- @classic@
 Filters.tdPackTags = {
     tags = {'tag'},
 
@@ -135,3 +135,4 @@ Filters.tdPackTags = {
         return items
     end)(),
 }
+-- @end-classic@
