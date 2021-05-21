@@ -2,7 +2,7 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/30/2019, 11:36:34 PM
-
+--
 local select, assert, unpack, wipe = select, assert, table.unpack or unpack, table.wipe or wipe
 local pairs = pairs
 local CopyTable, tInvert = CopyTable, tInvert
@@ -16,6 +16,8 @@ ns.L = LibStub('AceLocale-3.0'):GetLocale(ADDON)
 ns.ICON = [[Interface\AddOns\tdPack2\Resource\INV_Pet_Broom]]
 ns.UNKNOWN_ICON = 134400
 ns.GUI = LibStub('tdGUI-1.0')
+
+local L = ns.L
 
 function Addon:OnInitialize()
     local defaults = {
@@ -69,6 +71,7 @@ end
 
 function Addon:SetupProfile()
     self.db.profile.firstLoad = nil
+    self:UpgradeRules()
     self:SetupRules()
     self:SendMessage('TDPACK_PROFILE_CHANGED')
 end
@@ -80,6 +83,17 @@ function Addon:SetupRules()
             profile[key] = CopyTable(rules)
         end
     end
+end
+
+function Addon:UpgradeRules()
+    if self.db.profile.version and self.db.profile.version >= 20000 then
+        return
+    end
+    self.db.profile.version = ns.VERSION
+    print(ns.VERSION)
+
+    wipe(self.db.profile.rules)
+    self:Print(L['Rules restore to default.'])
 end
 
 function Addon:OnModuleCreated(module)

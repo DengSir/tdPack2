@@ -1,10 +1,10 @@
 language: node_js
 
 node_js:
-- 10
+- 14
 
 before_deploy:
-- npm install -g https://github.com/DengSir/wow-curse-tools.git
+- npm install -g wow-curse-tools
 
 deploy:
 - provider: script

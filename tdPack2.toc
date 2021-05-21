@@ -1,7 +1,11 @@
-﻿## Interface: 11306
+﻿#@debug@
+## Interface: 11306
+## Version: 2.0.0
+#@end-debug@
+#@project-interface@
+#@project-version@
 ## Title: tdPack2
 ## Author: Dencer
-## Version: @project-version@
 ## OptionalDeps: Bagnon, Combuctor, tdBag
 ## SavedVariables: TDDB_PACK2
 

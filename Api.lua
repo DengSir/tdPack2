@@ -36,6 +36,10 @@ local PickupContainerItem = PickupContainerItem
 ---- UI
 local UIParent = UIParent
 
+ns.VERSION = tonumber((GetAddOnMetadata('tdPack2', 'Version'):gsub('(%d+)%.?', function(x)
+    return format('%02d', tonumber(x))
+end))) or 0
+
 ---- ENUM
 ns.BAG_TYPE = {
     BAG = 'bag', --

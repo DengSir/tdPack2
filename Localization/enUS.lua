@@ -60,6 +60,7 @@ L['Drag to modify the sorting order'] = true
 L['Put in an item to add simple rule'] = true
 L['Advancee rules use LibItemSearch-1.2'] = true
 L['Enjoy!'] = true
+L['Rules restore to default.'] = true
 
 -- for actions
 L.None = true
