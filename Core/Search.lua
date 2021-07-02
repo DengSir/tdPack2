@@ -99,6 +99,36 @@ Filters.tdPackEquippable = {
     end,
 }
 
+Filters.tdPackBlizzardHasSet = {
+    keyword1 = 'bset',
+
+    canSearch = function(self, operator, search)
+        return self.keyword1 == search:lower()
+    end,
+
+    match = function(self, link, _, search)
+        local setId = select(16, GetItemInfo(link))
+        return setId and setId ~= 0
+    end,
+}
+
+Filters.tdPackBlizzardSet = {
+    tags = {'bset'},
+    onlyTags = true,
+
+    canSearch = function(self, operator, search)
+        return search
+    end,
+
+    match = function(self, item, _, search)
+        local setId = select(16, GetItemInfo(item))
+        if setId and setId ~= 0 then
+            local setName = GetItemSetInfo(setId)
+            return CustomSearch:Find(search, setName)
+        end
+    end,
+}
+
 -- @classic@
 Filters.tdPackTags = {
     tags = {'tag'},

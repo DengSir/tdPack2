@@ -90,7 +90,6 @@ function Addon:UpgradeRules()
         return
     end
     self.db.profile.version = ns.VERSION
-    print(ns.VERSION)
 
     wipe(self.db.profile.rules)
     self:Print(L['Rules restore to default.'])

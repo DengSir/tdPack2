@@ -72,3 +72,7 @@ end
 function Item:IsEquippable()
     return self.info.itemEquippable
 end
+
+function Item:GetItemSetId()
+    return self.info.itemSetId
+end

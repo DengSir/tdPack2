@@ -115,6 +115,7 @@ ns.DEFAULT_SORTING_RULES = {
         Weapon(LE_ITEM_WEAPON_FISHINGPOLE, 132932), -- 鱼竿
     }), --
     Rule(EQUIPSET_EQUIP, 132722, 'equip', {
+        Rule(nil, nil, 'bset'), --
         Slot(INVTYPE_2HWEAPON, 135324), -- 双手
         Slot(INVTYPE_WEAPONMAINHAND, 133045), -- 主手
         Slot(INVTYPE_WEAPON, 135641), -- 单手

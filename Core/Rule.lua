@@ -2,7 +2,7 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/31/2019, 12:00:28 AM
-
+--
 ---@type ns
 local ns = select(2, ...)
 
@@ -25,9 +25,9 @@ function Rule:OnInitialize()
     self.nameOrder = Item.GetItemName
     self.typeOrder = Item.GetItemType
     self.subTypeOrder = Item.GetItemSubType
-    --@classic@
+    -- @classic@
     self.tagOrder = Item.GetItemTag
-    --@end-classic@
+    -- @end-classic@
     self.sortingCustomOrder = ns.CustomOrder:New()
     self.levelQualityOrder = function(item)
         local level = 9999 - item:GetItemLevel()
@@ -40,6 +40,10 @@ function Rule:OnInitialize()
         end
     end
 
+    self.setOrder = function(item)
+        return 99999 - item:GetItemSetId()
+    end
+
     self.staticOrder = ns.CachableOrder:New({
         GetKey = function(item)
             return item:GetItemId()
@@ -47,11 +51,12 @@ function Rule:OnInitialize()
         GetOrder = function(item)
             return tconcat({
                 self.sortingCustomOrder(item), --
+                self.setOrder(item), --
                 self.typeOrder(item), --
                 self.subTypeOrder(item), --
-                --@classic@
+                -- @classic@
                 self.tagOrder(item), --
-                --@end-classic@
+                -- @end-classic@
                 self.levelQualityOrder(item), --
                 self.nameOrder(item), --
             }, ',')
