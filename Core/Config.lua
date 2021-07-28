@@ -89,7 +89,7 @@ local TRADEGOODS = GetItemClassInfo(LE_ITEM_CLASS_TRADEGOODS) -- 商品
 
 ns.DEFAULT_SORTING_RULES = {
     HEARTHSTONE_ITEM_ID, -- 炉石
-    -- TipLocale('MOUNT', 132261), -- 坐骑
+    184871, -- 黑暗之门
     -- @classic@
     Tag('Mount', 132261), -- 坐骑
     Tag('Pet', 132598), -- 宠物
@@ -104,6 +104,9 @@ ns.DEFAULT_SORTING_RULES = {
         5956, -- 铁匠锤
         7005, -- 剥皮刀
         9149, -- 点金石
+        22463, -- 符文恒金棒
+        22462, -- 符文精金棒
+        22461, -- 符文魔铁棒
         16207, -- 符文奥金棒
         11145, -- 符文真银棒
         11130, -- 符文金棒
@@ -112,10 +115,11 @@ ns.DEFAULT_SORTING_RULES = {
         6219, -- 扳手
         10498, -- 侏儒微调器
         19727, -- 血镰刀
+        20815, -- 珠宝制作工具
+        4471, -- 燧石和火绒
         Weapon(LE_ITEM_WEAPON_FISHINGPOLE, 132932), -- 鱼竿
     }), --
     Rule(EQUIPSET_EQUIP, 132722, 'equip', {
-        Rule(nil, nil, 'bset'), --
         Slot(INVTYPE_2HWEAPON, 135324), -- 双手
         Slot(INVTYPE_WEAPONMAINHAND, 133045), -- 主手
         Slot(INVTYPE_WEAPON, 135641), -- 单手
@@ -126,6 +130,7 @@ ns.DEFAULT_SORTING_RULES = {
         Weapon(LE_ITEM_WEAPON_GUNS, 135610), -- 枪
         Weapon(LE_ITEM_WEAPON_CROSSBOW, 135533), -- 弩
         Weapon(LE_ITEM_WEAPON_THROWN, 135427), -- 投掷武器
+        Weapon(LE_ITEM_WEAPON_WAND, 135473), -- 魔杖
         Slot(INVTYPE_RELIC, 134915), -- 圣物
         Slot(INVTYPE_HEAD, 133136), -- 头部
         Slot(INVTYPE_NECK, 133294), -- 颈部
@@ -147,6 +152,14 @@ ns.DEFAULT_SORTING_RULES = {
     Type(LE_ITEM_CLASS_QUIVER, 134407), -- 箭袋
     Type(LE_ITEM_CLASS_PROJECTILE, 132382), -- 弹药
     Type(LE_ITEM_CLASS_RECIPE, 134939), -- 配方
+    Rule(CONSUMABLE, 134829, 'type:' .. CONSUMABLE .. ' & tip:!' .. QUEST, {
+        TipLocale('CLASS', 132273), -- 职业
+        Spell(746, 133685), -- 急救
+        Spell(433, 133945), -- 食物
+        Spell(430, 132794), -- 水
+        Spell(439, 134830), -- 治疗药水
+        Spell(438, 134851), -- 法力药水
+    }), -- 消耗品
     Type(LE_ITEM_CLASS_TRADEGOODS, 132905, {
         TipLocale('CLASS', 132273), -- 职业
         -- @classic@
@@ -159,6 +172,9 @@ ns.DEFAULT_SORTING_RULES = {
         Tag('Enchanting', 132864), -- 附魔
         -- @end-classic@
         -- @bcc@
+        Trade(2, 132903), -- 爆炸物
+        Trade(3, 132903), -- 装置
+        Trade(1, 132903), -- 零件
         Trade(5, 132903), -- 布
         Trade(6, 134256), -- 皮
         Trade(7, 133217), -- 金属和矿石
@@ -166,16 +182,10 @@ ns.DEFAULT_SORTING_RULES = {
         Trade(9, 134215), -- 草药
         Trade(10, 135819), -- 元素
         Trade(12, 132864), -- 附魔
+        Trade(4, 132864), -- 珠宝加工
+        Trade(13, 132864), -- 原料
         -- @end-bcc@
     }), -- 商品
-    Rule(CONSUMABLE, 134829, 'type:' .. CONSUMABLE .. ' & tip:!' .. QUEST, {
-        TipLocale('CLASS', 132273), -- 职业
-        Spell(746, 133685), -- 急救
-        Spell(433, 133945), -- 食物
-        Spell(430, 132794), -- 水
-        Spell(439, 134830), -- 治疗药水
-        Spell(438, 134851), -- 法力药水
-    }), -- 消耗品
     Type(LE_ITEM_CLASS_REAGENT, 133587), -- 材料
     Rule(MISC, 134237, 'type:!' .. QUEST .. ' & tip:!' .. QUEST, {
         Type(LE_ITEM_CLASS_MISCELLANEOUS, 134400), -- 其它
