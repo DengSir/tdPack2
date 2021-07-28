@@ -22,9 +22,11 @@ local function Rule(name, icon, rule, c)
         local exists = {}
         for i, v in ipairs(c) do
             local isAdv = ns.IsAdvanceRule(v)
-            if isAdv and not exists[v.rule] then
+            if isAdv and (not v.rule or not exists[v.rule]) then
                 tinsert(children, v)
-                exists[v.rule] = true
+                if v.rule then
+                    exists[v.rule] = true
+                end
             end
             if not isAdv then
                 tinsert(children, v)
@@ -60,6 +62,10 @@ local function Trade(subType, icon, children)
     return SubType(LE_ITEM_CLASS_TRADEGOODS, subType, icon, children)
 end
 
+local function Consumable(subType, icon, children)
+    return SubType(LE_ITEM_CLASS_CONSUMABLE, subType, icon, children)
+end
+
 local function Slot(name, icon, children)
     return Rule(name, icon, 'slot:' .. name, children)
 end
@@ -86,6 +92,7 @@ local CONSUMABLE = GetItemClassInfo(LE_ITEM_CLASS_CONSUMABLE) -- 消耗品
 local QUEST = GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM) -- 任务
 local MISC = GetItemClassInfo(LE_ITEM_CLASS_MISCELLANEOUS) -- 其它
 local TRADEGOODS = GetItemClassInfo(LE_ITEM_CLASS_TRADEGOODS) -- 商品
+local MOUNT = GetItemSubClassInfo(LE_ITEM_CLASS_MISCELLANEOUS, LE_ITEM_MISCELLANEOUS_MOUNT)
 
 ns.DEFAULT_SORTING_RULES = {
     HEARTHSTONE_ITEM_ID, -- 炉石
@@ -95,8 +102,20 @@ ns.DEFAULT_SORTING_RULES = {
     Tag('Pet', 132598), -- 宠物
     -- @end-classic@
     -- @bcc@
-    Misc(LE_ITEM_MISCELLANEOUS_MOUNT, 132261), --
-    Misc(LE_ITEM_MISCELLANEOUS_COMPANION_PET, 132598), --
+    Group(MOUNT, 132261, {
+        Misc(LE_ITEM_MISCELLANEOUS_MOUNT, 132261), --
+        -- 这几个数据有错误
+        34061, -- [涡轮加速飞行器控制台]
+        34060, -- [飞行器控制台]
+        33189, -- [摇摇晃晃的魔法扫帚]
+        21176, -- [黑色其拉共鸣水晶]
+        23720, -- [乌龟坐骑]
+    }), Misc(LE_ITEM_MISCELLANEOUS_COMPANION_PET, 132598, {
+        11110, 11474, 11825, 11826, 12264, 12529, 13582, 13583, 13584, 180089, 19054, 19055, 20371, 20651, 21026, 21301,
+        21305, 21308, 21309, 22114, 22235, 22780, 22781, 23002, 23007, 23015, 23083, 23712, 23713, 25535, 27445, 30360,
+        31665, 31760, 32233, 32465, 32498, 32588, 32616, 32617, 32622, 33154, 33993, 34425, 34518, 34519, 34955, 37297,
+        37298, 39656, 5332,
+    }), --
     -- @end-bcc@
     Group(L['Tools'], 134065, {
         5060, -- 潜行者工具
@@ -153,12 +172,31 @@ ns.DEFAULT_SORTING_RULES = {
     Type(LE_ITEM_CLASS_PROJECTILE, 132382), -- 弹药
     Type(LE_ITEM_CLASS_RECIPE, 134939), -- 配方
     Rule(CONSUMABLE, 134829, 'type:' .. CONSUMABLE .. ' & tip:!' .. QUEST, {
+        -- @classic@
         TipLocale('CLASS', 132273), -- 职业
         Spell(746, 133685), -- 急救
-        Spell(433, 133945), -- 食物
-        Spell(430, 132794), -- 水
+        Spell(433, 133945), -- 进食
+        Spell(430, 132794), -- 喝水
         Spell(439, 134830), -- 治疗药水
         Spell(438, 134851), -- 法力药水
+        -- @end-classic@
+        -- @bcc@
+        Consumable(7, 133692), -- 绷带
+        Consumable(3, 134742), -- 合剂
+        Consumable(2, 134773), -- 药剂
+        Consumable(1, 134729, {
+            Spell(439, 134830), -- 治疗药水
+            Spell(438, 134851), -- 法力药水
+        }), -- 药水
+        Consumable(4, 134937), -- 卷轴
+        Consumable(5, 133953, {
+            Spell(44166, 134051), -- 恢复体能
+            Spell(433, 133945), -- 进食
+            Spell(430, 132794), -- 喝水
+        }), -- 食物和饮料
+        Consumable(6, 133604), -- 物品强化
+        Group(GetSpellInfo(7620), 136245, {34861, 6533, 6532, 6530, 6529}),
+        -- @end-bcc@
     }), -- 消耗品
     Type(LE_ITEM_CLASS_TRADEGOODS, 132905, {
         TipLocale('CLASS', 132273), -- 职业
@@ -172,20 +210,31 @@ ns.DEFAULT_SORTING_RULES = {
         Tag('Enchanting', 132864), -- 附魔
         -- @end-classic@
         -- @bcc@
-        Trade(2, 132903), -- 爆炸物
-        Trade(3, 132903), -- 装置
-        Trade(1, 132903), -- 零件
-        Trade(5, 132903), -- 布
-        Trade(6, 134256), -- 皮
+        Trade(2, 133715), -- 爆炸物
+        Trade(3, 134441), -- 装置
+        Trade(1, 133025), -- 零件
+        Trade(5, 132903), -- 布料
+        Trade(6, 134256), -- 皮革
         Trade(7, 133217), -- 金属和矿石
-        Trade(8, 134027), -- 烹饪
+        Trade(8, 134027), -- 肉类
         Trade(9, 134215), -- 草药
         Trade(10, 135819), -- 元素
         Trade(12, 132864), -- 附魔
-        Trade(4, 132864), -- 珠宝加工
-        Trade(13, 132864), -- 原料
+        Trade(4, 134379), -- 珠宝加工
+        Trade(13, 132850), -- 原料
         -- @end-bcc@
     }), -- 商品
+    Type(LE_ITEM_CLASS_GEM, 133272, {
+        SubType(LE_ITEM_CLASS_GEM, 0, 134083), -- 红
+        SubType(LE_ITEM_CLASS_GEM, 2, 134114), -- 黄
+        SubType(LE_ITEM_CLASS_GEM, 1, 134080), -- 蓝
+        SubType(LE_ITEM_CLASS_GEM, 5, 134111), -- 橙
+        SubType(LE_ITEM_CLASS_GEM, 4, 134093), -- 绿
+        SubType(LE_ITEM_CLASS_GEM, 3, 134103), -- 紫
+        SubType(LE_ITEM_CLASS_GEM, 8, 132886), -- 棱彩
+        SubType(LE_ITEM_CLASS_GEM, 6, 134098), -- 多彩
+        SubType(LE_ITEM_CLASS_GEM, 7, 134087), -- 简易
+    }), -- 珠宝
     Type(LE_ITEM_CLASS_REAGENT, 133587), -- 材料
     Rule(MISC, 134237, 'type:!' .. QUEST .. ' & tip:!' .. QUEST, {
         Type(LE_ITEM_CLASS_MISCELLANEOUS, 134400), -- 其它
