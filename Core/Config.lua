@@ -67,7 +67,8 @@ local function Consumable(subType, icon, children)
 end
 
 local function Slot(name, icon, children)
-    return Rule(name, icon, 'slot:' .. name, children)
+    name = _G[name] or name
+    return Rule(name, icon, 'inv:' .. name, children)
 end
 
 local function TipLocale(key, icon, children)
@@ -88,6 +89,11 @@ local function Spell(id, icon, children)
     return Rule(spellName, icon, 'spell:' .. spellName, children)
 end
 
+local function TypeOrTag(type, subType, icon, children)
+    local name = GetItemSubClassInfo(type, subType)
+    return Rule(name, icon, format('type:%s | tag:%s', name, name), children)
+end
+
 local CONSUMABLE = GetItemClassInfo(LE_ITEM_CLASS_CONSUMABLE) -- 消耗品
 local QUEST = GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM) -- 任务
 local MISC = GetItemClassInfo(LE_ITEM_CLASS_MISCELLANEOUS) -- 其它
@@ -102,20 +108,8 @@ ns.DEFAULT_SORTING_RULES = {
     Tag('Pet', 132598), -- 宠物
     -- @end-classic@
     -- @bcc@
-    Group(MOUNT, 132261, {
-        Misc(LE_ITEM_MISCELLANEOUS_MOUNT, 132261), --
-        -- 这几个数据有错误
-        34061, -- [涡轮加速飞行器控制台]
-        34060, -- [飞行器控制台]
-        33189, -- [摇摇晃晃的魔法扫帚]
-        21176, -- [黑色其拉共鸣水晶]
-        23720, -- [乌龟坐骑]
-    }), Misc(LE_ITEM_MISCELLANEOUS_COMPANION_PET, 132598, {
-        11110, 11474, 11825, 11826, 12264, 12529, 13582, 13583, 13584, 180089, 19054, 19055, 20371, 20651, 21026, 21301,
-        21305, 21308, 21309, 22114, 22235, 22780, 22781, 23002, 23007, 23015, 23083, 23712, 23713, 25535, 27445, 30360,
-        31665, 31760, 32233, 32465, 32498, 32588, 32616, 32617, 32622, 33154, 33993, 34425, 34518, 34519, 34955, 37297,
-        37298, 39656, 5332,
-    }), --
+    TypeOrTag(LE_ITEM_CLASS_MISCELLANEOUS, LE_ITEM_MISCELLANEOUS_MOUNT, 132261), -- 坐骑
+    TypeOrTag(LE_ITEM_CLASS_MISCELLANEOUS, LE_ITEM_MISCELLANEOUS_COMPANION_PET, 132598), -- 宠物
     -- @end-bcc@
     Group(L['Tools'], 134065, {
         5060, -- 潜行者工具
@@ -123,9 +117,11 @@ ns.DEFAULT_SORTING_RULES = {
         5956, -- 铁匠锤
         7005, -- 剥皮刀
         9149, -- 点金石
+        -- @bcc@
         22463, -- 符文恒金棒
         22462, -- 符文精金棒
         22461, -- 符文魔铁棒
+        -- @end-bcc@
         16207, -- 符文奥金棒
         11145, -- 符文真银棒
         11130, -- 符文金棒
@@ -134,44 +130,47 @@ ns.DEFAULT_SORTING_RULES = {
         6219, -- 扳手
         10498, -- 侏儒微调器
         19727, -- 血镰刀
+        -- @bcc@
         20815, -- 珠宝制作工具
+        -- @end-bcc@
         4471, -- 燧石和火绒
         Weapon(LE_ITEM_WEAPON_FISHINGPOLE, 132932), -- 鱼竿
     }), --
     Rule(EQUIPSET_EQUIP, 132722, 'equip', {
-        Slot(INVTYPE_2HWEAPON, 135324), -- 双手
-        Slot(INVTYPE_WEAPONMAINHAND, 133045), -- 主手
-        Slot(INVTYPE_WEAPON, 135641), -- 单手
-        Slot(INVTYPE_SHIELD, 134955), -- 副手盾
-        Slot(INVTYPE_WEAPONOFFHAND, 134955), -- 副手
-        Slot(INVTYPE_HOLDABLE, 134333), -- 副手物品
-        Slot(INVTYPE_RANGED, 135498), -- 远程
-        Weapon(LE_ITEM_WEAPON_GUNS, 135610), -- 枪
-        Weapon(LE_ITEM_WEAPON_CROSSBOW, 135533), -- 弩
-        Weapon(LE_ITEM_WEAPON_THROWN, 135427), -- 投掷武器
-        Weapon(LE_ITEM_WEAPON_WAND, 135473), -- 魔杖
-        Slot(INVTYPE_RELIC, 134915), -- 圣物
-        Slot(INVTYPE_HEAD, 133136), -- 头部
-        Slot(INVTYPE_NECK, 133294), -- 颈部
-        Slot(INVTYPE_SHOULDER, 135033), -- 肩部
-        Slot(INVTYPE_CLOAK, 133768), -- 背部
-        Slot(INVTYPE_CHEST, 132644), -- 胸部
-        Slot(INVTYPE_ROBE, 132644), -- 胸部
-        Slot(INVTYPE_WRIST, 132608), -- 手腕
-        Slot(INVTYPE_HAND, 132948), -- 手
-        Slot(INVTYPE_WAIST, 132511), -- 腰部
-        Slot(INVTYPE_LEGS, 134588), -- 腿部
-        Slot(INVTYPE_FEET, 132541), -- 脚
-        Slot(INVTYPE_FINGER, 133345), -- 手指
-        Slot(INVTYPE_TRINKET, 134010), -- 饰品
-        Slot(INVTYPE_BODY, 135022), -- 衬衣
-        Slot(INVTYPE_TABARD, 135026), -- 战袍
+        Slot('INVTYPE_2HWEAPON', 135324), -- 双手
+        Slot('INVTYPE_WEAPONMAINHAND', 133045), -- 主手
+        Slot('INVTYPE_WEAPON', 135641), -- 单手
+        Slot('INVTYPE_SHIELD', 134955), -- 副手盾
+        Slot('INVTYPE_WEAPONOFFHAND', 134955), -- 副手
+        Slot('INVTYPE_HOLDABLE', 134333), -- 副手物品
+        Slot('INVTYPE_RANGED', 135498), -- 远程
+        Slot('INVTYPE_RANGEDRIGHT', 135468), -- 远程
+        Slot('INVTYPE_THROWN', 132394), -- Weapon(LE_ITEM_WEAPON_GUNS, 135610), -- 枪
+        -- Weapon(LE_ITEM_WEAPON_CROSSBOW, 135533), -- 弩
+        -- Weapon(LE_ITEM_WEAPON_THROWN, 135427), -- 投掷武器
+        -- Weapon(LE_ITEM_WEAPON_WAND, 135473), -- 魔杖
+        Slot('INVTYPE_RELIC', 134915), -- 圣物
+        Slot('INVTYPE_HEAD', 133136), -- 头部
+        Slot('INVTYPE_NECK', 133294), -- 颈部
+        Slot('INVTYPE_SHOULDER', 135033), -- 肩部
+        Slot('INVTYPE_CLOAK', 133768), -- 背部
+        Slot('INVTYPE_CHEST', 132644), -- 胸部
+        Slot('INVTYPE_ROBE', 132644), -- 胸部
+        Slot('INVTYPE_WRIST', 132608), -- 手腕
+        Slot('INVTYPE_HAND', 132948), -- 手
+        Slot('INVTYPE_WAIST', 132511), -- 腰部
+        Slot('INVTYPE_LEGS', 134588), -- 腿部
+        Slot('INVTYPE_FEET', 132541), -- 脚
+        Slot('INVTYPE_FINGER', 133345), -- 手指
+        Slot('INVTYPE_TRINKET', 134010), -- 饰品
+        Slot('INVTYPE_BODY', 135022), -- 衬衣
+        Slot('INVTYPE_TABARD', 135026), -- 战袍
     }), -- 装备
+    Type(LE_ITEM_CLASS_PROJECTILE, 132382), -- 弹药
     Type(LE_ITEM_CLASS_CONTAINER, 133652), -- 容器
     Type(LE_ITEM_CLASS_QUIVER, 134407), -- 箭袋
-    Type(LE_ITEM_CLASS_PROJECTILE, 132382), -- 弹药
     Type(LE_ITEM_CLASS_RECIPE, 134939), -- 配方
-    Rule(CONSUMABLE, 134829, 'type:' .. CONSUMABLE .. ' & tip:!' .. QUEST, {
+    Rule(CONSUMABLE, 134829, 'type:' .. CONSUMABLE .. ' & tip:!' .. QUEST .. ' & spell', {
         -- @classic@
         TipLocale('CLASS', 132273), -- 职业
         Spell(746, 133685), -- 急救
@@ -235,8 +234,9 @@ ns.DEFAULT_SORTING_RULES = {
         SubType(LE_ITEM_CLASS_GEM, 6, 134098), -- 多彩
         SubType(LE_ITEM_CLASS_GEM, 7, 134087), -- 简易
     }), -- 珠宝
-    Type(LE_ITEM_CLASS_REAGENT, 133587), -- 材料
     Rule(MISC, 134237, 'type:!' .. QUEST .. ' & tip:!' .. QUEST, {
+        Misc(LE_ITEM_MISCELLANEOUS_REAGENT, 133587), -- 材料
+        Type(LE_ITEM_CLASS_CONSUMABLE, 134420), -- 消耗品
         Type(LE_ITEM_CLASS_MISCELLANEOUS, 134400), -- 其它
         Type(LE_ITEM_CLASS_KEY, 134237), -- 钥匙
     }), --

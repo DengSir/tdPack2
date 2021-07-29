@@ -108,7 +108,7 @@ Filters.tdPackBlizzardHasSet = {
 
     match = function(self, link, _, search)
         local setId = select(16, GetItemInfo(link))
-        return setId and setId ~= 0
+        return setId
     end,
 }
 
@@ -129,7 +129,29 @@ Filters.tdPackBlizzardSet = {
     end,
 }
 
--- @classic@
+Filters.tdPackInvtype = {
+    tags = {'inv'},
+    onlyTags = true,
+
+    canSearch = function(self, operator, search)
+        return search
+    end,
+
+    match = function(self, item, _, search)
+        local equipLoc = select(9, GetItemInfo(item))
+        if not equipLoc then
+            return
+        end
+        local text = CustomSearch:Clean(search)
+        if text == equipLoc:lower() then
+            return true
+        end
+
+        local localeLoc = _G[equipLoc]
+        return localeLoc and text == localeLoc:lower()
+    end,
+}
+
 Filters.tdPackTags = {
     tags = {'tag'},
 
@@ -165,4 +187,3 @@ Filters.tdPackTags = {
         return items
     end)(),
 }
--- @end-classic@
