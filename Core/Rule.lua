@@ -30,8 +30,8 @@ function Rule:OnInitialize()
     -- @end-classic@
     self.sortingCustomOrder = ns.CustomOrder:New()
     self.levelQualityOrder = function(item)
-        local level = 9999 - item:GetItemLevel()
-        local quality = 99 - item:GetItemQuality()
+        local level = 9999 - (item:GetItemLevel() or 0)
+        local quality = 99 - (item:GetItemQuality() or 0)
 
         if item:IsEquippable() then
             return format('%04d,%02d', level, quality)
@@ -41,7 +41,7 @@ function Rule:OnInitialize()
     end
 
     self.setOrder = function(item)
-        return 99999 - item:GetItemSetId()
+        return 99999 - (item:GetItemSetId() or 0)
     end
 
     self.staticOrder = ns.CachableOrder:New({
