@@ -3,19 +3,21 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/30/2019, 11:36:34 PM
 --
-local select, assert, unpack, wipe = select, assert, table.unpack or unpack, table.wipe or wipe
+local assert, wipe = assert, table.wipe or wipe
 local pairs = pairs
-local CopyTable, tInvert = CopyTable, tInvert
+
+local CopyTable = CopyTable
 
 ---@type ns
 local ADDON, ns = ...
+
+---@class Addon: AceAddon-3.0, LibClass-2.0, AceEvent-3.0
 local Addon = LibStub('AceAddon-3.0'):NewAddon(ADDON, 'LibClass-2.0', 'AceEvent-3.0', 'AceConsole-3.0')
 
 ns.Addon = Addon
 ns.L = LibStub('AceLocale-3.0'):GetLocale(ADDON)
 ns.ICON = [[Interface\AddOns\tdPack2\Resource\INV_Pet_Broom]]
 ns.UNKNOWN_ICON = 134400
-ns.GUI = LibStub('tdGUI-1.0')
 
 local L = ns.L
 

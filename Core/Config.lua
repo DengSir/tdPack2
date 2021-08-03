@@ -248,5 +248,15 @@ ns.DEFAULT_SORTING_RULES = {
 
 ns.DEFAULT_SAVING_RULES = { --
     16885, -- 重垃圾箱
-    Rule(TRADEGOODS, 132905, 'type:' .. TRADEGOODS .. ' & !spell & !bop'),
+    Trade(1, 133025), -- 零件
+    Trade(5, 132903), -- 布料
+    Trade(6, 134256), -- 皮革
+    Trade(7, 133217), -- 金属和矿石
+    Trade(8, 134027), -- 肉类
+    Trade(9, 134215), -- 草药
+    Trade(10, 135819), -- 元素
+    Trade(12, 132864), -- 附魔
+    Trade(4, 134379), -- 珠宝加工
+    Trade(13, 132850), -- 原料
+    Type(LE_ITEM_CLASS_GEM, 133272)
 }
