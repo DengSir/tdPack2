@@ -182,7 +182,9 @@ Filters.tdPackTags = {
                 ids[id] = true
             end
             items[k:lower()] = ids
-            items[L['ITEM_TAG: ' .. k]] = ids
+            if ids.locale then
+                items[L['ITEM_TAG: ' .. k]] = ids
+            end
         end
         return items
     end)(),

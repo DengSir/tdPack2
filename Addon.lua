@@ -113,13 +113,32 @@ function Addon:CleanRules()
 end
 
 function Addon:UpgradeRules()
-    if self.db.profile.version and self.db.profile.version >= 20000 then
-        return
+    if self.db.profile.version then
+        if self.db.profile.version < 20000 then
+            wipe(self.db.profile.rules)
+            self:Print(L['Rules restore to default.'])
+        elseif self.db.profile.version < 20004 then
+
+            if self.db.profile.rules.saving or self.db.profile.rules.sorting then
+                if not StaticPopupDialogs['TDPACK2_UPDATE_RULES'] then
+                    StaticPopupDialogs['TDPACK2_UPDATE_RULES'] = {
+                        button1 = ACCEPT,
+                        button2 = CANCEL,
+                        text = L.UPDATE_RULES_CONFIRM,
+                        OnAccept = function()
+                            self:ResetRules(ns.SORT_TYPE.SORTING)
+                            self:ResetRules(ns.SORT_TYPE.SAVING)
+                        end,
+                    }
+                end
+
+                StaticPopup_Show('TDPACK2_UPDATE_RULES')
+            end
+        end
     end
     self.db.profile.version = ns.VERSION
 
-    wipe(self.db.profile.rules)
-    self:Print(L['Rules restore to default.'])
+    print(ns.VERSION)
 end
 
 function Addon:OnModuleCreated(module)

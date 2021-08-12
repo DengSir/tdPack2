@@ -62,6 +62,13 @@ L['Advancee rules use LibItemSearch-1.2'] = true
 L['Enjoy!'] = true
 L['Rules restore to default.'] = true
 
+L.UPDATE_RULES_CONFIRM = [[The current version of tdPack2 updates a large number of rules. Do you want to reset the rules to the default settings?
+
+Help to choose:
+1. I know what this prompt is saying: choose for yourself
+2. I don’t know how to choose: Accept
+]]
+
 -- for actions
 L.None = true
 L.SORT = 'Default pack'
