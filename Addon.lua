@@ -61,8 +61,14 @@ function Addon:OnInitialize()
         self:SetupProfile()
     end
 
+    local function CleanRules()
+        self:CleanRules()
+    end
+
     self.db:RegisterCallback('OnProfileChanged', SetupProfile)
     self.db:RegisterCallback('OnProfileReset', SetupProfile)
+    self.db:RegisterCallback('OnProfileShutdown', CleanRules)
+    self.db:RegisterCallback('OnDatabaseShutdown', CleanRules)
 end
 
 function Addon:OnEnable()
@@ -83,6 +89,25 @@ function Addon:SetupRules()
     for key, rules in pairs(self.defaultRules) do
         if not profile[key] then
             profile[key] = CopyTable(rules)
+        end
+    end
+end
+
+local function compare(lhs, rhs)
+    if type(lhs) ~= type(rhs) then
+        return false
+    end
+    if type(lhs) ~= 'table' then
+        return false
+    end
+    return tCompare(lhs, rhs, 10)
+end
+
+function Addon:CleanRules()
+    local profile = self.db.profile.rules
+    for key, rules in pairs(self.defaultRules) do
+        if compare(rules, profile[key]) then
+            profile[key] = nil
         end
     end
 end
