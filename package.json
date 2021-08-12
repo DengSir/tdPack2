@@ -4,7 +4,8 @@
   "description": "Sorting your items",
   "main": "index.js",
   "scripts": {
-    "test": "echo not implemented"
+    "test": "echo not implemented",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",
