@@ -137,8 +137,6 @@ function Addon:UpgradeRules()
         end
     end
     self.db.profile.version = ns.VERSION
-
-    print(ns.VERSION)
 end
 
 function Addon:OnModuleCreated(module)
