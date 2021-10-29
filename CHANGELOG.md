@@ -1,3 +1,12 @@
+## [2.0.6](https://github.com/DengSir/tdPack2/compare/v2.0.5...v2.0.6) (2021-10-29)
+
+
+### Features
+
+* better trade pack ([48b75ae](https://github.com/DengSir/tdPack2/commit/48b75ae2869d9619664221cc51365181d578d5b8))
+
+
+
 ## [2.0.5](https://github.com/DengSir/tdPack2/compare/v2.0.4...v2.0.5) (2021-08-14)
 
 
