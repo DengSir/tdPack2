@@ -32,7 +32,7 @@
     },
     "builds": {
       "classic": "11400",
-      "bcc": "20501"
+      "bcc": "20504"
     }
   },
   "dependencies": {
