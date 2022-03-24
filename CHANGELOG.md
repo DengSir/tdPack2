@@ -1,3 +1,7 @@
+## [2.0.7](https://github.com/DengSir/tdPack2/compare/v2.0.6...v2.0.7) (2022-03-24)
+
+
+
 ## [2.0.6](https://github.com/DengSir/tdPack2/compare/v2.0.5...v2.0.6) (2021-10-29)
 
 
