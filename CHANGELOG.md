@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/DengSir/tdPack2/compare/v2.0.7...v2.1.0) (2022-08-03)
+
+
+### Features
+
+* update for wlk ([4aa8de6](https://github.com/DengSir/tdPack2/commit/4aa8de637941b3ca2b60ab6eb432e55e9c17362a))
+
+
+
 ## [2.0.7](https://github.com/DengSir/tdPack2/compare/v2.0.6...v2.0.7) (2022-03-24)
 
 
