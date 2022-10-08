@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/DengSir/tdPack2/compare/v2.1.0...v2.1.1) (2022-10-08)
+
+
+### Bug Fixes
+
+* bugs ([6db9fcb](https://github.com/DengSir/tdPack2/commit/6db9fcb5016779d547977fdda433cdb67885919f))
+
+
+
 # [2.1.0](https://github.com/DengSir/tdPack2/compare/v2.0.7...v2.1.0) (2022-08-03)
 
 
