@@ -168,6 +168,22 @@ function ns.GetBagFamily(bag)
         return 256
     end
     -- @end-build<2@
+
+    -- 3.4 GetContainerNumFreeSlots 接口有bug，专业包可能取到0
+    if bag > 0 then
+        local invId = ContainerIDToInventoryID(bag)
+        local itemId = GetInventoryItemID('player', invId)
+        if itemId then
+            local itemFamily = GetItemFamily(itemId)
+            if itemFamily then
+                return itemFamily
+            end
+            return nil
+        else
+            return 0
+        end
+    end
+
     return select(2, GetContainerNumFreeSlots(bag))
 end
 
