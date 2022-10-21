@@ -209,8 +209,8 @@ ns.DEFAULT_SORTING_RULES = {
         Consumable(1, 134729), -- 药水
         Consumable(4, 134937), -- 卷轴
         Consumable(5, 133953, {
-            43051, -- 鱼
-            45554, -- 猪
+            43015, -- 鱼
+            34753, -- 猪
             Spell(44166, 134051), -- 恢复体能
             SpellId(33262, 134034, SPELL_STAT2_NAME), -- 敏捷
             SpellId(33255, 134016, SPELL_STAT1_NAME), -- 力量
