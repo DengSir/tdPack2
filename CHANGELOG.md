@@ -1,3 +1,17 @@
+## [2.1.2](https://github.com/DengSir/tdPack2/compare/v2.1.1...v2.1.2) (2022-10-21)
+
+
+### Bug Fixes
+
+* CURSOR_CHANGED ([eeb986b](https://github.com/DengSir/tdPack2/commit/eeb986ba810727b6938179a5f617c6837f6d6942))
+
+
+### Features
+
+* update rule ([9063ade](https://github.com/DengSir/tdPack2/commit/9063ade8d97d0f0d13e901eda2a013aca23ce646))
+
+
+
 ## [2.1.1](https://github.com/DengSir/tdPack2/compare/v2.1.0...v2.1.1) (2022-10-08)
 
 
