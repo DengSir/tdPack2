@@ -95,6 +95,8 @@ L.COMMENT_CLASS = 'Class items'
 L.KEYWORD_CLASS = 'Classes'
 
 L.Tools = true
+L.Transporter = true
+L.Usuable = true
 
 L['ITEM_TAG: Cloth'] = 'Cloth'
 L['ITEM_TAG: Leather'] = 'Leather'
