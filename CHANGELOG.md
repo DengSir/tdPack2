@@ -1,3 +1,12 @@
+## [2.1.3](https://github.com/DengSir/tdPack2/compare/v2.1.2...v2.1.3) (2022-10-24)
+
+
+### Features
+
+* update rules ([076c2bf](https://github.com/DengSir/tdPack2/commit/076c2bf1f3efa98f948ed105f8e5126c1e0d4e81))
+
+
+
 ## [2.1.2](https://github.com/DengSir/tdPack2/compare/v2.1.1...v2.1.2) (2022-10-21)
 
 
