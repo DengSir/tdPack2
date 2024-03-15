@@ -60,18 +60,18 @@ end))) or 0
 
 ---- ENUM
 ns.BAG_TYPE = {
-    BAG = 'bag', --
+    BAG = 'bag',   --
     BANK = 'bank', --
 }
 
 ns.BAG_TYPES = {
-    ns.BAG_TYPE.BAG, --
+    ns.BAG_TYPE.BAG,  --
     ns.BAG_TYPE.BANK, --
 }
 
 ns.COMMAND = {
-    ALL = 'all', --
-    BAG = 'bag', --
+    ALL = 'all',   --
+    BAG = 'bag',   --
     BANK = 'bank', --
 }
 
@@ -80,13 +80,13 @@ ns.EXTRA_COMMAND = {
 }
 
 ns.ORDER = {
-    ASC = 'asc', --
+    ASC = 'asc',   --
     DESC = 'desc', --
 }
 
 ns.SORT_TYPE = {
     SORTING = 1, --
-    SAVING = 2, --
+    SAVING = 2,  --
 }
 
 local function riter(t, i)
@@ -118,8 +118,8 @@ function ns.memorize(func)
 end
 
 local BAGS = { --
-    [ns.BAG_TYPE.BAG] = {BACKPACK_CONTAINER},
-    [ns.BAG_TYPE.BANK] = {BANK_CONTAINER},
+    [ns.BAG_TYPE.BAG] = { BACKPACK_CONTAINER },
+    [ns.BAG_TYPE.BANK] = { BANK_CONTAINER },
 }
 local BAG_SETS = {}
 
@@ -177,7 +177,7 @@ function ns.GetBagFamily(bag)
     if bag == KEYRING_CONTAINER then
         return 256
     end
-    -- @end-build<2@
+    -- @end-build>2@
 
     -- 3.4 GetContainerNumFreeSlots 接口有bug，专业包可能取到0
     if bag > 0 then
@@ -262,12 +262,14 @@ end
 function ns.IsFamilyContains(bagFamily, itemFamily)
     return bagFamily == itemFamily
 end
+
 -- @end-build<2@
 
 -- @build>2@
 function ns.IsFamilyContains(bagFamily, itemFamily)
     return band(bagFamily, itemFamily) > 0
 end
+
 -- @end-build>2@
 
 function ns.GetClickToken(button, control, shift, alt)

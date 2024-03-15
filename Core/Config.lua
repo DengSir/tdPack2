@@ -193,35 +193,39 @@ ns.DEFAULT_SORTING_RULES = {
         Weapon(LE_ITEM_WEAPON_FISHINGPOLE, 132932), -- 鱼竿
     }), --
     Rule(EQUIPSET_EQUIP, 132722, 'equip', {
-        Slot('INVTYPE_2HWEAPON', 135324), -- 双手
-        Slot('INVTYPE_WEAPONMAINHAND', 133045), -- 主手
-        Slot('INVTYPE_WEAPON', 135641), -- 单手
-        Slot('INVTYPE_SHIELD', 134955), -- 副手盾
-        Slot('INVTYPE_WEAPONOFFHAND', 134955), -- 副手
-        Slot('INVTYPE_HOLDABLE', 134333), -- 副手物品
-        Slot('INVTYPE_RANGED', 135498), -- 远程
-        Slot('INVTYPE_RANGEDRIGHT', 135468), -- 远程
-        Slot('INVTYPE_THROWN', 132394), -- 投掷武器
-        -- Weapon(LE_ITEM_WEAPON_GUNS, 135610), -- 枪
-        -- Weapon(LE_ITEM_WEAPON_CROSSBOW, 135533), -- 弩
-        -- Weapon(LE_ITEM_WEAPON_THROWN, 135427), -- 投掷武器
-        -- Weapon(LE_ITEM_WEAPON_WAND, 135473), -- 魔杖
-        Slot('INVTYPE_RELIC', 134915), -- 圣物
-        Slot('INVTYPE_HEAD', 133136), -- 头部
-        Slot('INVTYPE_NECK', 133294), -- 颈部
-        Slot('INVTYPE_SHOULDER', 135033), -- 肩部
-        Slot('INVTYPE_CLOAK', 133768), -- 背部
-        Slot('INVTYPE_CHEST', 132644), -- 胸部
-        Slot('INVTYPE_ROBE', 132644), -- 胸部
-        Slot('INVTYPE_WRIST', 132608), -- 手腕
-        Slot('INVTYPE_HAND', 132948), -- 手
-        Slot('INVTYPE_WAIST', 132511), -- 腰部
-        Slot('INVTYPE_LEGS', 134588), -- 腿部
-        Slot('INVTYPE_FEET', 132541), -- 脚
-        Slot('INVTYPE_FINGER', 133345), -- 手指
-        Slot('INVTYPE_TRINKET', 134010), -- 饰品
-        Slot('INVTYPE_BODY', 135022), -- 衬衣
-        Slot('INVTYPE_TABARD', 135026), -- 战袍
+        Rule('Set', 132722, 'bset'), --
+        Group('非套装', 132722, {
+
+            Slot('INVTYPE_2HWEAPON', 135324), -- 双手
+            Slot('INVTYPE_WEAPONMAINHAND', 133045), -- 主手
+            Slot('INVTYPE_WEAPON', 135641), -- 单手
+            Slot('INVTYPE_SHIELD', 134955), -- 副手盾
+            Slot('INVTYPE_WEAPONOFFHAND', 134955), -- 副手
+            Slot('INVTYPE_HOLDABLE', 134333), -- 副手物品
+            Slot('INVTYPE_RANGED', 135498), -- 远程
+            Slot('INVTYPE_RANGEDRIGHT', 135468), -- 远程
+            Slot('INVTYPE_THROWN', 132394), -- 投掷武器
+            -- Weapon(LE_ITEM_WEAPON_GUNS, 135610), -- 枪
+            -- Weapon(LE_ITEM_WEAPON_CROSSBOW, 135533), -- 弩
+            -- Weapon(LE_ITEM_WEAPON_THROWN, 135427), -- 投掷武器
+            -- Weapon(LE_ITEM_WEAPON_WAND, 135473), -- 魔杖
+            Slot('INVTYPE_RELIC', 134915), -- 圣物
+            Slot('INVTYPE_HEAD', 133136), -- 头部
+            Slot('INVTYPE_NECK', 133294), -- 颈部
+            Slot('INVTYPE_SHOULDER', 135033), -- 肩部
+            Slot('INVTYPE_CLOAK', 133768), -- 背部
+            Slot('INVTYPE_CHEST', 132644), -- 胸部
+            Slot('INVTYPE_ROBE', 132644), -- 胸部
+            Slot('INVTYPE_WRIST', 132608), -- 手腕
+            Slot('INVTYPE_HAND', 132948), -- 手
+            Slot('INVTYPE_WAIST', 132511), -- 腰部
+            Slot('INVTYPE_LEGS', 134588), -- 腿部
+            Slot('INVTYPE_FEET', 132541), -- 脚
+            Slot('INVTYPE_FINGER', 133345), -- 手指
+            Slot('INVTYPE_TRINKET', 134010), -- 饰品
+            Slot('INVTYPE_BODY', 135022), -- 衬衣
+            Slot('INVTYPE_TABARD', 135026), -- 战袍
+        }),
     }), -- 装备
     Type(LE_ITEM_CLASS_PROJECTILE, 132382), -- 弹药
     Type(LE_ITEM_CLASS_CONTAINER, 133652), -- 容器
