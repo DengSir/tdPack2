@@ -1,6 +1,6 @@
 {
   "name": "tdpack2",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "Sorting your items",
   "main": "index.js",
   "scripts": {

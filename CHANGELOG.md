@@ -1,3 +1,12 @@
+## [2.1.4](https://github.com/DengSir/tdPack2/compare/v2.1.3...v2.1.4) (2024-03-19)
+
+
+### Features
+
+* support plus ([30ebe86](https://github.com/DengSir/tdPack2/commit/30ebe86c18b5f034facda3880eafccf84a1c46d4))
+
+
+
 ## [2.1.3](https://github.com/DengSir/tdPack2/compare/v2.1.2...v2.1.3) (2022-10-24)
 
 
