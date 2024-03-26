@@ -231,7 +231,7 @@ ns.DEFAULT_SORTING_RULES = {
     Type(LE_ITEM_CLASS_CONTAINER, 133652), -- 容器
     Type(LE_ITEM_CLASS_QUIVER, 134407), -- 箭袋
     Type(LE_ITEM_CLASS_RECIPE, 134939), -- 配方
-    Rule(CONSUMABLE, 134829, 'type:' .. CONSUMABLE .. ' & tip:!' .. QUEST .. ' & spell', {
+    Rule(CONSUMABLE, 134829, 'class:' .. CONSUMABLE .. ' & tip:!' .. QUEST .. ' & spell', {
         -- @build<2@
         TipLocale('CLASS', 132273), -- 职业
         Spell(746, 133685), -- 急救
@@ -310,7 +310,7 @@ ns.DEFAULT_SORTING_RULES = {
         SubType(LE_ITEM_CLASS_GEM, 7, 134087), -- 简易
     }), -- 珠宝
     -- @end-build>2@
-    Rule(MISC, 134237, 'type:!' .. QUEST .. ' & tip:!' .. QUEST, {
+    Rule(MISC, 134237, 'class:!' .. QUEST .. ' & tip:!' .. QUEST, {
         -- @build>2@
         Misc(LE_ITEM_MISCELLANEOUS_REAGENT, 133587), -- 材料
         -- @end-build>2@
@@ -318,7 +318,7 @@ ns.DEFAULT_SORTING_RULES = {
         Type(LE_ITEM_CLASS_MISCELLANEOUS, 134400), -- 其它
         Type(LE_ITEM_CLASS_KEY, 134237), -- 钥匙
     }), --
-    Rule(QUEST, 133469, 'type:' .. QUEST .. ' | tip:' .. QUEST, {
+    Rule(QUEST, 133469, 'class:' .. QUEST .. ' | tip:' .. QUEST, {
         Tip(ITEM_STARTS_QUEST, 132836), -- 接任务
         Rule(nil, 133942, 'spell'), --
     }), -- 任务

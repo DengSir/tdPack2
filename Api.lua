@@ -23,22 +23,15 @@
 ---@field Search Search
 local ns = select(2, ...)
 
+local C = LibStub('C_Everywhere')
+
 ---- LUA
 local select, type, assert, ipairs = select, type, assert, ipairs
 local tostring, format, strrep = tostring, string.format, string.rep
 local tonumber, band = tonumber, bit.band
 
 ---- WOW
-local GetContainerItemInfo = function(bag, slot)
-    if C_Container and C_Container.GetContainerItemInfo then
-        local info = C_Container.GetContainerItemInfo(bag, slot)
-        if info then
-            return info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound
-        end
-    else
-        return _G.GetContainerItemInfo(bag, slot)
-    end
-end
+local GetContainerItemInfo = C.Container.GetContainerItemInfo
 local GetContainerItemID = GetContainerItemID or C_Container.GetContainerItemID
 local GetContainerItemLink = GetContainerItemLink or C_Container.GetContainerItemLink
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots or C_Container.GetContainerNumFreeSlots
@@ -60,18 +53,18 @@ end))) or 0
 
 ---- ENUM
 ns.BAG_TYPE = {
-    BAG = 'bag',   --
+    BAG = 'bag', --
     BANK = 'bank', --
 }
 
 ns.BAG_TYPES = {
-    ns.BAG_TYPE.BAG,  --
+    ns.BAG_TYPE.BAG, --
     ns.BAG_TYPE.BANK, --
 }
 
 ns.COMMAND = {
-    ALL = 'all',   --
-    BAG = 'bag',   --
+    ALL = 'all', --
+    BAG = 'bag', --
     BANK = 'bank', --
 }
 
@@ -80,13 +73,13 @@ ns.EXTRA_COMMAND = {
 }
 
 ns.ORDER = {
-    ASC = 'asc',   --
+    ASC = 'asc', --
     DESC = 'desc', --
 }
 
 ns.SORT_TYPE = {
     SORTING = 1, --
-    SAVING = 2,  --
+    SAVING = 2, --
 }
 
 local function riter(t, i)
@@ -118,8 +111,8 @@ function ns.memorize(func)
 end
 
 local BAGS = { --
-    [ns.BAG_TYPE.BAG] = { BACKPACK_CONTAINER },
-    [ns.BAG_TYPE.BANK] = { BANK_CONTAINER },
+    [ns.BAG_TYPE.BAG] = {BACKPACK_CONTAINER},
+    [ns.BAG_TYPE.BANK] = {BANK_CONTAINER},
 }
 local BAG_SETS = {}
 
@@ -243,7 +236,8 @@ function ns.IsBagSlotFull(bag, slot)
 end
 
 function ns.GetBagSlotCount(bag, slot)
-    return (select(2, GetContainerItemInfo(bag, slot)))
+    local info = GetContainerItemInfo(bag, slot)
+    return info and info.stackCount
 end
 
 function ns.GetBagSlotFamily(bag, slot)
@@ -251,7 +245,8 @@ function ns.GetBagSlotFamily(bag, slot)
 end
 
 function ns.IsBagSlotLocked(bag, slot)
-    return (select(3, GetContainerItemInfo(bag, slot)))
+    local info = GetContainerItemInfo(bag, slot)
+    return info and info.isLocked
 end
 
 function ns.PickupBagSlot(bag, slot)
