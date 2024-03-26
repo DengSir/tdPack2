@@ -2,11 +2,79 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/2/2019, 12:35:41 PM
-
 ---@type ns
 local ADDON, ns = ...
 local Addon = ns.Addon
 local L = ns.L
+
+local AceConfigRegistry = LibStub('AceConfigRegistry-3.0')
+local AceConfigDialog = LibStub('AceConfigDialog-3.0')
+
+local AceGUI = LibStub('AceGUI-3.0')
+
+local Type = ADDON .. 'RuleView'
+
+local methods = {
+    OnAcquire = function(self)
+        print('OnAcquire', self)
+        self:SetHeight(295)
+    end,
+
+    OnRelease = function(self)
+        print('OnRelease', self)
+        self.frame:UnregisterAllMessages()
+    end,
+
+    OnWidthSet = function(self, width)
+        self.frame:SetWidth(width - 18)
+        self.frame.scrollChild:SetWidth(width - 18)
+    end,
+
+    OnHeightSet = function(self, height)
+        self.frame:SetHeight(height)
+        self.frame.scrollChild:SetHeight(height)
+    end,
+
+    SetText = function(self, type)
+        assert(ns.SORT_TYPE[type])
+        local frame = self.frame
+        print(self)
+
+        self.listType = type
+        self.event = format('TDPACK_%s_RULES_UPDATE', type)
+        self:Refresh()
+
+        self.frame:SetCallback('OnListChanged', function()
+            Addon:SendMessage(self.event)
+        end)
+        self.frame:RegisterMessage(self.event, function()
+            self:Refresh()
+        end)
+        self.frame:RegisterMessage('TDPACK_PROFILE_CHANGED', function()
+            self:Refresh()
+        end)
+    end,
+
+    Refresh = function(self)
+        self.frame:SetItemTree(Addon:GetRules(ns.SORT_TYPE[self.listType]))
+        self.frame:Refresh()
+    end,
+}
+
+local function Constructor()
+    local frame = ns.UI.RuleView:Bind(CreateFrame('ScrollFrame', 'tdPackPackFrame', UIParent,
+                                                  'tdPack2ScrollFrameTemplate'))
+    frame:Hide()
+
+    local widget = {frame = frame, type = Type}
+    for method, func in pairs(methods) do
+        widget[method] = func
+    end
+
+    return AceGUI:RegisterAsWidget(widget)
+end
+
+AceGUI:RegisterWidgetType(Type, Constructor, 1)
 
 function Addon:InitOptionFrame()
     local index = 0
@@ -36,6 +104,20 @@ function Addon:InitOptionFrame()
             confirm = not not confirm,
             confirmText = confirm,
             func = func,
+        }
+    end
+
+    local function desc(name)
+        return {
+            type = 'description',
+            order = orderGen(),
+            name = name,
+            fontSize = 'medium',
+            image = [[Interface\Common\help-i]],
+            imageWidth = 32,
+            imageHeight = 32,
+            imageCoords = {.2, .8, .2, .8},
+            desc = name,
         }
     end
 
@@ -71,7 +153,7 @@ function Addon:InitOptionFrame()
         }
 
         for _, v in ipairs(ns.CLICK_LIST) do
-            g.args[tostring(v.token)] = drop{
+            g.args[tostring(v.token)] = drop {
                 name = v.name,
                 order = orderGen(),
                 values = {
@@ -99,7 +181,7 @@ function Addon:InitOptionFrame()
 
     local options = {
         type = 'group',
-        name = ADDON,
+        name = format('%s - |cff00ff00%s|r', ADDON, GetAddOnMetadata(ADDON, 'Version')),
 
         get = function(item)
             return self:GetOption(item[#item])
@@ -181,22 +263,80 @@ function Addon:InitOptionFrame()
             },
             [ns.BAG_TYPE.BAG] = generateButton(ns.BAG_TYPE.BAG, L['Bag button features']),
             [ns.BAG_TYPE.BANK] = generateButton(ns.BAG_TYPE.BANK, L['Bank button features']),
+            pack = {
+                type = 'group',
+                name = 'hello',
+                args = {
+                    title = desc(L['Sorting rule settings']),
+                    add = {
+                        type = 'execute',
+                        name = L['Add advance rule'],
+                        order = orderGen(),
+                        desc = 'helloworld',
+                        func = function()
+
+                        end,
+                    },
+                    reset = {
+                        type = 'execute',
+                        name = L['Reset rule'],
+                        order = orderGen(),
+                        func = function()
+
+                        end,
+                    },
+                    help = {
+                        type = 'execute',
+                        name = L['Help'],
+                        width = 'half',
+                        order = orderGen(),
+                        image = [[Interface\HelpFrame\HelpIcon-KnowledgeBase]],
+                        imageCoords = {0.2, 0.8, 0.2, 0.8},
+                        imageWidth = 24,
+                        imageHeight = 24,
+                        desc = table.concat({
+                            L['Drag to modify the sorting order'], L['Put in an item to add simple rule'],
+                            L['Advancee rules use ItemSearch-1.3'], L['Enjoy!'],
+                        }, '\n'),
+                    },
+                    view = {
+                        type = 'group',
+                        name = 'Rules',
+                        inline = true,
+                        order = orderGen(),
+                        args = {
+                            view = {
+                                type = 'header',
+                                name = 'SORTING',
+                                order = orderGen(),
+                                width = 'full',
+                                dialogControl = ADDON .. 'RuleView',
+                                arg = {'pack'},
+                            },
+                        },
+                    },
+                    -- help = {
+                    --     type = 'description',
+                    --     name = table.concat({
+                    --         L['Drag to modify the sorting order'], L['Put in an item to add simple rule'],
+                    --         L['Advancee rules use ItemSearch-1.3'], L['Enjoy!'],
+                    --     }, '\n'),
+                    -- },
+                },
+
+            },
         },
     }
 
-    local registry = LibStub('AceConfigRegistry-3.0')
-    registry:RegisterOptionsTable(ADDON, options)
-
-    local dialog = LibStub('AceConfigDialog-3.0')
-    self.options = dialog:AddToBlizOptions(ADDON, ADDON)
-end
-
-local function OpenToCategory(options)
-    InterfaceOptionsFrame_OpenToCategory(options)
-    InterfaceOptionsFrame_OpenToCategory(options)
-    OpenToCategory = InterfaceOptionsFrame_OpenToCategory
+    AceConfigRegistry:RegisterOptionsTable(ADDON, options)
+    AceConfigDialog:AddToBlizOptions(ADDON, ADDON)
+    AceConfigDialog:SetDefaultSize(ADDON, 700, 570)
 end
 
 function Addon:OpenOption()
-    OpenToCategory(self.options)
+    AceConfigDialog:Open(ADDON)
+    pcall(function()
+        AceConfigDialog.OpenFrames[ADDON]:EnableResize(false)
+        AceConfigDialog.OpenFrames[ADDON].frame:SetFrameStrata('DIALOG')
+    end)
 end

@@ -32,11 +32,39 @@
     </Button>
     <ScrollFrame name="tdPack2ScrollFrameTemplate" inherits="HybridScrollFrameTemplate" virtual="true">
         <Frames>
-            <Slider parentKey="scrollBar" inherits="HybridScrollBarTemplate">
+            <Slider parentKey="scrollBar">
+                <Size x="22" y="0"/>
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="0" y="-14" />
-                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="0" y="13" />
+                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="-18" y="-14" />
+                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="-18" y="13" />
                 </Anchors>
+                <Frames>
+                    <Button inherits="UIPanelScrollUpButtonTemplate">
+                        <Anchors>
+                            <Anchor point="TOP" x="0" y="15"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnLoad function="HybridScrollFrameScrollUp_OnLoad"/>
+                            <OnClick function="HybridScrollFrameScrollButton_OnClick"/>
+                        </Scripts>
+                    </Button>
+                    <Button inherits="UIPanelScrollDownButtonTemplate">
+                        <Anchors>
+                            <Anchor point="BOTTOM" x="0" y="-15"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnLoad function="HybridScrollFrameScrollDown_OnLoad"/>
+                            <OnClick function="HybridScrollFrameScrollButton_OnClick"/>
+                        </Scripts>
+                    </Button>
+                </Frames>
+                <Scripts>
+                    <OnValueChanged function="HybridScrollFrame_OnValueChanged"/>
+                </Scripts>
+                <ThumbTexture name="$parentThumbTexture" inherits="HybridScrollBarButton" file="Interface\Buttons\UI-ScrollBar-Knob" parentKey="thumbTexture">
+                    <Size x="18" y="24"/>
+                    <TexCoords left="0.20" right="0.80" top="0.125" bottom="0.875"/>
+                </ThumbTexture>
             </Slider>
         </Frames>
     </ScrollFrame>
