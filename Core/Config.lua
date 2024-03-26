@@ -42,12 +42,12 @@ end
 
 local function Type(type, icon, children)
     local name = GetItemClassInfo(type)
-    return Rule(name, icon, 'type:' .. name, children)
+    return Rule(name, icon, 'class:' .. name, children)
 end
 
 local function SubType(type, subType, icon, children)
     local name = GetItemSubClassInfo(type, subType)
-    return Rule(name, icon, 'type:' .. name, children)
+    return Rule(name, icon, 'class:' .. name, children)
 end
 
 local function Weapon(subType, icon, children)
@@ -103,7 +103,7 @@ end
 
 local function TypeOrTag(type, subType, icon, children)
     local name = GetItemSubClassInfo(type, subType)
-    return Rule(name, icon, format('type:%s | tag:%s', name, name), children)
+    return Rule(name, icon, format('class:%s | tag:%s', name, name), children)
 end
 
 local CONSUMABLE = GetItemClassInfo(LE_ITEM_CLASS_CONSUMABLE) -- 消耗品
