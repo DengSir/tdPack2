@@ -53,12 +53,12 @@ L['Save to bank when default packing'] = true
 L['Keep bank items stack full'] = true
 L['Bank and bag stacking together'] = true
 L['Global'] = true
-L['Add extension filter to LibItemSearch-1.2'] = true
+L['Add extension filter to ItemSearch-1.3'] = true
 
 L['Help'] = true
 L['Drag to modify the sorting order'] = true
 L['Put in an item to add simple rule'] = true
-L['Advancee rules use LibItemSearch-1.2'] = true
+L['Advancee rules use ItemSearch-1.3'] = true
 L['Enjoy!'] = true
 L['Rules restore to default.'] = true
 

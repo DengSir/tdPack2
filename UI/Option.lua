@@ -174,7 +174,7 @@ function Addon:InitOptionFrame()
                         order = orderGen(),
                         inline = true,
                         args = { --
-                            applyLibItemSearch = toggle(L['Add extension filter to LibItemSearch-1.2']),
+                            applyLibItemSearch = toggle(L['Add extension filter to ItemSearch-1.3']),
                         },
                     },
                 },
