@@ -52,7 +52,7 @@ function Search:UpdateLib()
 end
 
 function Search:Matches(link, search)
-    return CustomSearch:Matches(link, search, self.filters)
+    return CustomSearch:Matches({link = link}, search, self.filters)
 end
 
 Filters.tdpackSpell = {
