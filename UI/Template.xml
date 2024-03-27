@@ -61,7 +61,7 @@
                 <Scripts>
                     <OnValueChanged function="HybridScrollFrame_OnValueChanged"/>
                 </Scripts>
-                <ThumbTexture name="$parentThumbTexture" inherits="HybridScrollBarButton" file="Interface\Buttons\UI-ScrollBar-Knob" parentKey="thumbTexture">
+                <ThumbTexture inherits="HybridScrollBarButton" file="Interface\Buttons\UI-ScrollBar-Knob" parentKey="thumbTexture">
                     <Size x="18" y="24"/>
                     <TexCoords left="0.20" right="0.80" top="0.125" bottom="0.875"/>
                 </ThumbTexture>
@@ -152,22 +152,7 @@
         </HighlightTexture>
     </Button>
 
-    <Frame name="tdPack2RuleOptionTemplate" inherits="ButtonFrameTemplate" toplevel="true" enableMouse="true" movable="true" resizable="true" virtual="true">
-        <Frames>
-            <Button parentKey="Resize" inherits="PanelResizeButtonTemplate">
-                <Anchors>
-                    <Anchor point="BOTTOMRIGHT" />
-                </Anchors>
-                <Scripts>
-                    <OnLoad>
-                        self:Init(self:GetParent(), 337, 423)
-                    </OnLoad>
-                </Scripts>
-            </Button>
-        </Frames>
-    </Frame>
-
-    <Frame name="tdPack2RuleEditorTemplate" frameStrata="DIALOG" enableMouse="true" inherits="BackdropTemplate" virtual="true">
+    <Frame name="tdPack2RuleEditorTemplate" frameStrata="DIALOG" enableMouse="true" toplevel="true" inherits="BackdropTemplate" virtual="true">
         <Size x="395" y="400" />
         <Layers>
             <Layer level="ARTWORK">

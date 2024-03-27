@@ -21,6 +21,7 @@
 ---@field Stacking Stacking
 ---@field Sorting Sorting
 ---@field Search Search
+---@field Addon Addon
 local ns = select(2, ...)
 
 local C = LibStub('C_Everywhere')

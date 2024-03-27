@@ -107,9 +107,16 @@ function Rule:OnInitialize()
         end,
     }
 
-    self:RegisterMessage('TDPACK_SORTING_RULES_UPDATE', 'RebuildSorting')
-    self:RegisterMessage('TDPACK_SAVING_RULES_UPDATE', 'RebuildSaving')
+    self:RegisterMessage('TDPACK_RULES_UPDATE')
     self:RegisterMessage('TDPACK_PROFILE_CHANGED', 'RebuildAll')
+end
+
+function Rule:TDPACK_RULES_UPDATE(_, ruleType)
+    if ruleType == ns.SORT_TYPE.SORTING then
+        self:RebuildSorting()
+    elseif ruleType == ns.SORT_TYPE.SAVING then
+        self:RebuildSaving()
+    end
 end
 
 function Rule:RebuildAll()

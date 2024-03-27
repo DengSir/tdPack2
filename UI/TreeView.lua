@@ -65,7 +65,6 @@ local TreeView = UI:NewClass('TreeView', UI.ScrollFrame)
 LibStub('AceTimer-3.0'):Embed(TreeView)
 
 function TreeView:Constructor()
-    self.treeStatus = TreeStatus:New()
     self:SetCallback('OnItemCreated', self.OnItemCreated)
     self:SetCallback('OnItemDragStart', self.OnItemDragStart)
     self:SetCallback('OnItemDragStop', self.OnItemDragStop)
@@ -290,6 +289,9 @@ function TreeView:UpdateInsert()
 end
 
 function TreeView:update()
+    if not self.treeStatus then
+        return
+    end
     local offset = self:GetOffset()
     local buttons = self.buttons
     local treeStatus = self.treeStatus

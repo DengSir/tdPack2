@@ -30,17 +30,24 @@ L['Are you sure you want to restore the current Settings?'] = true
 L['Left Click'] = true
 L['Right Click'] = true
 
-L['Bag button features'] = true
-L['Bank button features'] = true
-L['Reset sorting rules'] = true
-L['Are you sure to |cffff1919RESET|r sorting rules?'] = true
+L['tdPack2 is a bag sorting addon.'] = true
+L['Rules'] = true
+L['Buttons'] = true
+L['Bag'] = true
+L['Bank'] = true
+L['Reset rule'] = true
+L['Are you sure to |cffff1919RESET|r rules?'] = true
+L['Profile'] = true
+
+L['SORTING_NAME'] = 'Sorting'
+L['SORTING_DESC'] = 'Sort bags and bank.'
+L['SAVING_NAME'] = 'Saving'
+L['SAVING_DESC'] = 'Save items to bank.'
 
 L['Already exists'] = true
 L['Add advance rule'] = true
 L['Are you sure |cffff191919DELETE|r rule and its |cffff1919SUBRULES|r?'] = true
 L['Are you sure |cffff191919DELETE|r rule?'] = true
-L['Reset saving rules'] = true
-L['Are you sure to |cffff1919RESET|r saving rules?'] = true
 
 L['Root'] = true
 L['Rule'] = true
@@ -76,14 +83,14 @@ Help to choose:
 -- for actions
 L.None = true
 L.SORT = 'Default pack'
-L.SORT_BAG = 'Pack bag'
-L.SORT_BAG_ASC = 'Pack bag asc'
-L.SORT_BAG_DESC = 'Pack bag desc'
-L.SORT_BANK = 'Pack bank'
-L.SORT_BANK_ASC = 'Pack bank asc'
-L.SORT_BANK_DESC = 'Pack bank desc'
-L.SORT_ASC = 'Pack asc'
-L.SORT_DESC = 'Pack desc'
+L.SORT_BAG = 'Sort bag'
+L.SORT_BAG_ASC = 'Sort bag asc'
+L.SORT_BAG_DESC = 'Sort bag desc'
+L.SORT_BANK = 'Sort bank'
+L.SORT_BANK_ASC = 'Sort bank asc'
+L.SORT_BANK_DESC = 'Sort bank desc'
+L.SORT_ASC = 'Sort asc'
+L.SORT_DESC = 'Sort desc'
 L.OPEN_RULE_OPTIONS = 'Open rule options'
 L.OPEN_OPTIONS = 'Open options'
 L.SAVE = 'Save to bank'

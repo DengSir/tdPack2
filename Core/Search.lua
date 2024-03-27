@@ -24,6 +24,7 @@ local CustomSearch = LibStub('CustomSearch-1.0')
 local ItemSearch = LibStub('ItemSearch-1.3')
 local Filters = {}
 
+---@class Search: AceEvent-3.0, AceAddon-3.0
 local Search = ns.Addon:NewModule('Search', 'AceEvent-3.0')
 
 function Search:OnInitialize()

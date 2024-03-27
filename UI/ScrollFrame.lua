@@ -35,7 +35,6 @@ function ScrollFrame:Constructor()
     self.scrollBar:SetValue(0)
     self.scrollBar.doNotHide = true
     self:SetScript('OnSizeChanged', function(_, width, height)
-        print(width, height)
         C_Timer.After(0, function()
             self:OnSizeChanged(width, height)
         end)
@@ -48,7 +47,6 @@ function ScrollFrame:OnUpdate()
 end
 
 function ScrollFrame:OnSizeChanged(width, height)
-    print(width, height)
     self:GetScrollChild():SetSize(width, height)
     self:Refresh()
 end
