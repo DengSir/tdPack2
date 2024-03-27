@@ -1,3 +1,20 @@
+## [2.1.5](https://github.com/DengSir/tdPack2/compare/v2.1.4...v2.1.5) (2024-03-27)
+
+
+### Bug Fixes
+
+* ruleview drag ([d075ee4](https://github.com/DengSir/tdPack2/commit/d075ee4f6dc93f3278b43fc043762cae3971e0f4))
+
+
+### Features
+
+* 在Ace窗口上打开设置 ([176dc2b](https://github.com/DengSir/tdPack2/commit/176dc2b15204f51511c2cf8ccece11beb4196c99))
+* update to ItemSearch-1.3 ([d0c8e77](https://github.com/DengSir/tdPack2/commit/d0c8e77fe4c4de4e259646c5913647aa444664c2))
+* update to ItemSearch-1.3 ([359a165](https://github.com/DengSir/tdPack2/commit/359a165a13c8f3536eda63d8a219ac1174bb8c30))
+* use C_Everywhere ([7c4c32f](https://github.com/DengSir/tdPack2/commit/7c4c32fb6123861b24d680b191b80a5646e1e679))
+
+
+
 ## [2.1.4](https://github.com/DengSir/tdPack2/compare/v2.1.3...v2.1.4) (2024-03-19)
 
 
