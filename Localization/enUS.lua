@@ -8,7 +8,8 @@ if not L then
     return
 end
 
--- @localization(locale=""enUS", format="lua_additive_table", table-name="L", same-key-is-true=true)@
+-- @locale:language=enUS@
+-- @end-locale@
 
 -- @debug@
 -- @import@
