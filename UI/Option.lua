@@ -135,7 +135,7 @@ function Addon:InitOptionFrame()
 
     -- @maybe@
     maybe {L['SORTING_NAME'], L['SORTING_DESC'], L['SAVING_NAME'], L['SAVING_DESC']}
-    -- @maybe@
+    -- @end-maybe@
 
     local function ruleView(key)
         local ruleType = ns.SORT_TYPE[key]

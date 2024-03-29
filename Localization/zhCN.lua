@@ -48,9 +48,12 @@ L['Rule'] = '规则'
 L['Put where?'] = '放在哪？'
 L['Name (Optional)'] = '名称（可选）'
 L['Select an icon (Optional)'] = '选择一个图标（可选）'
+L['Sorting rules'] = '排序规则'
+L['Saving rules'] = '保存规则'
 L['Save to bank when default packing'] = '默认整理同时保存到银行'
 L['Keep bank items stack full'] = '保持银行物品堆满'
 L['Bank and bag stacking together'] = '银行和背包一起堆叠'
+L['Global'] = '全局'
 L['Add extension filter to ItemSearch-1.3'] = '将扩展的过滤器添加到ItemSearch-1.3'
 
 L['Help'] = '帮助'
@@ -84,6 +87,12 @@ L.SORT_DESC = '逆序整理全部'
 L.OPEN_RULE_OPTIONS = '打开规则设置'
 L.OPEN_OPTIONS = '打开设置'
 L.SAVE = '保存到银行'
+
+-- rules comment
+L.COMMENT_CLASS = '职业物品'
+
+-- for rules
+L.KEYWORD_CLASS = '职业：'
 
 L.Tools = '工具'
 L.Transporter = '传送器'

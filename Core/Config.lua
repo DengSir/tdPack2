@@ -71,6 +71,10 @@ local function Slot(name, icon, children)
     return Rule(name, icon, 'inv:' .. name, children)
 end
 
+--@maybe@
+maybe {L['COMMENT_CLASS'], L['KEYWORD_CLASS']}
+--@end-maybe@
+
 local function TipLocale(key, icon, children)
     return Rule(L['COMMENT_' .. key], icon, 'tip:' .. L['KEYWORD_' .. key], children)
 end
