@@ -168,3 +168,11 @@ do
         end
     end
 end
+
+-- @maybe@
+maybe {
+    L['ITEM_TAG: Cloth'], L['ITEM_TAG: Leather'], L['ITEM_TAG: Metal & Stone'], L['ITEM_TAG: Cooking'],
+    L['ITEM_TAG: Herb'], L['ITEM_TAG: Elemental'], L['ITEM_TAG: Enchanting'], L['ITEM_TAG: Jewelry'],
+    L['ITEM_TAG: Mount'], L['ITEM_TAG: Pet'],
+}
+-- @end-maybe@
