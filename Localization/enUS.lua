@@ -138,12 +138,12 @@ L['Rule'] = true
 L['Put where?'] = true
 L['Name (Optional)'] = true
 L['Select an icon (Optional)'] = true
-L['Sorting rules'] = true
-L['Saving rules'] = true
+-- [comment by wct] L['Sorting rules'] = true
+-- [comment by wct] L['Saving rules'] = true
 L['Save to bank when default packing'] = true
 L['Keep bank items stack full'] = true
 L['Bank and bag stacking together'] = true
-L['Global'] = true
+-- [comment by wct] L['Global'] = true
 L['Add extension filter to ItemSearch-1.3'] = true
 
 L['Help'] = true
