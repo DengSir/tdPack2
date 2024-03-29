@@ -108,4 +108,7 @@ L['ITEM_TAG: Enchanting'] = '附魔'
 L['ITEM_TAG: Jewelry'] = '宝石'
 L['ITEM_TAG: Mount'] = '坐骑'
 L['ITEM_TAG: Pet'] = '宠物'
+
+-- @locale-fill@
+
 -- @end-import@
