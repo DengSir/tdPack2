@@ -1,3 +1,28 @@
+## [2.1.6](https://github.com/DengSir/tdPack2/compare/v2.1.5...v2.1.6) (2024-04-08)
+
+
+### Bug Fixes
+
+* locale ([9c2d2c4](https://github.com/DengSir/tdPack2/commit/9c2d2c43484bf0ca6ce3c4e7c96cf0cdb179aedc))
+
+
+### Features
+
+* actions add scan locale ([5a77089](https://github.com/DengSir/tdPack2/commit/5a7708986ffd6ca6e9b0495d221acbe4d9c7ac1a))
+* add locale action ([dd94da6](https://github.com/DengSir/tdPack2/commit/dd94da633823d693beb7bb6030e6ef33ee1ca0cf))
+* add locale scan ([1e4a3f5](https://github.com/DengSir/tdPack2/commit/1e4a3f52c2f2244e8671abc84d87e1f9d062d01a))
+* release to github ([5aa6aca](https://github.com/DengSir/tdPack2/commit/5aa6aca0b9a00fdefa4abeaafc9c2e04ee337dfd))
+* update locale ([dfb645d](https://github.com/DengSir/tdPack2/commit/dfb645d7dff9c0f72d6f493b626f16d163aeb3ce))
+* update locale ([48ee5cd](https://github.com/DengSir/tdPack2/commit/48ee5cd2b7bf040ee07ee2d06f742a6aeb8cd123))
+* update locale ([fe0274b](https://github.com/DengSir/tdPack2/commit/fe0274b83afdb449608375e2f5713c28f9221569))
+
+
+### Reverts
+
+* Revert "chore: Update locale files" ([ef96174](https://github.com/DengSir/tdPack2/commit/ef96174b73ce7e51d0be1b2aa23fa009bf72e34b))
+
+
+
 ## [2.1.5](https://github.com/DengSir/tdPack2/compare/v2.1.4...v2.1.5) (2024-03-27)
 
 
