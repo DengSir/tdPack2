@@ -13,7 +13,7 @@ jobs:
         with:
           submodules: true
 
-      - uses: Dencer/wow-curse-tools@v1
+      - uses: DengSir/wow-curse-tools@v1
         with:
           action: locale
 
