@@ -13,21 +13,9 @@ jobs:
         with:
           submodules: true
 
-      - uses: actions/setup-node@v4
+      - uses: Dencer/wow-curse-tools@v1
         with:
-          node-version: '20'
-
-      - name: install wct
-        run: npm install --location=global wow-curse-tools
-
-      - name: scan locales
-        run: wct locale scan
-
-      - name: upload locales
-        run: wct locale import --token ${{ secrets.CURSE_TOKEN }}
-
-      - name: download locales
-        run: wct locale export --token ${{ secrets.CURSE_TOKEN }}
+          action: locale
 
       - uses: GuillaumeFalourd/git-commit-push@v1.3
         with:
