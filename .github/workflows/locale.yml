@@ -21,4 +21,3 @@ jobs:
         with:
           commit_message: "chore: Update locale files"
           tags: false
-
