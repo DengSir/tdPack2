@@ -13,10 +13,7 @@ jobs:
         with:
           submodules: true
 
-      - uses: DengSir/wow-curse-tools@v1
-        with:
-          action: locale
-          token: ${{ secrets.CURSE_TOKEN }}
+      - uses: DengSir/curse-locale@v1
 
       - uses: GuillaumeFalourd/git-commit-push@v1.3
         with:
