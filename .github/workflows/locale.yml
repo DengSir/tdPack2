@@ -13,7 +13,7 @@ jobs:
         with:
           submodules: true
 
-      - uses: DengSir/curse-locale@v1
+      - uses: DengSir/curse-locale-action@v1
 
       - uses: GuillaumeFalourd/git-commit-push@v1.3
         with:
