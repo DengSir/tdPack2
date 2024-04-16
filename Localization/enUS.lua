@@ -85,7 +85,6 @@ L["tdPack2 is a bag sorting addon."] = true
 L["Tools"] = true
 L["Transporter"] = true
 L["UPDATE_RULES_CONFIRM"] = [=[The current version of tdPack2 updates a large number of rules. Do you want to reset the rules to the default settings?
-
 Help to choose:
 1. I know what this prompt is saying: choose for yourself
 2. I don’t know how to choose: Accept
