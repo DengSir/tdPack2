@@ -15,6 +15,7 @@ end
 
 function Order:GetOrder(item)
     error('Not implemented')
+    print(item)
 end
 
 function Order._Meta:__call(item)

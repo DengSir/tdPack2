@@ -2,7 +2,6 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/30/2019, 11:41:51 PM
-
 ---@type ns
 local ns = select(2, ...)
 
@@ -11,8 +10,8 @@ local Slot = ns.Slot
 local Item = ns.Item
 
 ---- LUA
-local ripairs = ns.ripairs
-local select, ipairs = select, ipairs
+local ripairs = ipairs_reverse
+local ipairs = ipairs
 local tinsert, tremove = table.insert, table.remove
 local random = fastrandom or math.random
 
@@ -22,7 +21,7 @@ local InCombatLockdown = InCombatLockdown
 ---@class Group: Base
 local Group = ns.Addon:NewClass('Group', ns.Base)
 
-function Group:Constructor(parent, family)
+function Group:Constructor(_, family)
     self.family = family
     ---@type Slot[]
     self.slots = {}
@@ -132,7 +131,7 @@ function Group:Pack()
     return true
 end
 
----@return Slot
+---@return Slot?, integer?
 function Group:GetIdleSlot()
     local step = random(0, 1) == 0 and -1 or 1
     local e = random(1, self:GetItemCount())

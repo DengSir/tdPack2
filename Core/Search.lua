@@ -11,13 +11,8 @@ local L = ns.L
 local _G = _G
 local select, pairs, ipairs = select, pairs, ipairs
 local tonumber = tonumber
-local pcall = pcall
 
----- WOW
-local GetItemInfo = GetItemInfo
-local GetItemSpell = GetItemSpell
-local IsEquippableItem = IsEquippableItem
-local GetItemInfoInstant = GetItemInfoInstant
+local C = LibStub('C_Everywhere')
 
 ---- LIBS
 local CustomSearch = LibStub('CustomSearch-1.0')
@@ -64,7 +59,7 @@ Filters.tdpackSpell = {
     end,
 
     match = function(self, item, _, search)
-        return not not GetItemSpell(item.link)
+        return not not C.Item.GetItemSpell(item.link)
     end,
 }
 
@@ -78,7 +73,7 @@ Filters.tdpackSpellName = {
 
     match = function(self, item, _, search)
         local searchId = tonumber(search)
-        local spellName, spellId = GetItemSpell(item.link)
+        local spellName, spellId = C.Item.GetItemSpell(item.link)
         if searchId then
             return searchId == spellId
         else
@@ -98,10 +93,10 @@ Filters.tdPackEquippable = {
     end,
 
     match = function(self, item, ...)
-        if not IsEquippableItem(item.link) then
+        if not C.Item.IsEquippableItem(item.link) then
             return false
         end
-        return not self.exclude[select(9, GetItemInfo(item.link))]
+        return not self.exclude[select(9, C.Item.GetItemInfo(item.link))]
     end,
 }
 
@@ -113,7 +108,7 @@ Filters.tdPackBlizzardHasSet = {
     end,
 
     match = function(self, item, _, search)
-        local setId = select(16, GetItemInfo(item.link))
+        local setId = select(16, C.Item.GetItemInfo(item.link))
         return setId
     end,
 }
@@ -127,9 +122,9 @@ Filters.tdPackBlizzardSet = {
     end,
 
     match = function(self, item, _, search)
-        local setId = select(16, GetItemInfo(item.link))
+        local setId = select(16, C.Item.GetItemInfo(item.link))
         if setId and setId ~= 0 then
-            local setName = GetItemSetInfo(setId)
+            local setName = C.Item.GetItemSetInfo(setId)
             return CustomSearch:Find(search, setName)
         end
     end,
@@ -144,7 +139,7 @@ Filters.tdPackInvtype = {
     end,
 
     match = function(self, item, _, search)
-        local equipLoc = select(9, GetItemInfo(item.link))
+        local equipLoc = select(9, C.Item.GetItemInfo(item.link))
         if not equipLoc then
             return
         end

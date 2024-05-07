@@ -2,7 +2,6 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/31/2019, 11:10:04 PM
-
 ---@type ns
 local ns = select(2, ...)
 
@@ -13,11 +12,7 @@ local type, ipairs = type, ipairs
 ---- NS
 local Search = ns.Search
 
----- WOW
-local GetItemInfo = GetItemInfo
-
 ---- LOCAL
-local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 local CONJURED_ITEM_MATCHS = 'tip:' .. ITEM_CONJURED
 
 local LibJunk = LibStub('LibJunk-1.0')

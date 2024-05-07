@@ -11,7 +11,7 @@ function UI:OnModuleCreated(module)
     self[module:GetName()] = module
 
     module.AfterSetup = setmetatable({}, {
-        __newindex = function(t, k, v)
+        __newindex = function(_, k, v)
             module[k] = function(...)
                 if module.OnSetup then
                     return

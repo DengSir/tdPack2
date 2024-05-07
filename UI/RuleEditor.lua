@@ -4,21 +4,20 @@
 -- @Date   : 9/29/2019, 12:25:28 AM
 --
 ---- LUA
-local tinsert, tremove = table.insert, table.remove
+local tinsert = table.insert
 local pairs, ipairs, setmetatable = pairs, ipairs, setmetatable
 local coroutine = coroutine
 local floor = math.floor
 
+local C = LibStub('C_Everywhere')
+
 ---- WOW
 local CreateFrame = CreateFrame
-local GetContainerItemLink = GetContainerItemLink or C_Container.GetContainerItemLink
-local GetItemIcon = GetItemIcon
 
 ---@type ns
 local ns = select(2, ...)
 local L = ns.L
 local UI = ns.UI
-local Addon = ns.Addon
 local Search = ns.Search
 
 local ICON_SIZE = 32
@@ -250,9 +249,9 @@ function RuleEditor:UpdateIcons()
             if itemId and not touchedItems[itemId] then
                 touchedItems[itemId] = true
 
-                local link = GetContainerItemLink(bag, slot)
+                local link = C.Container.GetContainerItemLink(bag, slot)
                 if not rule or Search:Matches(link, rule) then
-                    DrawIcon(index, GetItemIcon(link), row, column)
+                    DrawIcon(index, C.Item.GetItemIconByID(link), row, column)
                 end
             end
         end

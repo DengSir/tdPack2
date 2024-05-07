@@ -5,9 +5,16 @@
 --
 ---@type ns
 local ADDON, ns = ...
+
+---@class Addon
 local Addon = ns.Addon
+
+local C = LibStub('C_Everywhere')
+
 local L = ns.L
 local UI = ns.UI
+
+local format = string.format
 
 local AceConfigRegistry = LibStub('AceConfigRegistry-3.0')
 local AceConfigDialog = LibStub('AceConfigDialog-3.0')
@@ -191,7 +198,7 @@ function Addon:InitOptionFrame()
 
     local options = {
         type = 'group',
-        name = format('%s - |cff00ff00%s|r', ADDON, GetAddOnMetadata(ADDON, 'Version')),
+        name = format('%s - |cff00ff00%s|r', ADDON, C.AddOns.GetAddOnMetadata(ADDON, 'Version')),
 
         get = function(item)
             return self:GetOption(item[#item])

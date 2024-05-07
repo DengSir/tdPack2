@@ -12,14 +12,12 @@ local Addon = ns.Addon
 ---- LUA
 local format = string.format
 local tremove = table.remove
-local select, type, ipairs = select, type, ipairs
+local type, ipairs = type, ipairs
 
 ---- WOW
 local ClearCursor = ClearCursor
 local CreateFrame = CreateFrame
 local GetCursorInfo = GetCursorInfo
-local GetItemIcon = GetItemIcon
-local GetItemQualityColor = GetItemQualityColor
 
 ---- UI
 local GameTooltip = GameTooltip
@@ -76,7 +74,7 @@ function RuleView:TDPACK_RULES_UPDATE(_, ruleType)
 end
 
 function RuleView:CURSOR_CHANGED()
-    local cursorType, itemId, itemLink = GetCursorInfo()
+    local cursorType, itemId = GetCursorInfo()
     if cursorType == 'item' then
         self:StartCursorCatching(itemId)
     else
@@ -84,7 +82,7 @@ function RuleView:CURSOR_CHANGED()
     end
 end
 
-function RuleView:OnCheckItemCanPutIn(from, to)
+function RuleView:OnCheckItemCanPutIn(_, to)
     return ns.IsAdvanceRule(to)
 end
 
@@ -208,7 +206,7 @@ function RuleView:CreateCursorCatcher()
 end
 
 function RuleView:ShowRuleMenu(button, item)
-    local name, icon, rule, hasChild = ns.GetRuleInfo(item)
+    local name, icon, _, hasChild = ns.GetRuleInfo(item)
 
     ns.ToggleMenu(button, {
         { --

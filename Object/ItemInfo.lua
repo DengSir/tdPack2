@@ -5,10 +5,7 @@
 ---@type ns
 local ns = select(2, ...)
 
----- WOW
-local GetItemInfo = GetItemInfo
-local GetItemSpell = GetItemSpell
-local IsEquippableItem = IsEquippableItem
+local C = LibStub('C_Everywhere')
 
 ---@class ItemInfo
 local ItemInfo = ns.Addon:NewClass('ItemInfo')
@@ -20,7 +17,8 @@ end
 
 function ItemInfo:Build()
     local itemName, itemLink, itemQuality, itemLevel, _, itemType, itemSubType, itemStackCount, itemEquipLoc,
-          itemTexture, sellPrice, itemTypeId, itemSubTypeId, bindType, expacId, setId, isCraftingReagent = GetItemInfo(
+          itemTexture, sellPrice, itemTypeId, itemSubTypeId, bindType, expacId, setId, isCraftingReagent = C.Item
+                                                                                                               .GetItemInfo(
                                                                                                                self.itemId)
 
     if itemName then
@@ -41,7 +39,7 @@ function ItemInfo:Build()
         self.itemTag = ns.ITEM_TAG_SETS[self.itemId] or 'UNKNOWN'
         -- @end-build<2@
         self.itemFamily = ns.GetItemFamily(self.itemId) or 0
-        self.itemEquippable = IsEquippableItem(self.itemId) or false
+        self.itemEquippable = C.Item.IsEquippableItem(self.itemId) or false
     else
         self.notReady = true
     end

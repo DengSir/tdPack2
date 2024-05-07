@@ -7,8 +7,8 @@
 local ns = select(2, ...)
 
 ---- LUA
-local select, pairs, ipairs = select, pairs, ipairs
-local tinsert, tremove, wipe = table.insert, table.remove, wipe or table.wipe
+local pairs, ipairs = pairs, ipairs
+local tinsert = table.insert
 
 ---- NS
 local Group = ns.Group

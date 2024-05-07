@@ -1,9 +1,10 @@
 {
     "Lua.workspace.ignoreDir": [
         ".vscode",
-        "Button"
+        "Button",
     ],
     "Lua.diagnostics.disable": [
         "undefined-global"
-    ]
+    ],
+    "Lua.runtime.version": "Lua 5.1"
 }

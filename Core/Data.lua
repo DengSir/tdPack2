@@ -2,11 +2,12 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/21/2019, 2:00:49 AM
----@type ns
+---@class ns
 local ns = select(2, ...)
 
 ---- NS
 local L = ns.L
+local C = LibStub('C_Everywhere')
 
 ---- LUA
 local pairs, ipairs = pairs, ipairs
@@ -141,14 +142,14 @@ NewTag('Pet', {
 -- @end-build<2@
 -- @build>2@
 
-NewTag2(GetItemSubClassInfo(LE_ITEM_CLASS_MISCELLANEOUS, LE_ITEM_MISCELLANEOUS_MOUNT), {
+NewTag2(C.Item.GetItemSubClassInfo(Enum.ItemClass.Miscellaneous, Enum.ItemMiscellaneousSubclass.Mount), {
     34061, -- [涡轮加速飞行器控制台]
     34060, -- [飞行器控制台]
     33189, -- [摇摇晃晃的魔法扫帚]
     21176, -- [黑色其拉共鸣水晶]
     23720, -- [乌龟坐骑]
 })
-NewTag2(GetItemSubClassInfo(LE_ITEM_CLASS_MISCELLANEOUS, LE_ITEM_MISCELLANEOUS_COMPANION_PET), {
+NewTag2(C.Item.GetItemSubClassInfo(Enum.ItemClass.Miscellaneous, Enum.ItemMiscellaneousSubclass.CompanionPet), {
     11110, 11474, 11825, 11826, 12264, 12529, 13582, 13583, 13584, 180089, 19054, 19055, 20371, 20651, 21026, 21301,
     21305, 21308, 21309, 22114, 22235, 22780, 22781, 23002, 23007, 23015, 23083, 23712, 23713, 25535, 27445, 30360,
     31665, 31760, 32233, 32465, 32498, 32588, 32616, 32617, 32622, 33154, 33993, 34425, 34518, 34519, 34955, 37297,

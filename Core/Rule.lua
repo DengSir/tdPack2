@@ -11,9 +11,9 @@ local Addon = ns.Addon
 local Item = ns.Item
 
 ---- LUA
-local pairs, setmetatable = pairs, setmetatable
+local setmetatable = setmetatable
 local format = string.format
-local tconcat, sort = table.concat, table.sort or sort
+local tconcat, sort = table.concat, table.sort
 
 ---- ENUM
 local SORT_TYPE = ns.SORT_TYPE

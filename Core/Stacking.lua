@@ -9,7 +9,7 @@ local tinsert, tremove, wipe = table.insert, table.remove, table.wipe or wipe
 
 ---@type ns
 local ns = select(2, ...)
-local ripairs = ns.ripairs
+local ripairs = ipairs_reverse
 
 local BAG_TYPE = ns.BAG_TYPE
 

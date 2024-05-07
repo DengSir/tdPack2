@@ -5,10 +5,10 @@
 ---@type ns
 local ns = select(2, ...)
 
----@class _Item: Base
+---@class tdPack2Item: Base
 local Item = ns.Addon:NewClass('Item', ns.Base)
 
-function Item:Constructor(parent, bag, slot)
+function Item:Constructor(_, bag, slot)
     local itemId = ns.GetBagSlotId(bag, slot)
     self.itemCount = ns.GetBagSlotCount(bag, slot) or 1
     self.itemLink = ns.GetBagSlotLink(bag, slot) or ''

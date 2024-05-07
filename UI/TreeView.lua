@@ -9,11 +9,12 @@ local setmetatable, ipairs, type, select = setmetatable, ipairs, type, select
 local tinsert, tremove = table.insert, table.remove
 local ceil, min, abs = math.ceil, math.min, math.abs
 local coroutine = coroutine
-local tIndexOf = tIndexOf
+local tIndexOf = _G.tIndexOf
 
-local CreateFrame, HybridScrollFrame_Update = CreateFrame, HybridScrollFrame_Update
+local CreateFrame, HybridScrollFrame_Update = _G.CreateFrame, _G.HybridScrollFrame_Update
 
-local UIParent = UIParent
+local UIParent = _G.UIParent
+local GameTooltip = _G.GameTooltip
 
 local WHERE_AFTER = 1
 local WHERE_BEFORE = 2
@@ -118,7 +119,7 @@ function TreeView:OnItemDragStart(button)
 end
 
 local inStop = false
-function TreeView:OnItemDragStop(button)
+function TreeView:OnItemDragStop()
     if inStop then
         return
     end
@@ -213,7 +214,7 @@ function TreeView:OnTimer()
 end
 
 function TreeView:UpdateInsert()
-    local where, target, last
+    local where, target
     if self.mouseHolder:IsMouseOver() then
         local top = self.sortingButton:GetTop()
 
@@ -238,7 +239,6 @@ function TreeView:UpdateInsert()
                 if target then
                     break
                 end
-                last = button
             end
         end
 

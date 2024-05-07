@@ -2,23 +2,19 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/31/2019, 3:14:49 AM
-
 ---@type ns
 local ns = select(2, ...)
 
 ---- NS
 local L = ns.L
 local Bag = ns.Bag
-local Slot = ns.Slot
-local Item = ns.Item
 local Addon = ns.Addon
 local BAG_TYPE = ns.BAG_TYPE
 
 ---- LUA
-local select, ipairs, pairs = select, ipairs, pairs
-local tinsert, tremove, wipe = table.insert, table.remove, wipe
+local pairs = select
+local wipe = wipe
 local format = string.format
-local coroutine = coroutine
 
 ---- WOW
 local GetCursorInfo = GetCursorInfo
@@ -37,24 +33,23 @@ local STATUS = {
     CANCEL = 7, --
 }
 
----@class Pack: AceAddon-3.0, AceEvent-3.0, AceTimer-3.0
----@field private bags table<number, Bag>
+---@class Pack: AceModule, AceEvent-3.0, AceTimer-3.0
 ---@field private Stacking Stacking
 ---@field private Saving Saving
 ---@field private Sorting Sorting
----@field private tasks table<STATUS, Task>
+---@field private tasks table<STATUS, Task|function>
 local Pack = Addon:NewModule('Pack', 'AceEvent-3.0', 'AceTimer-3.0')
 Pack:SetDefaultModuleState(false)
 
 function Pack:OnInitialize()
     self.isBankOpened = false
     self.status = STATUS.FREE
+    ---@type table<number, Bag>
     self.bags = {}
     self.tasks = { --
         [STATUS.STACKING] = ns.Stacking:New(),
         [STATUS.SAVING] = ns.Saving:New(),
         [STATUS.SORTING] = ns.Sorting:New(),
-
         [STATUS.PREPARE] = self.Prepare,
         [STATUS.READY] = self.NextStep,
         [STATUS.FINISH] = self.Finish,
