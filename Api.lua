@@ -4,7 +4,6 @@
 -- @Date   : 8/30/2019, 11:46:11 PM
 --
 local tinsert = table.insert
-local bit = bit
 
 ---@class ns
 ---@field UI UI
@@ -33,7 +32,7 @@ ns.C = C
 ---- LUA
 local select, type, ipairs = select, type, ipairs
 local format = string.format
-local tonumber, band = tonumber, bit.band
+local tonumber = tonumber
 
 ---- WOW
 local GetCursorPosition = GetCursorPosition
@@ -244,10 +243,10 @@ end
 -- @end-build<2@
 
 -- @build>2@
+local band = bit.band
 function ns.IsFamilyContains(bagFamily, itemFamily)
     return band(bagFamily, itemFamily) > 0
 end
-
 -- @end-build>2@
 
 function ns.GetClickToken(button, control, shift, alt)

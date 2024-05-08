@@ -12,7 +12,9 @@ local ns = select(2, ...)
 
 ---- NS
 local L = ns.L
+-- @build>2@
 local C = ns.C
+-- @end-build>2@
 
 local function GenerateClickData(button, control, shift, alt)
     local sb = {}
@@ -76,16 +78,12 @@ ns.CLICK_LIST = {
 
 ns.ITEM_TAGS = {}
 
+-- @build<2@
 local function NewTag(tag, ids)
     ns.ITEM_TAGS[tag] = ids
     ids.locale = true
 end
 
-local function NewTag2(tag, ids)
-    ns.ITEM_TAGS[tag] = ids
-end
-
--- @build<2@
 ---- TradeGoods
 NewTag('Cloth', {
     14342, 14256, 14341, 14227, 14048, 14047, 4338, 3182, 2592, 4306, 2589, 10285, 4339, 4337, 2320, 4305, 2321, 2997,
@@ -140,6 +138,10 @@ NewTag('Pet', {
 })
 -- @end-build<2@
 -- @build>2@
+
+local function NewTag2(tag, ids)
+    ns.ITEM_TAGS[tag] = ids
+end
 
 NewTag2(C.Item.GetItemSubClassInfo(Enum.ItemClass.Miscellaneous, Enum.ItemMiscellaneousSubclass.Mount), {
     34061, -- [涡轮加速飞行器控制台]

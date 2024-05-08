@@ -55,6 +55,7 @@ local function Weapon(subType, icon, children)
     return SubType(Enum.ItemClass.Weapon, subType, icon, children)
 end
 
+-- @build>2@
 local function Misc(subType, icon, children)
     return SubType(Enum.ItemClass.Miscellaneous, subType, icon, children)
 end
@@ -66,6 +67,7 @@ end
 local function Consumable(subType, icon, children)
     return SubType(Enum.ItemClass.Consumable, subType, icon, children)
 end
+-- @end-build>2@
 
 local function Slot(name, icon, children)
     name = _G[name] or name
@@ -84,16 +86,19 @@ local function Tip(tip, icon, children)
     return Rule(tip, icon, 'tip:' .. tip, children)
 end
 
+-- @build<2@
 local function Tag(key, icon, children)
     local l = L['ITEM_TAG: ' .. key]
     return Rule(l, icon, 'tag:' .. l, children)
 end
+-- @end-build<2@
 
 local function Spell(id, icon, children)
     local spellName = GetSpellInfo(id)
     return Rule(spellName, icon, 'spell:' .. spellName, children)
 end
 
+-- @build>2@
 local function SpellId(id, icon, name, ...)
     local children
     if type(name) == 'table' then
@@ -110,6 +115,7 @@ local function TypeOrTag(type, subType, icon, children)
     local name = C.Item.GetItemSubClassInfo(type, subType)
     return Rule(name, icon, format('class:%s | tag:%s', name, name), children)
 end
+-- @build>2@
 
 local CONSUMABLE = C.Item.GetItemClassInfo(Enum.ItemClass.Consumable) -- 消耗品
 local QUEST = C.Item.GetItemClassInfo(Enum.ItemClass.Questitem) -- 任务
