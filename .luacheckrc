@@ -1,9 +1,21 @@
-require('__globals')
+do
+    local file = io.open('default.luacheckrc', 'r')
+    if file then
+        file:close()
+
+        local _ENV = {}
+
+        local f = loadfile('default.luacheckrc')
+        f()
+
+        read_globals = _ENV.read_globals
+    end
+end
 
 std = 'lua51'
 
 exclude_files = { --
-    '**/Libs', '**/Localization', '.index.lua', '.emmy', 'Scaner.lua', '**/Button/**', '**/Core/Compat.lua', '__globals.lua'
+    '**/Libs', '**/Localization', '.index.lua', '.emmy', 'Scaner.lua', '**/Button/**', '**/Core/Compat.lua',
 }
 
 ignore = {
@@ -30,4 +42,4 @@ ignore = {
     '43.', -- Shadowing an upvalue, an upvalue argument, an upvalue loop variable.
 }
 
-globals = { 'maybe' }
+globals = {'maybe'}

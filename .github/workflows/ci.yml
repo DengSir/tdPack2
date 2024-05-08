@@ -20,7 +20,6 @@ jobs:
           repository: LiangYuxuan/wow-addon-luacheckrc
           latest: true
           fileName: default.luacheckrc
-          out-file-path: globals.lua
 
       - name: Luacheck
         uses: lunarmodules/luacheck@v1
