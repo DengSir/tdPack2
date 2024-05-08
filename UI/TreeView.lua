@@ -7,12 +7,12 @@ local setmetatable, ipairs, type, select = setmetatable, ipairs, type, select
 local tinsert, tremove = table.insert, table.remove
 local ceil, min, abs = math.ceil, math.min, math.abs
 local coroutine = coroutine
-local tIndexOf = _G.tIndexOf
+local tIndexOf = tIndexOf
 
-local CreateFrame, HybridScrollFrame_Update = _G.CreateFrame, _G.HybridScrollFrame_Update
+local CreateFrame, HybridScrollFrame_Update = CreateFrame, HybridScrollFrame_Update
 
-local UIParent = _G.UIParent
-local GameTooltip = _G.GameTooltip
+local UIParent = UIParent
+local GameTooltip = GameTooltip
 
 ---@type ns
 local ns = select(2, ...)
@@ -23,6 +23,7 @@ local WHERE_BEFORE = 2
 local WHERE_IN = 3
 
 ---@class TreeStatus: Object
+---@field itemTree any[]
 local TreeStatus = UI:NewClass('TreeStatus')
 
 function TreeStatus:Constructor()
@@ -62,7 +63,8 @@ function TreeStatus:GetCount()
     return GetCount(self.itemTree, 1)
 end
 
----@class TreeView: Object, ScrollFrame
+---@class TreeView: AceEvent-3.0, AceTimer-3.0, UI.ScrollFrame, Object
+---@field treeStatus TreeStatus
 local TreeView = UI:NewClass('TreeView', UI.ScrollFrame)
 
 LibStub('AceTimer-3.0'):Embed(TreeView)

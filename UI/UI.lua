@@ -11,6 +11,7 @@ local ns = select(2, ...)
 ---@field TreeStatus TreeStatus
 ---@field RuleEditor RuleEditor
 ---@field RuleView RuleView
+---@field ScrollFrame UI.ScrollFrame
 local UI = ns.Addon:NewModule('UI', 'LibClass-2.0')
 
 function UI:OnModuleCreated(module)

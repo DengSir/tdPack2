@@ -3,6 +3,8 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/26/2019, 2:09:42 AM
 --
+-- luacheck: ignore 212/search 212/operator
+--
 ---- LUA
 local _G = _G
 local select, pairs, ipairs = select, pairs, ipairs
@@ -92,7 +94,7 @@ Filters.tdPackEquippable = {
         return self.keyword1 == search or self.keyword2 == search:lower()
     end,
 
-    match = function(self, item, ...)
+    match = function(self, item)
         if not C.Item.IsEquippableItem(item.link) then
             return false
         end

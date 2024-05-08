@@ -26,7 +26,7 @@ local L = ns.L
 local UI = ns.UI
 local Addon = ns.Addon
 
----@class RuleView: TreeView
+---@class RuleView: AceEvent-3.0, TreeView
 local RuleView = UI:NewClass('RuleView', UI.TreeView)
 LibStub('AceEvent-3.0'):Embed(RuleView)
 
@@ -195,7 +195,7 @@ function RuleView:CreateCursorCatcher()
     catcher:SetScript('OnClick', OnClick)
     catcher:SetScript('OnReceiveDrag', OnClick)
     catcher:SetScript('OnEnter', OnEnter)
-    catcher:SetScript('OnLeave', OnLeave)
+    -- catcher:SetScript('OnLeave', OnLeave)
     self:SetCallback('OnSortingOut', function()
         if catcher:IsShown() then
             self:StopSorting()

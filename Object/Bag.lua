@@ -75,7 +75,7 @@ end
 function Bag:Pack()
     local complete = true
     for _, group in self:IterateGroups() do
-        local success, result = group:Pack()
+        local success = group:Pack()
         if not success then
             complete = false
         end

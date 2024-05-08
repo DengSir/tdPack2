@@ -38,6 +38,8 @@ local tonumber, band = tonumber, bit.band
 ---- WOW
 local GetCursorPosition = GetCursorPosition
 
+local KEYRING_CONTAINER = Enum.BagIndex.Keyring
+
 ---- UI
 local UIParent = UIParent
 
@@ -89,12 +91,15 @@ function ns.memorize(func)
 end
 
 local BAGS = { --
-    [ns.BAG_TYPE.BAG] = {BACKPACK_CONTAINER},
-    [ns.BAG_TYPE.BANK] = {BANK_CONTAINER},
+    [ns.BAG_TYPE.BAG] = {Enum.BagIndex.Backpack}, --
+    [ns.BAG_TYPE.BANK] = {Enum.BagIndex.Bank}, --
 }
 local BAG_SETS = {}
 
 do
+    local NUM_BAG_SLOTS = Constants.InventoryConstants.NumBagSlots
+    local NUM_BANKBAGSLOTS = Constants.InventoryConstants.NumBankBagSlots
+
     for i = 1, NUM_BAG_SLOTS do
         tinsert(BAGS[ns.BAG_TYPE.BAG], i)
     end
@@ -316,15 +321,16 @@ local function Initialize(_, level, menuList)
     end
 end
 
+local menuFrame
 local function CreateGlobalMenuFrame()
-    local menuFrame = CreateFrame('Frame', 'tdGlobalMenuFrame', UIParent, 'UIDropDownMenuTemplate')
+    menuFrame = CreateFrame('Frame', 'tdGlobalMenuFrame', UIParent, 'UIDropDownMenuTemplate')
     menuFrame.initialize = Initialize
     menuFrame.displayMode = 'MENU'
     return menuFrame
 end
 
 function ns.ToggleMenu(owner, menuList)
-    local menuFrame = tdGlobalMenuFrame or CreateGlobalMenuFrame()
+    local menuFrame = menuFrame or CreateGlobalMenuFrame()
 
     if DropDownList1:IsShown() and UIDROPDOWNMENU_OPEN_MENU == menuFrame and menuFrame.LastOwner == owner then
         CloseDropDownMenus()

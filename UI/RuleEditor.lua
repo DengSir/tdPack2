@@ -177,7 +177,7 @@ function RuleEditor:CreateWhereItemTable(profile)
 
     for i, v in ipairs(profile) do
         if ns.IsAdvanceRule(v) then
-            local name, icon, rule = ns.GetRuleInfo(v)
+            local name = ns.GetRuleInfo(v)
             local hasArrow = v.children and #v.children > 0
 
             tinsert(menuTable, {

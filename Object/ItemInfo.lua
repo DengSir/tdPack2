@@ -18,9 +18,7 @@ end
 
 function ItemInfo:Build()
     local itemName, itemLink, itemQuality, itemLevel, _, itemType, itemSubType, itemStackCount, itemEquipLoc,
-          itemTexture, sellPrice, itemTypeId, itemSubTypeId, bindType, expacId, setId, isCraftingReagent = C.Item
-                                                                                                               .GetItemInfo(
-                                                                                                               self.itemId)
+          itemTexture, _, itemTypeId, itemSubTypeId, _, _, setId = C.Item.GetItemInfo(self.itemId)
 
     if itemName then
         self.notReady = nil

@@ -29,10 +29,6 @@ function Addon:InitOptionFrame()
         return {type = 'group', name = name, inline = true, order = orderGen(), args = args}
     end
 
-    local function group(name, args)
-        return {type = 'group', name = name, order = orderGen(), args = args}
-    end
-
     local function toggle(text, disabled)
         return {type = 'toggle', name = text, width = 'full', order = orderGen(), disabled = disabled}
     end

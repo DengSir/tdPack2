@@ -13,7 +13,8 @@ local CreateFrame = CreateFrame
 local ns = select(2, ...)
 local UI = ns.UI
 
----@class _ScrollFrame: ScrollFrame
+---@class UI.ScrollFrame: ScrollFrame
+---@field scrollBar Slider
 local ScrollFrame = UI:NewClass('ScrollFrame', 'ScrollFrame')
 
 ScrollFrame.GetOffset = HybridScrollFrame_GetOffset
