@@ -6,7 +6,9 @@
 ----LUA
 local ipairs = ipairs
 local tinsert = table.insert
+-- @build>2@
 local format = string.format
+-- @end-build>2@
 
 ---- WOW
 local GetSpellInfo = GetSpellInfo
