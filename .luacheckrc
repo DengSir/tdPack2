@@ -1,23 +1,22 @@
-do
-    local file = io.open('default.luacheckrc', 'r')
-    if file then
-        file:close()
-
-        local e = {}
-        local f = loadfile('default.luacheckrc', 't', e)
-        if setfenv then
-            setfenv(f, e)
-        end
-        f()
-
-        read_globals = e.read_globals
-    end
-end
+read_globals = (function()
+    local e = {}
+    local f = loadfile('default.luacheckrc', 't', e)
+    if not f then return end
+    if setfenv then setfenv(f, e) end
+    f()
+    return e.read_globals
+end)()
 
 std = 'lua51'
 
 exclude_files = { --
-    '**/Libs', '**/Localization', '.index.lua', '.emmy', 'Scaner.lua', '**/Button/**', '**/Core/Compat.lua',
+    '**/Libs', --
+    '**/Localization', --
+    '.index.lua', --
+    '.emmy', --
+    'Scaner.lua', --
+    '**/Button/**', --
+    '**/Core/Compat.lua', --
 }
 
 ignore = {
