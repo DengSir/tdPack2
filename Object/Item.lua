@@ -6,7 +6,7 @@
 ---@type ns
 local ns = select(2, ...)
 
----@class tdPack2Item: Base
+---@class Addon.Item: Addon.Base
 local Item = ns.Addon:NewClass('Item', ns.Base)
 
 function Item:Constructor(_, bag, slot)

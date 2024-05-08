@@ -15,8 +15,8 @@ local BAG_TYPE = ns.BAG_TYPE
 local Pack = ns.Pack
 local Item = ns.Item
 
----@class Saving: Task
----@field private slots Slot[]
+---@class Addon.Saving: Addon.Task
+---@field private slots Addon.Slot[]
 local Saving = ns.Addon:NewClass('Saving', ns.Task)
 
 function Saving:Constructor()
@@ -37,7 +37,7 @@ function Saving:Prepare()
 
     ---@type Item[]
     local items = {}
-    ---@type table<Item, Slot>
+    ---@type table<Item, Addon.Slot>
     local itemSlots = {}
 
     for _, group in bag:IterateGroups() do
@@ -55,7 +55,7 @@ function Saving:Prepare()
 
     ns.Rule:SortItems(items, ns.SORT_TYPE.SAVING)
 
-    ---@param group Group
+    ---@param group Addon.Group
     local function PickItem(group)
         for i, item in ipairs(items) do
             if group:CanPutItem(item) then

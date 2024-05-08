@@ -12,12 +12,12 @@ local ns = select(2, ...)
 
 local BAG_TYPE = ns.BAG_TYPE
 
----@type Pack
+---@type Addon.Pack
 local Pack = ns.Pack
 
----@class Stacking: Task
----@field private bags table<string, Slot[]>
----@field private stackingSlots table<number, Slot>
+---@class Addon.Stacking: Addon.Task
+---@field private bags table<string, Addon.Slot[]>
+---@field private stackingSlots table<number, Addon.Slot>
 local Stacking = ns.Addon:NewClass('Stacking', ns.Task)
 
 function Stacking:Constructor()
@@ -30,7 +30,7 @@ function Stacking:Prepare()
     self:InitBag(Pack:GetBag(BAG_TYPE.BANK))
 end
 
----@param bag Bag
+---@param bag Addon.Bag
 function Stacking:InitBag(bag)
     if not bag then
         return
@@ -89,7 +89,7 @@ function Stacking:ProcessSlots(slots)
     return complete
 end
 
----@param slot Slot
+---@param slot Addon.Slot
 function Stacking:IsCanStack(slot)
     if slot:IsEmpty() then
         return false

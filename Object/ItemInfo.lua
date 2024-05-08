@@ -8,7 +8,7 @@ local ns = select(2, ...)
 
 local C = ns.C
 
----@class ItemInfo
+---@class Addon.ItemInfo: Object
 local ItemInfo = ns.Addon:NewClass('ItemInfo')
 
 function ItemInfo:Constructor(itemId)

@@ -12,7 +12,7 @@ local ADDON = ...
 ---@class ns
 local ns = select(2, ...)
 
----@class Addon: AceModule, LibClass-2.0, AceEvent-3.0, AceConsole-3.0
+---@class Addon: AceAddon, LibClass-2.0, AceEvent-3.0, AceConsole-3.0
 local Addon = LibStub('AceAddon-3.0'):NewAddon(ADDON, 'LibClass-2.0', 'AceEvent-3.0', 'AceConsole-3.0')
 
 ns.Addon = Addon

@@ -13,8 +13,8 @@ local ns = select(2, ...)
 ---- NS
 local Group = ns.Group
 
----@class Bag: Object
----@field private groups Group[]
+---@class Addon.Bag: Object
+---@field private groups Addon.Group[]
 local Bag = ns.Addon:NewClass('Bag')
 
 function Bag:Constructor(bagType)

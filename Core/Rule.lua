@@ -16,7 +16,7 @@ local Addon = ns.Addon
 local Item = ns.Item
 local SORT_TYPE = ns.SORT_TYPE
 
----@class Rule
+---@class Addon.Rule: AceModule, AceEvent-3.0
 local Rule = Addon:NewModule('Rule', 'AceEvent-3.0')
 
 function Rule:OnInitialize()

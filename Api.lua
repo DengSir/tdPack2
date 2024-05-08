@@ -7,23 +7,25 @@ local tinsert = table.insert
 
 ---@class ns
 ---@field UI UI
----@field Base Base
----@field Item tdPack2Item
----@field Bag Bag
----@field Slot Slot
----@field Group Group
----@field Pack Pack
----@field Rule Rule
----@field Order Order
----@field Task Task
----@field CachableOrder CachableOrder
----@field CustomOrder CustomOrder
----@field ItemInfoCache ItemInfoCache
----@field Saving Saving
----@field Stacking Stacking
----@field Sorting Sorting
----@field Search Search
 ---@field Addon Addon
+---@field Base Addon.Base
+---@field Item Addon.Item
+---@field Bag Addon.Bag
+---@field Slot Addon.Slot
+---@field Group Addon.Group
+---@field Pack Addon.Pack
+---@field Rule Addon.Rule
+---@field Order Addon.Order
+---@field Task Addon.Task
+---@field CachableOrder Addon.CachableOrder
+---@field CustomOrder Addon.CustomOrder
+---@field ItemInfoCache Addon.ItemInfoCache
+---@field Saving Addon.Saving
+---@field Stacking Addon.Stacking
+---@field Sorting Addon.Sorting
+---@field Search Addon.Search
+---@field ItemInfo Addon.ItemInfo
+---@field JunkOrder Addon.JunkOrder
 local ns = select(2, ...)
 
 local C = LibStub('C_Everywhere')
@@ -239,7 +241,6 @@ end
 function ns.IsFamilyContains(bagFamily, itemFamily)
     return bagFamily == itemFamily
 end
-
 -- @end-build<2@
 
 -- @build>2@
@@ -329,13 +330,13 @@ local function CreateGlobalMenuFrame()
 end
 
 function ns.ToggleMenu(owner, menuList)
-    local menuFrame = menuFrame or CreateGlobalMenuFrame()
+    local frame = menuFrame or CreateGlobalMenuFrame()
 
-    if DropDownList1:IsShown() and UIDROPDOWNMENU_OPEN_MENU == menuFrame and menuFrame.LastOwner == owner then
+    if DropDownList1:IsShown() and UIDROPDOWNMENU_OPEN_MENU == frame and frame.LastOwner == owner then
         CloseDropDownMenus()
     else
-        menuFrame.LastOwner = owner
+        frame.LastOwner = owner
         CloseDropDownMenus()
-        ToggleDropDownMenu(1, nil, menuFrame, owner, 0, 0, menuList)
+        ToggleDropDownMenu(1, nil, frame, owner, 0, 0, menuList)
     end
 end

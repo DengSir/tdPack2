@@ -22,7 +22,7 @@ local WHERE_AFTER = 1
 local WHERE_BEFORE = 2
 local WHERE_IN = 3
 
----@class TreeStatus: Object
+---@class UI.TreeStatus: Object
 ---@field itemTree any[]
 local TreeStatus = UI:NewClass('TreeStatus')
 
@@ -63,8 +63,8 @@ function TreeStatus:GetCount()
     return GetCount(self.itemTree, 1)
 end
 
----@class TreeView: AceEvent-3.0, AceTimer-3.0, UI.ScrollFrame, Object
----@field treeStatus TreeStatus
+---@class UI.TreeView: AceEvent-3.0, AceTimer-3.0, UI.ScrollFrame, Object
+---@field treeStatus UI.TreeStatus
 local TreeView = UI:NewClass('TreeView', UI.ScrollFrame)
 
 LibStub('AceTimer-3.0'):Embed(TreeView)

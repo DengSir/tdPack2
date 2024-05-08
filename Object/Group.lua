@@ -19,12 +19,12 @@ local ns = select(2, ...)
 local Slot = ns.Slot
 local Item = ns.Item
 
----@class Group: Base
+---@class Addon.Group: Addon.Base
 local Group = ns.Addon:NewClass('Group', ns.Base)
 
 function Group:Constructor(_, family)
     self.family = family
-    ---@type Slot[]
+    ---@type Addon.Slot[]
     self.slots = {}
     self.items = {}
 
@@ -132,7 +132,7 @@ function Group:Pack()
     return true
 end
 
----@return Slot?, integer?
+---@return Addon.Slot?, integer?
 function Group:GetIdleSlot()
     local step = random(0, 1) == 0 and -1 or 1
     local e = random(1, self:GetItemCount())

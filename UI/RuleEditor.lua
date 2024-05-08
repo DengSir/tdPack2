@@ -21,7 +21,7 @@ local Search = ns.Search
 
 local ICON_SIZE = 32
 
----@class RuleEditor: UIPrototype
+---@class UI.RuleEditor: AceModule, UI.Prototype
 local RuleEditor = UI:NewModule('RuleEditor')
 
 local function GetText(editbox)

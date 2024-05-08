@@ -12,8 +12,8 @@ local ns = select(2, ...)
 ---- NS
 local ItemInfo = ns.ItemInfo
 
----@class ItemInfoCache
----@field cache ItemInfo
+---@class Addon.ItemInfoCache: AceModule, AceEvent-3.0
+---@field cache Addon.ItemInfo
 local ItemInfoCache = ns.Addon:NewModule('ItemInfoCache', 'AceEvent-3.0')
 
 function ItemInfoCache:OnInitialize()

@@ -17,6 +17,7 @@ local CONJURED_ITEM_MATCHS = 'tip:' .. ITEM_CONJURED
 
 local LibJunk = LibStub('LibJunk-1.0')
 
+---@class Addon.JunkOrder : Addon.Order
 local JunkOrder = ns.Addon:NewClass('JunkOrder', ns.Order)
 
 function JunkOrder:Constructor()

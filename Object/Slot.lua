@@ -9,7 +9,7 @@ local InCombatLockdown = InCombatLockdown
 ---@type ns
 local ns = select(2, ...)
 
----@class Slot: Base
+---@class Addon.Slot: Addon.Base
 ---@field bag number
 ---@field slot number
 local Slot = ns.Addon:NewClass('Slot', ns.Base)
@@ -55,7 +55,7 @@ function Slot:IsBag()
     return ns.IsBag(self.bag)
 end
 
----@param slot Slot
+---@param slot Addon.Slot
 ---@return boolean, string?
 function Slot:MoveTo(slot)
     if self:IsEmpty() then
@@ -80,7 +80,7 @@ function Slot:MoveTo(slot)
     return true
 end
 
----@param item tdPack2Item
+---@param item Addon.Item
 ---@return boolean
 function Slot:IsItemIn(item)
     return self:GetItemId() == item:GetItemId() and ns.GetBagSlotCount(self.bag, self.slot) == item:GetItemCount()

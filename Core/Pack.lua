@@ -34,18 +34,18 @@ local STATUS = {
     CANCEL = 7, --
 }
 
----@class Pack: AceModule, AceEvent-3.0, AceTimer-3.0
----@field private Stacking Stacking
----@field private Saving Saving
----@field private Sorting Sorting
----@field private tasks table<STATUS, Task|function>
+---@class Addon.Pack: AceModule, AceEvent-3.0, AceTimer-3.0
+---@field private Stacking Addon.Stacking
+---@field private Saving Addon.Saving
+---@field private Sorting Addon.Sorting
+---@field private tasks table<STATUS, Addon.Task|function>
 local Pack = Addon:NewModule('Pack', 'AceEvent-3.0', 'AceTimer-3.0')
 Pack:SetDefaultModuleState(false)
 
 function Pack:OnInitialize()
     self.isBankOpened = false
     self.status = STATUS.FREE
-    ---@type table<number, Bag>
+    ---@type table<number, Addon.Bag>
     self.bags = {}
     self.tasks = { --
         [STATUS.STACKING] = ns.Stacking:New(),

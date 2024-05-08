@@ -26,7 +26,7 @@ local L = ns.L
 local UI = ns.UI
 local Addon = ns.Addon
 
----@class RuleView: AceEvent-3.0, TreeView
+---@class UI.RuleView: AceEvent-3.0, UI.TreeView
 local RuleView = UI:NewClass('RuleView', UI.TreeView)
 LibStub('AceEvent-3.0'):Embed(RuleView)
 

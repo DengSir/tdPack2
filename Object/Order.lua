@@ -6,7 +6,7 @@
 ---@type ns
 local ns = select(2, ...)
 
----@class Order
+---@class Addon.Order: Object
 local Order = ns.Addon:NewClass('Order')
 
 function Order:Constructor(profile)

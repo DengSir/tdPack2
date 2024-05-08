@@ -1,3 +1,4 @@
+---@meta
 ---@class tdPack2RuleItemTemplate : Button
 ---@field Status Texture
 ---@field Text FontString
@@ -6,10 +7,8 @@
 ---@field HighlightTexture Texture
 local tdPack2RuleItemTemplate = {}
 
----@class __tdPack2ScrollFrameTemplate_scrollBar : HybridScrollBarTemplate , Slider
-
 ---@class tdPack2ScrollFrameTemplate : HybridScrollFrameTemplate , ScrollFrame
----@field scrollBar __tdPack2ScrollFrameTemplate_scrollBar
+---@field scrollBar Slider
 local tdPack2ScrollFrameTemplate = {}
 
 ---@class tdPack2TabButtonTemplate : Button
@@ -22,12 +21,6 @@ local tdPack2ScrollFrameTemplate = {}
 ---@field HighlightTexture Texture
 ---@field Text FontString
 local tdPack2TabButtonTemplate = {}
-
----@class __tdPack2RuleOptionTemplate_Resize : PanelResizeButtonTemplate , Button
-
----@class tdPack2RuleOptionTemplate : ButtonFrameTemplate , Frame
----@field Resize __tdPack2RuleOptionTemplate_Resize
-local tdPack2RuleOptionTemplate = {}
 
 ---@class __tdPack2RuleEditorTemplate_RuleInput : InputBoxTemplate , EditBox
 

@@ -12,7 +12,7 @@ local format, tostring = string.format, tostring
 local ns = select(2, ...)
 local Search = ns.Search
 
----@class CustomOrder: Order
+---@class Addon.CustomOrder: Addon.Order
 local CustomOrder = ns.Addon:NewClass('CustomOrder', ns.Order)
 
 function CustomOrder:Constructor(noDefault)
