@@ -2,17 +2,17 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/26/2019, 2:09:42 AM
----@type ns
-local ns = select(2, ...)
-
-local L = ns.L
-
+--
 ---- LUA
 local _G = _G
 local select, pairs, ipairs = select, pairs, ipairs
 local tonumber = tonumber
 
-local C = LibStub('C_Everywhere')
+---@type ns
+local ns = select(2, ...)
+
+local L = ns.L
+local C = ns.C
 
 ---- LIBS
 local CustomSearch = LibStub('CustomSearch-1.0')

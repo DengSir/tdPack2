@@ -3,12 +3,6 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/28/2019, 1:35:42 PM
 --
----@type ns
-local ADDON, ns = ...
-local L = ns.L
-local UI = ns.UI
-local Addon = ns.Addon
-
 ---- LUA
 local format = string.format
 local tremove = table.remove
@@ -26,6 +20,13 @@ local UIParent = UIParent
 ---- LOCAL
 local DELETE, EDIT, CANCEL = DELETE, EDIT, CANCEL
 
+---@type string, ns
+local ADDON, ns = ...
+local L = ns.L
+local UI = ns.UI
+local Addon = ns.Addon
+
+---@class RuleView: TreeView
 local RuleView = UI:NewClass('RuleView', UI.TreeView)
 LibStub('AceEvent-3.0'):Embed(RuleView)
 

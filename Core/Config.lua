@@ -2,19 +2,19 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/31/2019, 7:22:32 PM
+--
+----LUA
 local ipairs = ipairs
 local tinsert = table.insert
+local format = string.format
+
+---- WOW
+local GetSpellInfo = GetSpellInfo
 
 ---@class ns
 local ns = select(2, ...)
 local L = ns.L
-
-local format = string.format
-
-local C = LibStub('C_Everywhere')
-
----- WOW
-local GetSpellInfo = GetSpellInfo
+local C = ns.C
 
 local function Rule(name, icon, rule, c)
     local children

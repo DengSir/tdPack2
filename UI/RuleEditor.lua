@@ -9,8 +9,6 @@ local pairs, ipairs, setmetatable = pairs, ipairs, setmetatable
 local coroutine = coroutine
 local floor = math.floor
 
-local C = LibStub('C_Everywhere')
-
 ---- WOW
 local CreateFrame = CreateFrame
 
@@ -18,6 +16,7 @@ local CreateFrame = CreateFrame
 local ns = select(2, ...)
 local L = ns.L
 local UI = ns.UI
+local C = ns.C
 local Search = ns.Search
 
 local ICON_SIZE = 32

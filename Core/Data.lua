@@ -2,18 +2,17 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/21/2019, 2:00:49 AM
+--
+---- LUA
+local pairs, ipairs = pairs, ipairs
+local tinsert, tconcat = table.insert, table.concat
+
 ---@class ns
 local ns = select(2, ...)
 
 ---- NS
 local L = ns.L
-local C = LibStub('C_Everywhere')
-
----- LUA
-local pairs, ipairs = pairs, ipairs
-
----- WOW
-local tinsert, tconcat = table.insert, table.concat
+local C = ns.C
 
 local function GenerateClickData(button, control, shift, alt)
     local sb = {}

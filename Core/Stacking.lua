@@ -2,14 +2,13 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 10/10/2019, 10:38:31 AM
-
+--
 ---- LUA
-local pairs = pairs
+local pairs, ripairs = pairs, ipairs_reverse
 local tinsert, tremove, wipe = table.insert, table.remove, table.wipe or wipe
 
 ---@type ns
 local ns = select(2, ...)
-local ripairs = ipairs_reverse
 
 local BAG_TYPE = ns.BAG_TYPE
 

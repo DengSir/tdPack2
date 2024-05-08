@@ -3,12 +3,12 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/28/2019, 10:37:26 PM
 --
----@type ns
-local ns = select(2, ...)
-
 ---- LUA
 local pairs, ipairs = pairs, ipairs
 local tinsert = table.insert
+
+---@type ns
+local ns = select(2, ...)
 
 ---- NS
 local Group = ns.Group

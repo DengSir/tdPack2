@@ -2,15 +2,16 @@
 -- @Author : DengSir (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 10/20/2018, 7:46:03 PM
-local ns = select(2, ...)
-local UI = ns.UI
-
+--
 ---- LUA
 local setmetatable, assert, type = setmetatable, assert, type
 local tremove = table.remove
 
 ---- WOW
 local CreateFrame = CreateFrame
+
+local ns = select(2, ...)
+local UI = ns.UI
 
 ---@class _ScrollFrame: ScrollFrame
 local ScrollFrame = UI:NewClass('ScrollFrame', 'ScrollFrame')

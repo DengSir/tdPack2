@@ -3,14 +3,13 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/2/2019, 12:35:41 PM
 --
----@type ns
+---@type string, ns
 local ADDON, ns = ...
 
 ---@class Addon
 local Addon = ns.Addon
 
-local C = LibStub('C_Everywhere')
-
+local C = ns.C
 local L = ns.L
 local UI = ns.UI
 

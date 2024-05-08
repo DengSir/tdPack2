@@ -2,9 +2,7 @@
 -- @Author : DengSir (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 10/20/2018, 4:28:53 PM
-local ns = select(2, ...)
-local UI = ns.UI
-
+--
 local setmetatable, ipairs, type, select = setmetatable, ipairs, type, select
 local tinsert, tremove = table.insert, table.remove
 local ceil, min, abs = math.ceil, math.min, math.abs
@@ -15,6 +13,10 @@ local CreateFrame, HybridScrollFrame_Update = _G.CreateFrame, _G.HybridScrollFra
 
 local UIParent = _G.UIParent
 local GameTooltip = _G.GameTooltip
+
+---@type ns
+local ns = select(2, ...)
+local UI = ns.UI
 
 local WHERE_AFTER = 1
 local WHERE_BEFORE = 2

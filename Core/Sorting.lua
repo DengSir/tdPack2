@@ -2,7 +2,8 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 10/10/2019, 11:02:51 AM
-
+--
+---- LUA
 local tinsert, wipe = table.insert, table.wipe or wipe
 local ipairs = ipairs
 

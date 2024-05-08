@@ -2,11 +2,12 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/31/2019, 3:29:19 AM
----@type ns
-local ns = select(2, ...)
-
+--
 ---- WOW
 local InCombatLockdown = InCombatLockdown
+
+---@type ns
+local ns = select(2, ...)
 
 ---@class Slot: Base
 ---@field bag number

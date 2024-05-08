@@ -3,6 +3,9 @@
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/30/2019, 11:46:11 PM
 --
+local tinsert = table.insert
+local bit = bit
+
 ---@class ns
 ---@field UI UI
 ---@field Base Base
@@ -24,13 +27,11 @@
 ---@field Addon Addon
 local ns = select(2, ...)
 
-local tinsert = table.insert
-local bit = bit
-
 local C = LibStub('C_Everywhere')
+ns.C = C
 
 ---- LUA
-local select, type, assert, ipairs = select, type, assert, ipairs
+local select, type, ipairs = select, type, ipairs
 local format = string.format
 local tonumber, band = tonumber, bit.band
 

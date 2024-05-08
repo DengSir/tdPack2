@@ -2,13 +2,7 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/30/2019, 11:41:51 PM
----@type ns
-local ns = select(2, ...)
-
----- NS
-local Slot = ns.Slot
-local Item = ns.Item
-
+--
 ---- LUA
 local ripairs = ipairs_reverse
 local ipairs = ipairs
@@ -17,6 +11,13 @@ local random = fastrandom or math.random
 
 ---- WOW
 local InCombatLockdown = InCombatLockdown
+
+---@type ns
+local ns = select(2, ...)
+
+---- NS
+local Slot = ns.Slot
+local Item = ns.Item
 
 ---@class Group: Base
 local Group = ns.Addon:NewClass('Group', ns.Base)

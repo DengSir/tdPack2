@@ -2,13 +2,13 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/31/2019, 11:10:04 PM
----@type ns
-local ns = select(2, ...)
-
+--
 ---- LUA
 local wipe = table.wipe or wipe
 local type, ipairs = type, ipairs
 
+---@type ns
+local ns = select(2, ...)
 ---- NS
 local Search = ns.Search
 

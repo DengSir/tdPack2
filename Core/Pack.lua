@@ -2,6 +2,17 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 8/31/2019, 3:14:49 AM
+--
+---- LUA
+local pairs = pairs
+local wipe = table.wipe
+local format = string.format
+
+---- WOW
+local GetCursorInfo = GetCursorInfo
+local InCombatLockdown = InCombatLockdown
+local UnitIsDead = UnitIsDead
+
 ---@type ns
 local ns = select(2, ...)
 
@@ -10,16 +21,6 @@ local L = ns.L
 local Bag = ns.Bag
 local Addon = ns.Addon
 local BAG_TYPE = ns.BAG_TYPE
-
----- LUA
-local pairs = select
-local wipe = wipe
-local format = string.format
-
----- WOW
-local GetCursorInfo = GetCursorInfo
-local InCombatLockdown = InCombatLockdown
-local UnitIsDead = UnitIsDead
 
 ---@alias STATUS number
 local STATUS = {

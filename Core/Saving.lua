@@ -2,9 +2,9 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 10/10/2019, 11:02:44 AM
-
+--
 ----LUA
-local tinsert, tremove, wipe = table.insert, table.remove, table.wipe or wipe
+local tinsert, tremove, wipe = table.insert, table.remove, table.wipe
 local ipairs = ipairs
 
 ---@type ns
@@ -13,7 +13,6 @@ local ns = select(2, ...)
 local BAG_TYPE = ns.BAG_TYPE
 
 local Pack = ns.Pack
-local Rule = ns.Rule
 local Item = ns.Item
 
 ---@class Saving: Task

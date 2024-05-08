@@ -2,9 +2,15 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/29/2019, 12:49:28 AM
+--
+---@class ns
 local ns = select(2, ...)
 
----@class UI: AceAddon-3.0, LibClass-2.0
+---@class UI: AceModule, AceAddon, LibClass-2.0
+---@field TreeView TreeView
+---@field TreeStatus TreeStatus
+---@field RuleEditor RuleEditor
+---@field RuleView RuleView
 local UI = ns.Addon:NewModule('UI', 'LibClass-2.0')
 
 function UI:OnModuleCreated(module)

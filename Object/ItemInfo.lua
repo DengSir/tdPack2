@@ -2,10 +2,11 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/27/2019, 12:15:26 AM
+--
 ---@type ns
 local ns = select(2, ...)
 
-local C = LibStub('C_Everywhere')
+local C = ns.C
 
 ---@class ItemInfo
 local ItemInfo = ns.Addon:NewClass('ItemInfo')

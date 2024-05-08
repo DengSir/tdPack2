@@ -2,12 +2,12 @@
 -- @Author : Dencer (tdaddon@163.com)
 -- @Link   : https://dengsir.github.io
 -- @Date   : 9/27/2019, 1:04:22 AM
+--
+---- LUA
+local wipe = table.wipe or wipe
 
 ---@type ns
 local ns = select(2, ...)
-
----- LUA
-local wipe = table.wipe or wipe
 
 ---@class CachableOrder: Order
 local CachableOrder = ns.Addon:NewClass('CachableOrder', ns.Order)
