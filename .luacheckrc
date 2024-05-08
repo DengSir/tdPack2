@@ -3,12 +3,14 @@ do
     if file then
         file:close()
 
-        local _ENV = {}
-
-        local f = loadfile('default.luacheckrc')
+        local e = {}
+        local f = loadfile('default.luacheckrc', 't', e)
+        if setfenv then
+            setfenv(f, e)
+        end
         f()
 
-        read_globals = _ENV.read_globals
+        read_globals = e.read_globals
     end
 end
 
