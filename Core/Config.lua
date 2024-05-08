@@ -115,7 +115,7 @@ local function TypeOrTag(type, subType, icon, children)
     local name = C.Item.GetItemSubClassInfo(type, subType)
     return Rule(name, icon, format('class:%s | tag:%s', name, name), children)
 end
--- @build>2@
+-- @end-build>2@
 
 local CONSUMABLE = C.Item.GetItemClassInfo(Enum.ItemClass.Consumable) -- 消耗品
 local QUEST = C.Item.GetItemClassInfo(Enum.ItemClass.Questitem) -- 任务
