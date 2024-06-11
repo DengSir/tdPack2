@@ -15,8 +15,7 @@ local UI = ns.UI
 
 local format = string.format
 
-local AceConfigRegistry = LibStub('AceConfigRegistry-3.0')
-local AceConfigDialog = LibStub('AceConfigDialog-3.0')
+local tdOptions = LibStub('tdOptions')
 
 function Addon:InitOptionFrame()
     local index = 0
@@ -203,7 +202,6 @@ function Addon:InitOptionFrame()
         end,
 
         args = {
-            title = desc(L['tdPack2 is a bag sorting addon.']),
             titleGeneral = treeTitle(GENERAL),
             general = treeItem(GENERAL, {
                 default = inline(L.SORT, {
@@ -247,20 +245,13 @@ function Addon:InitOptionFrame()
         },
     }
 
-    AceConfigRegistry:RegisterOptionsTable(ADDON, options)
-    AceConfigDialog:AddToBlizOptions(ADDON, ADDON)
-    AceConfigDialog:SetDefaultSize(ADDON, 700, 570)
+    tdOptions:Register(ADDON, options)
 end
 
 function Addon:OpenOption(toRule)
-    AceConfigDialog:Open(ADDON)
     if toRule then
-        AceConfigDialog:SelectGroup(ADDON, 'sorting')
+        tdOptions:Open(ADDON, 'sorting')
     else
-        AceConfigDialog:SelectGroup(ADDON, 'general')
+        tdOptions:Open(ADDON, 'general')
     end
-    pcall(function()
-        AceConfigDialog.OpenFrames[ADDON]:EnableResize(false)
-        AceConfigDialog.OpenFrames[ADDON].frame:SetFrameStrata('DIALOG')
-    end)
 end

@@ -284,7 +284,7 @@ ns.DEFAULT_SORTING_RULES = {
         Group(GetSpellInfo(7620), 136245, {34861, 6533, 6532, 6530, 6529}),
         -- @end-build>2@
     }), -- 消耗品
-    Type(Enum.ItemClass.Miscellaneous, 132905, {
+    Type(Enum.ItemClass.Tradegoods, 132905, {
         TipLocale('CLASS', 132273), -- 职业
         -- @build<2@
         Tag('Cloth', 132903), -- 布
