@@ -1,3 +1,17 @@
+## [2.1.7](https://github.com/DengSir/tdPack2/compare/v2.1.6...v2.1.7) (2024-06-29)
+
+
+### Bug Fixes
+
+* button for bagnon ([6f80ee7](https://github.com/DengSir/tdPack2/commit/6f80ee7201014f7406a4833b66938c0d07941da9))
+
+
+### Features
+
+* update rules ([9d3cdd2](https://github.com/DengSir/tdPack2/commit/9d3cdd2e2d358a7d83adb4b028475fed5527cc3d))
+
+
+
 ## [2.1.6](https://github.com/DengSir/tdPack2/compare/v2.1.5...v2.1.6) (2024-04-08)
 
 
