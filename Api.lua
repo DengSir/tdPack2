@@ -340,3 +340,10 @@ function ns.ToggleMenu(owner, menuList)
         ToggleDropDownMenu(1, nil, frame, owner, 0, 0, menuList)
     end
 end
+
+function ns.override(o, m, f)
+    local orig = assert(o[m])
+    o[m] = function(...)
+        return f(orig, ...)
+    end
+end
