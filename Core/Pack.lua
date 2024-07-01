@@ -6,7 +6,6 @@
 ---- LUA
 local pairs = pairs
 local wipe = table.wipe
-local format = string.format
 
 ---- WOW
 local GetCursorInfo = GetCursorInfo
@@ -21,16 +20,6 @@ local L = ns.L
 local Bag = ns.Bag
 local Addon = ns.Addon
 local BAG_TYPE = ns.BAG_TYPE
-
----- LUA
-local pairs = pairs
-local wipe = wipe
-local format = string.format
-
----- WOW
-local GetCursorInfo = GetCursorInfo
-local InCombatLockdown = InCombatLockdown
-local UnitIsDead = UnitIsDead
 
 ---@alias STATUS number
 local STATUS = {
