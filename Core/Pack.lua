@@ -93,13 +93,14 @@ function Pack:IsLocked()
 end
 
 function Pack:Start(opts)
-    local save = opts.save()
-    if (opts.bank or save) and not opts.bag and not self.isBankOpened then
+    if self.status ~= STATUS.FREE then
+        self:SetStatus(STATUS.CANCEL)
+        self:Warning(L['Pack canceled.'])
         return
     end
 
-    if self.status ~= STATUS.FREE then
-        self:Warning(L['Packing now'])
+    local save = opts.save()
+    if (opts.bank or save) and not opts.bag and not self.isBankOpened then
         return
     end
 

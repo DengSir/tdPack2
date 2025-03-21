@@ -38,6 +38,7 @@ RuleView.__treeStatus = setmetatable({}, {
 })
 
 function RuleView:Constructor()
+    self:Hide()
     self:SetItemTemplate('tdPack2RuleItemTemplate')
     self:SetCallback('OnItemFormatting', self.OnItemFormatting)
     self:SetCallback('OnItemEnter', self.OnItemEnter)
@@ -266,7 +267,7 @@ local TYPE = ADDON .. 'RuleView'
 
 local methods = {
     OnAcquire = function(self)
-        self:SetHeight(315)
+        self:SetHeight(290)
         self:SetFullWidth(true)
     end,
 
@@ -283,6 +284,7 @@ local methods = {
     end,
 
     OnHeightSet = function(self, height)
+        print(height)
         self.frame.scrollChild:SetHeight(height)
     end,
 
