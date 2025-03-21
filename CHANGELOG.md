@@ -1,3 +1,12 @@
+## [2.1.8](https://github.com/DengSir/tdPack2/compare/v2.1.7...v2.1.8) (2025-03-21)
+
+
+### Features
+
+* 更新到3.4.4 ([f7578a7](https://github.com/DengSir/tdPack2/commit/f7578a7d69027c6b854a3cdf5445473d0962d481))
+
+
+
 ## [2.1.7](https://github.com/DengSir/tdPack2/compare/v2.1.6...v2.1.7) (2024-06-29)
 
 
