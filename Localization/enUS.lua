@@ -103,6 +103,7 @@ L['Player in combat'] = true
 L['Please drop the item, money or skills.'] = true
 L['Some slot is locked'] = true
 L['Pack finish.'] = true
+L['Pack canceled.'] = true
 L['Reverse pack'] = true
 L['Enable chat message'] = true
 L['Character Specific Settings'] = true

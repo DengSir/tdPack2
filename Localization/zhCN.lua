@@ -13,6 +13,7 @@ L['Player in combat'] = '正在战斗'
 L['Please drop the item, money or skills.'] = '请放下鼠标上的东西'
 L['Some slot is locked'] = '一些物品已锁定'
 L['Pack finish.'] = '整理完成'
+L['Pack canceled.'] = '已取消'
 
 L['Reverse pack'] = '反向整理'
 L['Enable chat message'] = '启用聊天窗口消息'
