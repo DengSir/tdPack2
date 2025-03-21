@@ -284,7 +284,6 @@ local methods = {
     end,
 
     OnHeightSet = function(self, height)
-        print(height)
         self.frame.scrollChild:SetHeight(height)
     end,
 
