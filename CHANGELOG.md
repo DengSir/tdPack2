@@ -1,3 +1,12 @@
+## [2.1.9](https://github.com/DengSir/tdPack2/compare/v2.1.8...v2.1.9) (2025-03-21)
+
+
+### Features
+
+* 移除日志 ([888a7e5](https://github.com/DengSir/tdPack2/commit/888a7e5a9e785dac3ba845dc5b3fa44fc8735f60))
+
+
+
 ## [2.1.8](https://github.com/DengSir/tdPack2/compare/v2.1.7...v2.1.8) (2025-03-21)
 
 
