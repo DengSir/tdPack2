@@ -1,0 +1,41 @@
+{
+  "name": "tdpack2",
+  "version": "2.1.9",
+  "description": "Sorting your items",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo not implemented",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DengSir/tdPack2.git"
+  },
+  "keywords": [
+    "World",
+    "of",
+    "Warcraft"
+  ],
+  "author": "Dencer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DengSir/tdPack2/issues"
+  },
+  "homepage": "https://github.com/DengSir/tdPack2#readme",
+  "wow": {
+    "name": "tdPack2",
+    "curse_id": 340110,
+    "changelog": "CHANGELOG.md",
+    "builds": {
+      "Vanilla": "11506",
+      "Wrath": "30404"
+    },
+    "scan-locale-ignores": [
+      "Localization/**",
+      "Libs/**"
+    ],
+    "no-compiles": [
+      "Libs/*/**"
+    ]
+  }
+}
