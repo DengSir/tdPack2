@@ -95,8 +95,6 @@ L["Usuable"] = true
 -- @import:language=enUS@
 L['Leave bank, pack cancel.'] = true
 L['Player enter combat, pack cancel.'] = true
---[====[ never used ]====]
---[====[ L['Packing now'] = true ]====]
 L['Player is dead'] = true
 L['Player in combat'] = true
 L['Please drop the item, money or skills.'] = true
@@ -110,8 +108,6 @@ L['Restore default Settings'] = true
 L['Are you sure you want to restore the current Settings?'] = true
 L['Left Click'] = true
 L['Right Click'] = true
---[====[ never used ]====]
---[====[ L['tdPack2 is a bag sorting addon.'] = true ]====]
 L['Rules'] = true
 L['Buttons'] = true
 L['Bag'] = true
@@ -135,13 +131,9 @@ L['Select an icon (Optional)'] = true
 L['Save to bank when default packing'] = true
 L['Keep bank items stack full'] = true
 L['Bank and bag stacking together'] = true
---[====[ never used ]====]
---[====[ L['Add extension filter to ItemSearch-1.3'] = true ]====]
 L['Help'] = true
 L['Drag to modify the sorting order'] = true
 L['Put in an item to add simple rule'] = true
---[====[ never used ]====]
---[====[ L['Advancee rules use ItemSearch-1.3'] = true ]====]
 L['Enjoy!'] = true
 L['Rules restore to default.'] = true
 L['Add rule'] = true
