@@ -6,7 +6,7 @@
 ## IconTexture: Interface\AddOns\tdPack2\Resource\INV_Pet_Broom
 ## Author: Dencer
 ## Version: @project-version@
-## OptionalDeps: Bagnon, Combuctor, tdBag
+## OptionalDeps: Bagnon, Combuctor, Bagnonium
 ## SavedVariables: TDDB_PACK2
 
 Load.xml
