@@ -27,8 +27,8 @@
     "curse_id": 340110,
     "changelog": "CHANGELOG.md",
     "builds": {
-      "Vanilla": "11506",
-      "Wrath": "30404"
+      "Vanilla": "11507",
+      "Wrath": "30405"
     },
     "scan-locale-ignores": [
       "Localization/**",
