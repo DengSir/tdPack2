@@ -1,3 +1,15 @@
+## 2.1.10 (2025-07-16)
+
+
+### Features
+
+* support Bagnonium ([2fdac87](https://github.com/DengSir/tdPack2/commit/2fdac87ac0f2d948459fae7396673c96d0a74c6f))
+* support Inventorian ([6b157fb](https://github.com/DengSir/tdPack2/commit/6b157fb604de86b3984fe3676648a9364df3ed6f))
+* support new Bagnon ([3c9f743](https://github.com/DengSir/tdPack2/commit/3c9f74301152025a4c15edfa30410d955b028593))
+* update to ItemSearchModify-1.3 ([57cdd97](https://github.com/DengSir/tdPack2/commit/57cdd97e510f2af342c6ac2bebbb9808c7f38cb0))
+
+
+
 ## [2.1.9](https://github.com/DengSir/tdPack2/compare/v2.1.8...v2.1.9) (2025-03-21)
 
 
