@@ -1,8 +1,10 @@
 ﻿## Interface: @project-interface@
 ## Title: |cff00fffftdPack2|r - Sort bags
 ## Title-zhCN: |cff00fffftdPack2|r - 整理背包
+## Title-ruRU: |cff00fffftdPack2|r - Сортировка сумок
 ## Notes: Sort bags, allow custom sorting, support multiple bag plugins
 ## Notes-zhCN: 整理背包，允许自定义背包的排序方式，支持多种背包插件
+## Notes-ruRU: Сортировка сумок, возможность индивидуальной сортировки, поддержка нескольких плагинов для сумок
 ## IconTexture: Interface\AddOns\tdPack2\Resource\INV_Pet_Broom
 ## Author: Dencer
 ## Version: @project-version@
