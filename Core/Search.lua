@@ -18,22 +18,18 @@ local C = ns.C
 
 ---- LIBS
 local CustomSearch = LibStub('CustomSearch-1.0')
-local ItemSearch = LibStub('ItemSearchModify-1.3')
+local ItemSearch = LibStub('ItemSearch-1.3')
 local Filters = {}
 
 ---@class Addon.Search: AceModule, AceEvent-3.0
 local Search = ns.Addon:NewModule('Search', 'AceEvent-3.0')
 
 function Search:OnInitialize()
-    self.filters = {}
-
-    for k, v in pairs(ItemSearch.Filters) do
-        self.filters[k] = v
-    end
-
-    for k, v in pairs(Filters) do
-        self.filters[k] = v
-    end
+    self.filters = setmetatable(Filters, {
+        __index = function(_, k)
+            return ItemSearch.Filters[k]
+        end,
+    })
 end
 
 function Search:OnEnable()
@@ -43,7 +39,7 @@ function Search:Matches(link, search)
     return CustomSearch:Matches({link = link}, search, self.filters)
 end
 
-Filters.tdpackSpell = {
+Filters.spellKeyword = {
     keyword = 'spell',
 
     canSearch = function(self, operator, search)
@@ -55,8 +51,8 @@ Filters.tdpackSpell = {
     end,
 }
 
-Filters.tdpackSpellName = {
-    tags = {'p', 'spell'},
+Filters.spell = {
+    tags = {'spell'},
     onlyTags = true,
 
     canSearch = function(self, operator, search)
@@ -64,8 +60,8 @@ Filters.tdpackSpellName = {
     end,
 
     match = function(self, item, _, search)
-        local searchId = tonumber(search)
         local spellName, spellId = C.Item.GetItemSpell(item.link)
+        local searchId = tonumber(search)
         if searchId then
             return searchId == spellId
         else
@@ -74,7 +70,7 @@ Filters.tdpackSpellName = {
     end,
 }
 
-Filters.tdPackEquippable = {
+Filters.equippable = {
     keyword1 = 'equip',
     keyword2 = EQUIPSET_EQUIP:lower(),
 
@@ -92,7 +88,7 @@ Filters.tdPackEquippable = {
     end,
 }
 
-Filters.tdPackBlizzardHasSet = {
+Filters.blizzarSetKeyword = {
     keyword1 = 'bset',
 
     canSearch = function(self, operator, search)
@@ -105,7 +101,7 @@ Filters.tdPackBlizzardHasSet = {
     end,
 }
 
-Filters.tdPackBlizzardSet = {
+Filters.blizzardSet = {
     tags = {'bset'},
     onlyTags = true,
 
@@ -117,12 +113,12 @@ Filters.tdPackBlizzardSet = {
         local setId = select(16, C.Item.GetItemInfo(item.link))
         if setId and setId ~= 0 then
             local setName = C.Item.GetItemSetInfo(setId)
-            return CustomSearch:Find(search, setName)
+            return Parser:Find(search, setName)
         end
     end,
 }
 
-Filters.tdPackInvtype = {
+Filters.invtype = {
     tags = {'inv'},
     onlyTags = true,
 
@@ -135,7 +131,7 @@ Filters.tdPackInvtype = {
         if not equipLoc then
             return
         end
-        local text = CustomSearch:Clean(search)
+        local text = Parser:Clean(search)
         if text == equipLoc:lower() then
             return true
         end
@@ -145,7 +141,7 @@ Filters.tdPackInvtype = {
     end,
 }
 
-Filters.tdPackTags = {
+Filters.tags = {
     tags = {'tag'},
 
     canSearch = function(self, _, search)
