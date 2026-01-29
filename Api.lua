@@ -48,6 +48,12 @@ ns.VERSION = tonumber((C.AddOns.GetAddOnMetadata('tdPack2', 'Version'):gsub('(%d
     return format('%02d', tonumber(x))
 end))) or 0
 
+ns.BUILD = tonumber(GetBuildInfo():match('^(%d+)%.')) or 0
+
+ns.FEATURES = {
+    KEYRING = ns.BUILD < 5, --
+}
+
 ---- ENUM
 ns.BAG_TYPE = {
     BAG = 'bag', --
@@ -145,16 +151,9 @@ function ns.GetItemFamily(itemId)
 end
 
 function ns.GetBagFamily(bag)
-    -- @build<2@
     if bag == KEYRING_CONTAINER then
-        return 9
+        return ns.BUILD == 1 and 9 or 256
     end
-    -- @end-build<2@
-    -- @build>2@
-    if bag == KEYRING_CONTAINER then
-        return 256
-    end
-    -- @end-build>2@
 
     -- 3.4 GetContainerNumFreeSlots 接口有bug，专业包可能取到0
     if bag > 0 then
@@ -237,18 +236,16 @@ function ns.PickupBagSlot(bag, slot)
     return C.Container.PickupContainerItem(bag, slot)
 end
 
--- @build<2@
-function ns.IsFamilyContains(bagFamily, itemFamily)
-    return bagFamily == itemFamily
+if ns.BUILD == 1 then
+    function ns.IsFamilyContains(bagFamily, itemFamily)
+        return bagFamily == itemFamily
+    end
+else
+    local band = bit.band
+    function ns.IsFamilyContains(bagFamily, itemFamily)
+        return band(bagFamily, itemFamily) > 0
+    end
 end
--- @end-build<2@
-
--- @build>2@
-local band = bit.band
-function ns.IsFamilyContains(bagFamily, itemFamily)
-    return band(bagFamily, itemFamily) > 0
-end
--- @end-build>2@
 
 function ns.GetClickToken(button, control, shift, alt)
     local key
