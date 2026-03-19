@@ -23,9 +23,7 @@ function Rule:OnInitialize()
     self.nameOrder = Item.GetItemName
     self.typeOrder = Item.GetItemType
     self.subTypeOrder = Item.GetItemSubType
-    -- @build<2@
     self.tagOrder = Item.GetItemTag
-    -- @end-build<2@
     self.sortingCustomOrder = ns.CustomOrder:New()
     self.levelQualityOrder = function(item)
         local level = 9999 - item:GetItemLevel()
@@ -37,9 +35,26 @@ function Rule:OnInitialize()
             return format('%02d,%04d', quality, level)
         end
     end
+    self.invOrder = function(item)
+        local inv = item:GetItemEquipLoc()
+        local index = inv and ns.INV_ORDERS[inv] or 99
+        return format('%02d', index)
+    end
 
     self.setOrder = function(item)
         return 99999 - item:GetItemSetId()
+    end
+
+    if ns.FEATURES.EQUIPSET then
+        self.equipSetOrder = ns.EquipSetOrder:New()
+
+        self:RegisterEvent('EQUIPMENT_SETS_CHANGED', function()
+            self.equipSetOrder:RequestRebuild()
+        end)
+    else
+        self.equipSetOrder = function()
+            return ''
+        end
     end
 
     self.staticOrder = ns.CachableOrder:New({
@@ -48,13 +63,11 @@ function Rule:OnInitialize()
         end,
         GetOrder = function(item)
             return tconcat({
-                self.sortingCustomOrder(item), --
+                self.invOrder(item), --
                 self.setOrder(item), --
+                self.tagOrder(item), --
                 self.typeOrder(item), --
                 self.subTypeOrder(item), --
-                -- @build<2@
-                self.tagOrder(item), --
-                -- @end-build<2@
                 self.levelQualityOrder(item), --
                 self.nameOrder(item), --
             }, ',')
@@ -74,6 +87,8 @@ function Rule:OnInitialize()
         GetOrder = function(item)
             return tconcat({
                 self.junkOrder(item), --
+                self.sortingCustomOrder(item), --
+                self.equipSetOrder(item), --
                 self.staticOrder(item), --
                 self.countOrder(item), --
             }, ',')

@@ -64,11 +64,9 @@ function Item:GetItemEquipLoc()
     return self.info.itemEquipLoc
 end
 
--- @build<2@
 function Item:GetItemTag()
     return self.info.itemTag
 end
--- @end-build<2@
 
 function Item:IsEquippable()
     return self.info.itemEquippable

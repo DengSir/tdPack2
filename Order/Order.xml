@@ -1,5 +1,0 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">
-    <Script file="Junk.lua"/>
-    <Script file="Custom.lua"/>
-    <Script file="Cachable.lua"/>
-</Ui>

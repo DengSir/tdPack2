@@ -11,4 +11,55 @@
 ## OptionalDeps: Bagnon, Combuctor, Bagnonium
 ## SavedVariables: TDDB_PACK2
 
-Load.xml
+Libs\Libs.xml
+Localization\Localization.xml
+Api.lua
+Addon.lua
+
+Object\Base.lua
+Object\ItemInfo.lua
+Object\Item.lua
+Object\Slot.lua
+Object\Group.lua
+Object\Bag.lua
+Object\Order.lua
+Object\Task.lua
+
+Data\Tags.lua
+Data\Data.lua
+
+Core\Search.lua
+Core\ItemInfoCache.lua
+Core\Rule.lua
+Core\Pack.lua
+Core\Stacking.lua
+Core\Saving.lua
+Core\Sorting.lua
+Core\Command.lua
+Core\Compat.lua
+
+Rules\Rules.lua
+Rules\Vanilla.lua [AllowLoadGameType Vanilla]
+Rules\TBC.lua [AllowLoadGameType TBC]
+Rules\Wrath.lua [AllowLoadGameType Wrath]
+
+Order\Junk.lua
+Order\EquipSet.lua [AllowLoadGameType Wrath, Mists]
+Order\Custom.lua
+Order\Cachable.lua
+
+UI\Template.xml
+UI\UI.lua
+UI\Option.lua
+UI\ScrollFrame.lua
+UI\TreeView.lua
+UI\RuleView.lua
+UI\RuleEditor.lua
+
+Button\Button.lua
+Button\Bagnon.lua
+Button\Bagnonium.lua
+Button\Combuctor.lua
+Button\Blizzard.lua
+Button\Inventorian.lua
+Button\ArkInventory.lua
