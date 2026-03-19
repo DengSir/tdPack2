@@ -17,33 +17,31 @@ local L = ns.L
 local C = ns.C
 
 ---- LIBS
-local CustomSearch = LibStub('CustomSearch-1.0')
-local ItemSearch = LibStub('ItemSearchModify-1.3')
+local Parser = LibStub('CustomSearch-1.0')
+local ItemSearch = LibStub('ItemSearch-1.3')
 local Filters = {}
 
----@class Addon.Search: AceModule, AceEvent-3.0
-local Search = ns.Addon:NewModule('Search', 'AceEvent-3.0')
-
-function Search:OnInitialize()
-    self.filters = {}
-
-    for k, v in pairs(ItemSearch.Filters) do
-        self.filters[k] = v
-    end
-
-    for k, v in pairs(Filters) do
-        self.filters[k] = v
-    end
-end
-
-function Search:OnEnable()
-end
+---@class Addon.Search
+local Search = {}
+ns.Search = Search
 
 function Search:Matches(link, search)
-    return CustomSearch:Matches({link = link}, search, self.filters)
+    if not self.filters or not self.rawFilters or self.rawFilters ~= ItemSearch.Filters then
+        self.rawFilters = ItemSearch.Filters
+        self.filters = {}
+
+        for k, v in pairs(self.rawFilters) do
+            self.filters[k] = v
+        end
+
+        for k, v in pairs(Filters) do
+            self.filters[k] = v
+        end
+    end
+    return Parser:Matches({link = link}, search, self.filters)
 end
 
-Filters.tdpackSpell = {
+Filters._spellKeyword = {
     keyword = 'spell',
 
     canSearch = function(self, operator, search)
@@ -55,33 +53,33 @@ Filters.tdpackSpell = {
     end,
 }
 
-Filters.tdpackSpellName = {
-    tags = {'p', 'spell'},
+Filters._spell = {
+    tags = {'spell'},
     onlyTags = true,
 
     canSearch = function(self, operator, search)
-        return search
+        return not operator and search
     end,
 
     match = function(self, item, _, search)
-        local searchId = tonumber(search)
         local spellName, spellId = C.Item.GetItemSpell(item.link)
+        local searchId = tonumber(search)
         if searchId then
             return searchId == spellId
         else
-            return CustomSearch:Find(search, spellName or '')
+            return Parser:Find(search, spellName or '')
         end
     end,
 }
 
-Filters.tdPackEquippable = {
+Filters._equippable = {
     keyword1 = 'equip',
     keyword2 = EQUIPSET_EQUIP:lower(),
 
     exclude = tInvert {'INVTYPE_BAG', 'INVTYPE_AMMO'},
 
     canSearch = function(self, operator, search)
-        return self.keyword1 == search or self.keyword2 == search:lower()
+        return not operator and (self.keyword1 == search or self.keyword2 == search:lower())
     end,
 
     match = function(self, item)
@@ -92,11 +90,11 @@ Filters.tdPackEquippable = {
     end,
 }
 
-Filters.tdPackBlizzardHasSet = {
+Filters._blizzarSetKeyword = {
     keyword1 = 'bset',
 
     canSearch = function(self, operator, search)
-        return self.keyword1 == search:lower()
+        return not operator and self.keyword1 == search:lower()
     end,
 
     match = function(self, item, _, search)
@@ -105,29 +103,29 @@ Filters.tdPackBlizzardHasSet = {
     end,
 }
 
-Filters.tdPackBlizzardSet = {
+Filters._blizzardSet = {
     tags = {'bset'},
     onlyTags = true,
 
     canSearch = function(self, operator, search)
-        return search
+        return not operator and search
     end,
 
     match = function(self, item, _, search)
         local setId = select(16, C.Item.GetItemInfo(item.link))
         if setId and setId ~= 0 then
             local setName = C.Item.GetItemSetInfo(setId)
-            return CustomSearch:Find(search, setName)
+            return Parser:Find(search, setName)
         end
     end,
 }
 
-Filters.tdPackInvtype = {
+Filters._invtype = {
     tags = {'inv'},
     onlyTags = true,
 
     canSearch = function(self, operator, search)
-        return search
+        return not operator and search
     end,
 
     match = function(self, item, _, search)
@@ -135,7 +133,7 @@ Filters.tdPackInvtype = {
         if not equipLoc then
             return
         end
-        local text = CustomSearch:Clean(search)
+        local text = Parser:Clean(search)
         if text == equipLoc:lower() then
             return true
         end
@@ -145,43 +143,31 @@ Filters.tdPackInvtype = {
     end,
 }
 
-Filters.tdPackTags = {
+Filters._tags = {
     tags = {'tag'},
+    onlyTags = true,
 
-    canSearch = function(self, _, search)
-        if #search < 2 then
+    canSearch = function(self, operator, search)
+        if operator then
             return
         end
-        for k, v in pairs(self.items) do
-            if k:find(search) == 1 then
-                return k
-            end
+        if not ns.ITEM_TAG_KEYS[search:lower()] then
+            return
         end
+        return search
     end,
 
     match = function(self, item, _, search)
-        local items = self.items[search]
-        if items then
-            local id = tonumber(item.link:match('item:(%d+)'))
-            return id and items[id]
+        local id = tonumber(item.link:match('item:(%d+)'))
+        if not id then
+            return
         end
-    end,
 
-    items = (function()
-        local items = {}
-        for k, v in pairs(ns.ITEM_TAGS) do
-            local ids = {}
-            for _, id in ipairs(v) do
-                ids[id] = true
-            end
-            items[k:lower()] = ids
-            if v.locale then
-                local localeKey = L['ITEM_TAG: ' .. k]
-                if localeKey then
-                    items[localeKey] = ids
-                end
-            end
+        local key = ns.ITEM_TAG_KEYS[search:lower()]
+        local tag = ns.ITEM_TAG_SETS[id]
+        if not tag then
+            return
         end
-        return items
-    end)(),
+        return tag == key
+    end,
 }

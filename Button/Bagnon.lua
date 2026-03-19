@@ -33,9 +33,7 @@ end
 
 local function GetExtraButtons(orig, frame)
     local ret = orig(frame)
-    if frame.id == 'inventory' or frame.id == 'bank' then
-        tinsert(ret, ret[frame] or CreateButton(frame, frame.id == 'bank'))
-    end
+    tinsert(ret, ret[frame] or CreateButton(frame, frame.id == 'bank'))
     return ret
 end
 
@@ -45,17 +43,12 @@ if Bagnon.Inventory and Bagnon.Bank then
     ns.override(Bagnon.Bank, 'GetExtraButtons', GetExtraButtons)
 
 elseif Bagnon.Frame and Bagnon.Frame.PlaceMenuButtons then
-    local hooked = {}
-
     ns.override(Bagnon.Frame, 'PlaceMenuButtons', function(orig, frame)
-        if not hooked[frame] then
-            hooked[frame] = true
-
-            if frame.id == 'inventory' or frame.id == 'bank' then
-                ns.override(frame, 'GetExtraButtons', GetExtraButtons)
-            end
+        if frame.id == 'inventory' or frame.id == 'bank' then
+            ns.override(frame, 'GetExtraButtons', GetExtraButtons)
         end
 
+        frame.PlaceMenuButtons = orig
         return orig(frame)
     end)
 end
