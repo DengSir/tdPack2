@@ -1,3 +1,10 @@
+## [2.1.11](https://github.com/DengSir/tdPack2/compare/v2.1.10...v2.1.11) (2026-04-30)
+
+
+### Features
+
+* 拆分不同版本规则 ([dfe0b43](https://github.com/DengSir/tdPack2/commit/dfe0b433401d972b1602ca3ca55c3a90d96f40ac))
+* 单包模式 ([d090fa9](https://github.com/DengSir/tdPack2/commit/d090fa995eb27778a1e07d7c2310f5fc46682785))
 ## 2.1.10 (2025-07-16)
 
 
